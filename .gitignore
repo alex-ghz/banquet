@@ -7,6 +7,7 @@
 
 # production
 /client/build
+/client/yarn.lock
 
 # misc
 /client.DS_Store
