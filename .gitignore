@@ -5,6 +5,7 @@
 package-lock.json
 
 /client/node_modules
+/client/.idea
 
 # production
 /client/build
