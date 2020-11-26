@@ -25,10 +25,6 @@ if ( process.env.NODE_ENV === 'production' ) {
   });
 }
 
-app.get('*', (res, req) => {
-  res.status(200).json({port: process.env.PORT});
-});
-
 app.listen(port, error => {
   if ( error ) throw error;
   console.log('Server running on port ' + port);
