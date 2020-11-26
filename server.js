@@ -22,6 +22,10 @@ if ( process.env.NODE_ENV === 'production' ) {
   });
 }
 
+server.get('*', (res, req) => {
+  res.status(200).json({port: process.env.PORT});
+});
+
 // server.use('/', indexRouter);
 // server.use('/users', usersRouter);
 
