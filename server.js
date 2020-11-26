@@ -2,7 +2,6 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var sassMiddleware = require('node-sass-middleware');
 
 if ( process.env.NODE_ENV !== 'production' ) require('dotenv').config();
 
@@ -15,12 +14,6 @@ server.use(logger('dev'));
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use(cookieParser());
-server.use(sassMiddleware({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  indentedSyntax: true, // true = .sass and false = .scss
-  sourceMap: true
-}));
 
 if ( process.env.NODE_ENV === 'production' ) {
   server.use(express.static(path.join(__dirname, 'client/build')));
