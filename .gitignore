@@ -8,6 +8,7 @@
 # production
 /client/build
 /client/yarn.lock
+/client/.eslintcache
 
 # misc
 /client.DS_Store
