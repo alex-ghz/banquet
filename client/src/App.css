@@ -1,3 +1,32 @@
 body {
     background: #eef8fe;
 }
+
+@font-face {
+    font-family: "sofia-bold";
+    src: url("./assets/fonts/sofia-bold.woff2") format("woff2");
+}
+@font-face {
+    font-family: "sofia-medium";
+    src: url("./assets/fonts/sofia-medium.woff2") format("woff2");
+}
+@font-face {
+    font-family: "sofia-regular";
+    src: url("./assets/fonts/sofia-regular.woff2") format("woff2");
+}
+@font-face {
+    font-family: "sofia-sb";
+    src: url("./assets/fonts/sofia-sb.woff2") format("woff2");
+}
+.bold_sofia {
+    font-family: 'sofia-bold';
+}
+.medium_sofia {
+    font-family: 'sofia-medium';
+}
+.regular_sofia {
+    font-family: 'sofia-regular';
+}
+.sb_sofia {
+    font-family: 'sofia-sb';
+}

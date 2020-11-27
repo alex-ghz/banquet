@@ -3,6 +3,7 @@
 .env
 .idea
 package-lock.json
+.DS_Store
 
 /client/node_modules
 /client/.idea
