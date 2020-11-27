@@ -9,7 +9,7 @@
 }
 
 .empty_div {
-  display: none;
+  display: block;
   background: #f6fcff;
   height: 35px;
   width: 46px;
@@ -17,6 +17,7 @@
   border-bottom-right-radius: 40px;
   right: -4px;
   z-index: 99;
+  top: -35px;
 }
 
 .icon_menu {
@@ -36,4 +37,10 @@
 
 .button_title {
   text-transform: capitalize;
+}
+
+.selected {
+  color: #fe154c;
+  background: #eef9ff;
+  z-index: 9;
 }

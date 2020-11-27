@@ -24,7 +24,7 @@ class SideMenuButton extends React.Component {
 		return (
 			<div className='menu-button'>
 				<div className='empty_div'/>
-				<div className='menu_item bold_sofia'>
+				<div className='menu_item bold_sofia selected'>
 					{this.getIcon(this.props.title)}
 					<span className='button_title'>{ this.props.title }</span>
 				</div>

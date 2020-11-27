@@ -30,3 +30,8 @@ body {
 .sb_sofia {
     font-family: 'sofia-sb';
 }
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
