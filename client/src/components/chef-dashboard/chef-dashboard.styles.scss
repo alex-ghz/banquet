@@ -1,0 +1,19 @@
+.home_section_inner {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.day_moment {
+  margin: 30px 0 30px 0;
+  display: flex;
+  width: 12%;
+  justify-content: space-between;
+  color: #fe154c;
+  font-size: 24px;
+}
+
+.orders_information {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}

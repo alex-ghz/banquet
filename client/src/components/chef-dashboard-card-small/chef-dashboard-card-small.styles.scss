@@ -1,0 +1,39 @@
+.order_active {
+  background: white;
+  width: 215px;
+  height: 215px;
+  position: relative;
+  box-shadow: 8px 20px 30px -10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.information_title {
+  text-align: center;
+  font-size: 19px;
+  padding: 12.4pt 0 15.2pt 0;
+}
+
+.title_square {
+  color: #fe154c;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  border: 1px solid red;
+  border-radius: 40px;
+  font-size: 14px;
+}
+
+.information_value {
+  text-align: center;
+  font-size: 60px;
+  padding-bottom: 16.7pt;
+}
+
+.information_final {
+  text-align: center;
+  font-size: 19px;
+  padding-bottom: 30px;
+}

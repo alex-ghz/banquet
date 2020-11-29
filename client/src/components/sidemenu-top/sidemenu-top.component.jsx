@@ -3,16 +3,19 @@ import { FaCog, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 import './sidemenu-top.styles.scss';
 
-const SideMenuTop = () => (
-	<div className='side-menu-top'>
-		<div className="settings_btn">
-			<FaCog/>
+const SideMenuTop = () => {
+	let sideMenuArrow = 1 ? <FaChevronLeft/> : <FaChevronRight/>;
+
+	return (
+		<div className='side-menu-top'>
+			<div className="settings_btn">
+				<FaCog/>
+			</div>
+			<div className="menu_arrows">
+				{ sideMenuArrow }
+			</div>
 		</div>
-		<div className="menu_arrows">
-			<FaChevronLeft/>
-			<FaChevronRight/>
-		</div>
-	</div>
-);
+	);
+}
 
 export default SideMenuTop;
