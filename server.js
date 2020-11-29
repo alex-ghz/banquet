@@ -50,7 +50,8 @@ const parse = new ParseServer({
 	}
 });
 
-const options = { allowInsecureHTTP: false };
+// @TODO Set true when migrate from heroku to https server
+const options = { allowInsecureHTTP: true };
 const dashboard = new ParseDashboard({
 	"apps": [
 		{
