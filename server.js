@@ -30,31 +30,31 @@ const parse = new ParseServer({
 	databaseURI: databaseUri || 'mongodb+srv://test:test@cluster0.mtjj2.mongodb.net/Chef?retryWrites=true&w=majority',
 	appId: process.env.APP_ID || 'app',
 	masterKey: process.env.MASTER_KEY || 'master', //Add your master key here. Keep it secret!
-	serverURL: process.env.SERVER_URL || 'http://localhost:3000/parse',  // Don't forget to change to https if needed
-	// liveQuery: {
-	// 	classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
-	// },
-	// push: {
-	// 	ios: [
-	// 		{
-	// 			pfx: 'stagingDevelopment.p12', // Dev PFX or P12
-	// 			bundleId: process.env.BUNDLE_ID || '',
-	// 			production: false // Dev
-	// 		},
-	// 		{
-	// 			pfx: 'stagingDistribution.p12', // Prod PFX or P12
-	// 			bundleId: process.env.BUNDLE_ID || '',
-	// 			production: true // Prod
-	// 		}
-	// 	]
-	// }
+	serverURL: process.env.SERVER_URL || 'http://localhost:5000/parse',  // Don't forget to change to https if needed
+	liveQuery: {
+		classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
+	},
+	push: {
+		ios: [
+			{
+				pfx: 'stagingDevelopment.p12', // Dev PFX or P12
+				bundleId: process.env.BUNDLE_ID || '',
+				production: false // Dev
+			},
+			{
+				pfx: 'stagingDistribution.p12', // Prod PFX or P12
+				bundleId: process.env.BUNDLE_ID || '',
+				production: true // Prod
+			}
+		]
+	}
 });
 
 const options = { allowInsecureHTTP: false };
 const dashboard = new ParseDashboard({
 	"apps": [
 		{
-			"serverURL": process.env.SERVER_URL || 'http://localhost:3000/parse',
+			"serverURL": process.env.SERVER_URL || 'http://localhost:5000/parse',
 			"appId": process.env.APP_ID || 'app',
 			"masterKey": process.env.MASTER_KEY || 'master',
 			"javascriptKey": "NOT USED",
@@ -73,12 +73,12 @@ const dashboard = new ParseDashboard({
 
 app.use('/dashboard', dashboard);
 
-// if ( process.env.NODE_ENV === 'production' ) {
-// 	app.use(express.static(path.join(__dirname, 'client/build')));
-// 	app.get('*', (req, res) => {
-// 		res.sendFile(path.join(__dirname, 'client/build', 'index.html'))
-// 	});
-// }
+if ( process.env.NODE_ENV === 'production' ) {
+	app.use(express.static(path.join(__dirname, 'client/build')));
+	app.get('*', (req, res) => {
+		res.sendFile(path.join(__dirname, 'client/build', 'index.html'))
+	});
+}
 
 app.use('/api', apiRouter);
 app.use('/parse', parse);
