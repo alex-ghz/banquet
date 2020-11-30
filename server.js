@@ -29,7 +29,7 @@ if (!databaseUri) {
 const parse = new ParseServer({
 	databaseURI: databaseUri || 'mongodb+srv://test:test@cluster0.mtjj2.mongodb.net/Chef?retryWrites=true&w=majority',
 	appId: process.env.APP_ID || 'app',
-	clientKey: 'X3Xst6lMyVpyqJKljyNBYlski5AUCemcLQ1Ap8OF',
+	clientKey: process.env.CLIENT_KEY || '',
 	masterKey: process.env.MASTER_KEY || 'master', //Add your master key here. Keep it secret!
 	serverURL: process.env.SERVER_URL || 'http://localhost:5000/parse',  // Don't forget to change to https if needed
 	liveQuery: {
