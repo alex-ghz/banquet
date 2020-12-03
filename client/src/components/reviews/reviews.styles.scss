@@ -1,0 +1,32 @@
+.reviews_container {
+  margin-top: 50px;
+  background: white;
+  height: 117.6pt;
+  text-align: center;
+  position: relative;
+  box-shadow: 8px 20px 30px -10px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.reviews_title {
+  font-size: 43px;
+  color: #fe154c;
+  font-weight: 700;
+  padding-top: 28px;
+}
+
+.title_circle {
+  background: #fe154c;
+  width: 10px;
+  height: 10px;
+  border-radius: 50px;
+  position: absolute;
+  top: 30px;
+  right: 43%;
+}
+
+.reviews_text {
+  font-size: 19px;
+  padding-top: 10px;
+}

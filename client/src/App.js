@@ -5,6 +5,7 @@ import './App.css';
 
 import SideMenu from "./components/sidemenu/sidemenu.component";
 import HomePage from "./pages/homepage/homepage.component";
+import Reviews from "./pages/reviews/reviews.component";
 
 class App extends React.Component {
 	state = {
@@ -15,9 +16,13 @@ class App extends React.Component {
 		return (
 			<div className='app'>
 				<SideMenu/>
-				<Switch>
-					<Route exact path='/home' component={ HomePage }/>
-				</Switch>
+				<div className='content'>
+					<Switch>
+						<Route exact path='/home' component={ HomePage }/>
+						<Route exact path='/home/reviews' component={ Reviews }/>
+						<Redirect from='/' to='/home'/>
+					</Switch>
+				</div>
 			</div>
 		);
 	}

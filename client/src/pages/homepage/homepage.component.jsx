@@ -8,7 +8,7 @@ class HomePage extends React.Component {
 
 	render() {
 		return (
-			<div className='home'>
+			<div>
 				<div className="home_chef">
 					<ChefDashboard/>
 				</div>
