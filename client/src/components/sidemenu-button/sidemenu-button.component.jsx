@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaHome, FaListAlt, FaList, FaUser } from "react-icons/all";
+import { Link } from 'react-router-dom';
 
 import './sidemenu-button.styles.scss';
 
@@ -24,10 +25,12 @@ class SideMenuButton extends React.Component {
 		return (
 			<div className='menu-button'>
 				<div className='empty_div'/>
-				<div className='menu_item bold_sofia selected'>
-					{this.getIcon(this.props.title)}
-					<span className='button_title'>{ this.props.title }</span>
-				</div>
+				<Link to={`/${this.props.title}`}>
+					<div className='menu_item bold_sofia selected'>
+						{this.getIcon(this.props.title)}
+						<span className='button_title'>{ this.props.title }</span>
+					</div>
+				</Link>
 				<div className='empty_div'/>
 			</div>
 		);
