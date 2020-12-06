@@ -7,6 +7,7 @@ import SideMenu from "./components/sidemenu/sidemenu.component";
 import HomePage from "./pages/homepage/homepage.component";
 import Reviews from "./pages/reviews/reviews.component";
 import Orders from "./pages/orders/orders.component";
+import Profile from "./pages/profile/profile.component";
 
 class App extends React.Component {
 	state = {
@@ -22,6 +23,7 @@ class App extends React.Component {
 						<Route exact path='/home' component={ HomePage }/>
 						<Route exact path='/home/reviews' component={ Reviews }/>
 						<Route exact path='/orders' component={ Orders }/>
+						<Route exact path='/profile' component={ Profile }/>
 						<Redirect from='/' to='/home'/>
 					</Switch>
 				</div>

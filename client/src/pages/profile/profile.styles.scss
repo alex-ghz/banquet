@@ -1,0 +1,42 @@
+.profile_section_inner {
+  margin: 0 auto;
+  padding: 30pt 47.5pt;
+  background: white;
+  border-radius: 11px;
+  color: #002439;
+  margin-bottom: 35px;
+}
+
+.profile_section {
+  width: 93%;
+  margin: 0 auto;
+  font-size: 19px;
+  line-height: 25px;
+}
+
+.profile_section_title {
+  font-size: 36pt;
+  padding: 40pt 0 43pt 0;
+  cursor: pointer;
+}
+
+.last_section_profile {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile_updated_last {
+  color: #98A7AF;
+  font-size: 14pt;
+}
+
+.save_btn_profile {
+  background: #ff2d55;
+  color: white;
+  font-size: 14pt;
+  border-radius: 15px;
+  width: 150px;
+  height: 38px;
+  text-align: center;
+  padding: 10px 5px 0 5px;
+}
