@@ -2,10 +2,10 @@ import React from 'react';
 
 import './profile.styles.scss';
 
-import ProfileImage from "../../components/profile/profile-image/profile-image.component";
-import ProfileDescription from "../../components/profile/profile-description/profile-description.component";
-import ProfileDelivery from "../../components/profile/profile-delivery/profile-delivery.component";
-import ProfileCategory from "../../components/profile/profile-category/profile-category.component";
+import ProfileImage from "../../../components/profile/profile-image/profile-image.component";
+import ProfileDescription from "../../../components/profile/profile-description/profile-description.component";
+import ProfileDelivery from "../../../components/profile/profile-delivery/profile-delivery.component";
+import ProfileCategory from "../../../components/profile/profile-category/profile-category.component";
 
 class Profile extends React.Component {
 

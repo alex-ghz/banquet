@@ -3,14 +3,14 @@ import { Route } from 'react-router-dom';
 
 import './settings.styles.scss';
 
-import SettingsLink from "../../components/settings/settings-link/settings-link.component";
+import SettingsLink from "../../../components/settings/settings-link/settings-link.component";
 
-import SettingsAccount from "../../components/settings/settings-account/settings-account.component";
-import SettingsVerification from "../../components/settings/settings-verification/settings-verification.component";
-import SettingsNotifications from "../../components/settings/settings-notifications/settings-notifications.component";
-import SettingsPayment from "../../components/settings/settings-payment/settings-payment.component";
-import SettingsHelp from "../../components/settings/settings-help/settings-help.component";
-import SettingsFeedback from "../../components/settings/settings-feedback/settings-feedback.component";
+import SettingsAccount from "../../../components/settings/settings-account/settings-account.component";
+import SettingsVerification from "../../../components/settings/settings-verification/settings-verification.component";
+import SettingsNotifications from "../../../components/settings/settings-notifications/settings-notifications.component";
+import SettingsPayment from "../../../components/settings/settings-payment/settings-payment.component";
+import SettingsHelp from "../../../components/settings/settings-help/settings-help.component";
+import SettingsFeedback from "../../../components/settings/settings-feedback/settings-feedback.component";
 
 class Settings extends React.Component {
 

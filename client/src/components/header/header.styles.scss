@@ -1,0 +1,24 @@
+.site_menu_section {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin: 24pt auto 37pt;
+}
+
+.site_menu_logo {
+  font-size: 40pt;
+  cursor: pointer;
+}
+
+.site_menu_list {
+  list-style-type: none;
+  margin-top: 20pt;
+}
+
+.site_menu_item {
+  color: #ff2d55;
+  font-size: 20pt;
+  display: inline;
+  margin: 0 25pt;
+  cursor: pointer;
+}

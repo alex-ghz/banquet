@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 
 import './reviews.styles.scss';
 
-import ReviewCard from "../../components/reviews/review-card/review-card.component";
+import ReviewCard from "../../../components/reviews/review-card/review-card.component";
 
 const Reviews = () => (
 	<div>
