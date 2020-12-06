@@ -37,7 +37,12 @@
     width: 80%;
 }
 
-a {
+.app a {
     text-decoration: none;
     color: black;
+}
+
+.appu a {
+    text-decoration: none;
+    color: inherit;
 }
