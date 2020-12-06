@@ -1,0 +1,81 @@
+.settings_payment_introduction_row, .settings_payment_simple_row {
+  font-size: 16pt;
+  color: #002439;
+  line-height: 21pt;
+  padding: 15pt 32pt;
+  border-bottom: 2px solid #f5f5f5;
+}
+
+.settings_payment_simple_row {
+  font-size: 14pt;
+}
+
+.settings_payment_holder_row {
+  font-size: 14pt;
+  padding: 23pt 32pt;
+  border-bottom: 2px solid #f5f5f5;
+}
+
+.bank_icon {
+  color: #002439;
+  font-size: 19pt !important;
+}
+
+.bank_icon_padding {
+  padding-bottom: 10pt;
+}
+
+.payment_remove_button {
+  float: right;
+  font-size: 14pt;
+  margin: -25px 20px;
+  color: #ff2d55;
+}
+
+.settings_payment_text {
+  color: #98A7AF;
+  font-size: 16pt;
+}
+
+.settings_payment_complex_row {
+  font-size: 14pt;
+  display: flex;
+  justify-content: space-between;
+  padding: 23pt 32pt;
+  border-bottom: 2px solid #f5f5f5;
+}
+
+.settings_payment_left {
+  width: 30%;
+}
+
+.settings_btn_add_inner {
+  padding: 23pt 32pt;
+  border-bottom: 2px solid #f5f5f5;
+}
+
+.settings_payment_add_btn {
+  color: white;
+  background: #ff2d55;
+  font-size: 16pt;
+  width: 76pt;
+  text-align: center;
+  float: right;
+  margin-top: -15px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 15px 19px 38px -5px rgba(0,0,0,0.1);
+}
+
+.settings_payment_row {
+  padding: 24pt 32pt;
+  border-bottom: 2px solid #f5f5f5;
+  display: flex;
+  justify-content: space-between;
+  font-size: 16pt;
+  align-items: center;
+}
+
+.settings_menu_r_chevron {
+  color: #ff2d55;
+}

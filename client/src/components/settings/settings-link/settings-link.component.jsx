@@ -1,5 +1,14 @@
 import React from 'react';
-import { FaUserCircle, FaChevronRight, FaCheckSquare, FaBell, FaCreditCard, FaLock, FaQuestionCircle, FaSmile } from "react-icons/all";
+import {
+	FaUserCircle,
+	FaChevronRight,
+	FaCheckSquare,
+	FaBell,
+	FaCreditCard,
+	FaLock,
+	FaQuestionCircle,
+	FaSmile
+} from "react-icons/all";
 import { Link } from 'react-router-dom';
 
 import './settings-link.styles.scss';
@@ -21,7 +30,7 @@ class SettingsLink extends React.Component {
 			case 'help':
 				return (<FaQuestionCircle className='settings_dash_icon'/>);
 			case 'feedback':
-				return (<FaBell className='settings_dash_icon'/>);
+				return (<FaSmile className='settings_dash_icon'/>);
 		}
 	}
 
@@ -34,7 +43,7 @@ class SettingsLink extends React.Component {
 			<Link to={ this.getUrl(this.props.type) }>
 				<div className="settings_dash_menu_item regular_sofia">
 					<div className="settings_menu_icon">
-						<FaUserCircle className='settings_dash_icon'/>
+						{ this.getIcon(this.props.type) }
 					</div>
 					<div className="settings_menu_text"><span
 						className="settings_dash_menu_name">{ this.props.title }</span>

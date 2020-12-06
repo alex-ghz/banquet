@@ -6,6 +6,11 @@ import './settings.styles.scss';
 import SettingsLink from "../../components/settings/settings-link/settings-link.component";
 
 import SettingsAccount from "../../components/settings/settings-account/settings-account.component";
+import SettingsVerification from "../../components/settings/settings-verification/settings-verification.component";
+import SettingsNotifications from "../../components/settings/settings-notifications/settings-notifications.component";
+import SettingsPayment from "../../components/settings/settings-payment/settings-payment.component";
+import SettingsHelp from "../../components/settings/settings-help/settings-help.component";
+import SettingsFeedback from "../../components/settings/settings-feedback/settings-feedback.component";
 
 class Settings extends React.Component {
 
@@ -62,6 +67,11 @@ class Settings extends React.Component {
 				</div>
 				<div className="settings_dash_content_section">
 					<Route path={ `${ match.path }/account` } component={ SettingsAccount }/>
+					<Route path={ `${ match.path }/verification` } component={ SettingsVerification }/>
+					<Route path={ `${ match.path }/notifications` } component={ SettingsNotifications }/>
+					<Route path={ `${ match.path }/payment` } component={ SettingsPayment }/>
+					<Route path={ `${ match.path }/help` } component={ SettingsHelp }/>
+					<Route path={ `${ match.path }/feedback` } component={ SettingsFeedback }/>
 				</div>
 			</div>
 		);

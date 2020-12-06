@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 
 import SideMenu from "./components/sidemenu/sidemenu/sidemenu.component";
+
 import HomePage from "./pages/homepage/homepage.component";
 import Reviews from "./pages/reviews/reviews.component";
 import Orders from "./pages/orders/orders.component";

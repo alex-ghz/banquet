@@ -1,0 +1,35 @@
+.settings_feedback_inner {
+  padding: 23pt 32pt;
+}
+
+.settings_feedback_text {
+  font-size: 16pt;
+  line-height: 21pt;
+}
+
+.settings_feedback {
+  height: 50pt;
+  border: 0;
+  width: calc(100% - 2px);
+  margin-left: 4px;
+  box-shadow: -6px 10px 0px -7px #ebebeb, 8px 10px 0px -10px #ebebeb;
+  -webkit-transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s;
+  outline: none;
+  font-size: 16pt;
+  border-left: white;
+  color: #002439;
+}
+
+.send_feedback_btn {
+  font-size: 16pt;
+  color: white;
+  background: #ff2d55;
+  width: 100pt;
+  padding: 5px;
+  float: right;
+  margin: 40pt 0 40pt 0;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+}

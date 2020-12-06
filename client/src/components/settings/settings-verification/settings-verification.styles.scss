@@ -1,0 +1,59 @@
+.settings_verification_inner, .settings_notifications_inner,
+.settings_feedback_inner {
+  padding: 23pt 32pt;
+}
+
+.settings_verification_text {
+  font-size: 16pt;
+  line-height: 22pt;
+  margin: 0 0 30pt 0;
+}
+
+.settings_verification_certificate {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #98A7AF;
+  margin-bottom: 20px;
+}
+
+.settings_verification_certificate_last {
+  border: none;
+}
+
+.settings_certificate_title {
+  color: #98A7AF;
+  font-size: 14pt;
+}
+
+.settings_certificate_photo {
+  margin-top: 15pt;
+  width: 190pt;
+  height: 162pt;
+  background: #98A7AF;
+  border-radius: 10px;
+}
+
+.settings_certificate_status_type {
+  font-size: 16pt;
+  color: black;
+  padding-top: 5px;
+}
+
+.settings_cerficiate_status_date {
+  padding-top: 20px;
+  color: #98A7AF;
+}
+
+.settings_cerfiicate_status_checked {
+  width: 16pt;
+  height: 16pt;
+  margin-top: 35px;
+  background: #4bd964;
+  color: white;
+  border-radius: 40px;
+}
+
+.check_icon_certificate {
+  padding: 2px;
+}
