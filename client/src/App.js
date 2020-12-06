@@ -12,6 +12,10 @@ import Profile from "./pages/auth/profile/profile.component";
 import Settings from "./pages/auth/settings/settings.component";
 
 import Header from "./components/header/header.component";
+import IndexPage from "./pages/noAuth/index/index.component";
+import OurStoryPage from "./pages/noAuth/our-story/our-story.component";
+import HowItWorksPage from "./pages/noAuth/how-it-works/how-it-works.component";
+import Footer from "./components/footer/footer.component";
 
 class App extends React.Component {
 	state = {
@@ -39,6 +43,12 @@ class App extends React.Component {
 						:
 						<div className='appu'>
 							<Header/>
+							<Switch>
+								<Route exact path='/' component={ IndexPage }/>
+								<Route exact path='/our-story' component={ OurStoryPage }/>
+								<Route exact path='/how-it-works' component={ HowItWorksPage }/>
+							</Switch>
+							<Footer/>
 						</div>
 				}
 			</div>
