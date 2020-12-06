@@ -2,8 +2,8 @@ import React from 'react';
 
 import './orders.styles.scss';
 
-import OrdersMenu from "../../components/orders-menu/orders-menu.component";
-import OrdersDetails from "../../components/orders-details/orders-details.component";
+import OrdersMenu from "../../components/orders/orders-menu/orders-menu.component";
+import OrdersDetails from "../../components/orders/orders-details/orders-details.component";
 
 class Orders extends React.Component {
 

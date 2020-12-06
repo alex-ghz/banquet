@@ -1,0 +1,35 @@
+.settings_account_inner {
+  padding: 80pt 32pt;
+}
+
+.settings_account_item {
+  padding: 20px 0 20pt 0;
+  border-bottom: 2px solid #f5f5f5;
+}
+
+.settings_account_static {
+  font-size: 14pt;
+  color: #98A7AF;
+}
+
+.settings_account_dynamic {
+  font-size: 16pt;
+  padding-top: 10px;
+}
+
+.settings_account_edit_btn {
+  font-size: 14pt;
+  color: #ff2d55;
+}
+
+.settings_dash_content_section {
+  width: 64%;
+  background: white;
+  float: right;
+}
+
+.settings_item_flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

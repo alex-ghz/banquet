@@ -1,0 +1,35 @@
+.settings_dash {
+  //width: 80%;
+  display: flex;
+}
+
+.settings_dash_menu {
+  width: 36%;
+  background: #eef8fe;
+  position: sticky;
+  z-index: 1;
+  overflow-x: hidden;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  float: left;
+}
+
+.settings_dash_menu_title {
+  padding: 25pt 0 25pt 43pt;
+  font-size: 24pt;
+}
+
+.settings_dash_menu_container {
+  width: 80%;
+  margin: 0 auto;
+  color: black;
+  background: white;
+  border-radius: 10px;
+}
+
+.settings_dash_content_section {
+  width: 64%;
+  background: white;
+  float: right;
+}

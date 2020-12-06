@@ -1,0 +1,20 @@
+.settings_dash_menu_item {
+  height: 56pt;
+  width: 90%;
+  margin: 0 auto;
+  border-bottom: 2px solid #eef8fe;
+  font-size: 16pt;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  cursor: pointer;
+}
+
+.settings_dash_menu_item:hover, .settings_dash_menu_selected {
+  font-weight: bold;
+}
+
+.settings_menu_icon {
+  width: 25%;
+  text-align: center;
+}

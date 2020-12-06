@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaCog, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import {Link} from 'react-router-dom';
 
 import './sidemenu-top.styles.scss';
 
@@ -9,7 +10,9 @@ const SideMenuTop = () => {
 	return (
 		<div className='side-menu-top'>
 			<div className="settings_btn">
-				<FaCog/>
+				<Link to='/settings'>
+					<FaCog/>
+				</Link>
 			</div>
 			<div className="menu_arrows">
 				{ sideMenuArrow }

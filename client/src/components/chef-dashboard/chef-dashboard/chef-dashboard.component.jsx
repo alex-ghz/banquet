@@ -4,8 +4,8 @@ import { AiOutlineLeft, AiOutlineRight } from "react-icons/all";
 import './chef-dashboard.styles.scss';
 
 import ChefDashboardCardSmall from "../chef-dashboard-card-small/chef-dashboard-card-small.component";
-import Reviews from "../reviews/reviews.component";
-import GettingStarted from "../getting-started/getting-started.component";
+import Reviews from "../../reviews/reviews/reviews.component";
+import GettingStarted from "../../getting-started/getting-started.component";
 
 const ChefDashboard = () => {
 	const smallCards = [
