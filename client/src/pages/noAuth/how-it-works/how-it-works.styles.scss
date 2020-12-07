@@ -2,10 +2,10 @@
   background: #effaff;
 }
 .site_page_title {
-  font-size: 72pt;
+  font-size: 40pt;
   width: 90%;
   margin: 0 auto;
-  padding: 49pt 0 82pt 0;
+  padding: 49pt 0 49pt 0;
 }
 .how_it_works {
   display: flex;
@@ -23,7 +23,7 @@
   width: 33pt;
   height: 33pt;
   text-align: center;
-  margin-top: 240pt;
+  margin-top: 200pt;
   background-color: #a6c9db;
   z-index: 2;
 }
@@ -36,7 +36,7 @@
   content: '';
   left: 50%;
   z-index: 1;
-  top: -245pt;
+  top: -230pt;
   margin-left: -1px;
 }
 .circle:first-child {
@@ -60,12 +60,12 @@
   margin-bottom: 125pt;
 }
 .works_page_cont_title {
-  font-size: 28pt;
+  font-size: 20pt;
   padding: 25pt 0 12pt 30pt;
 }
 .works_page_cont_content {
-  font-size: 18pt;
+  font-size: 15pt;
   color: #515151;
   line-height: 22pt;
-  padding: 12pt 37pt 25pt 30pt;
+  padding: 0pt 37pt 25pt 30pt;
 }

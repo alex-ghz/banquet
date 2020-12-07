@@ -47,6 +47,7 @@ class App extends React.Component {
 								<Route exact path='/' component={ IndexPage }/>
 								<Route exact path='/our-story' component={ OurStoryPage }/>
 								<Route exact path='/how-it-works' component={ HowItWorksPage }/>
+								<Redirect from='*' to='/'/>
 							</Switch>
 							<Footer/>
 						</div>
