@@ -29,12 +29,13 @@ if (!databaseUri) {
 // Database
 Parse = require('parse/node');
 Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse'; // This is your Server URL
-Parse.initialize(process.env.APP_ID || 'app');
+Parse.initialize(process.env.APP_ID || 'app', process.env.JAVASCRIPT_KEY || "NOT USED");
 
 const parse = new ParseServer({
 	databaseURI: databaseUri || 'mongodb+srv://test:test@cluster0.mtjj2.mongodb.net/Chef?retryWrites=true&w=majority',
 	appId: process.env.APP_ID || 'app',
 	clientKey: process.env.CLIENT_KEY || '',
+	javascriptKey: process.env.JAVASCRIPT_KEY || "NOT USED",
 	masterKey: process.env.MASTER_KEY || 'master', //Add your master key here. Keep it secret!
 	serverURL: process.env.SERVER_URL || 'http://localhost:5000/parse',  // Don't forget to change to https if needed
 	liveQuery: {
@@ -64,7 +65,7 @@ const dashboard = new ParseDashboard({
 			"serverURL": process.env.SERVER_URL || 'http://localhost:5000/parse',
 			"appId": process.env.APP_ID || 'app',
 			"masterKey": process.env.MASTER_KEY || 'master',
-			"javascriptKey": "NOT USED",
+			"javascriptKey": process.env.JAVASCRIPT_KEY || "NOT USED",
 			"restKey": "NOT USED",
 			"appName": "Banquet"
 		}
