@@ -1,5 +1,6 @@
 .menu-button {
   cursor: pointer;
+  position: relative;
 }
 
 .active {
@@ -8,16 +9,22 @@
   color: red;
 }
 
-.empty_div {
+.menu-button > .empty_div, .menu-button > .empty_div_bottom {
   display: block;
   background: #f6fcff;
   height: 35px;
-  width: 46px;
+  width: 24px;
   position: absolute;
   border-bottom-right-radius: 40px;
   right: -4px;
   z-index: 99;
   top: -35px;
+}
+
+.menu-button > .empty_div_bottom {
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 0;
+  top: 53px;
 }
 
 .icon_menu {
@@ -43,4 +50,14 @@
   color: #fe154c;
   background: #eef9ff;
   z-index: 9;
+}
+
+.selected:after, .selected_order::after {
+  content: '';
+  position: absolute;
+  height: 180%;
+  width: 45px;
+  right: -25px;
+  top: -20px;
+  background: inherit;
 }
