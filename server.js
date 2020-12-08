@@ -26,6 +26,12 @@ if (!databaseUri) {
 	console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
+// Database
+Parse = require('parse/node');
+Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse'; // This is your Server URL
+Parse.initialize(
+    process.env.APP_ID || 'app');
+
 const parse = new ParseServer({
 	databaseURI: databaseUri || 'mongodb+srv://test:test@cluster0.mtjj2.mongodb.net/Chef?retryWrites=true&w=majority',
 	appId: process.env.APP_ID || 'app',
