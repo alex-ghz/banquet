@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-router.post('/', (req, res) => {
-
+router.post('/register', (req, res) => {
+	res.status(200).json({msg: "ok"});
 });
 
 module.exports = router;

@@ -8,6 +8,7 @@ import SideMenu from "./components/sidemenu/sidemenu/sidemenu.component";
 import HomePage from "./pages/auth/homepage/homepage.component";
 import Reviews from "./pages/auth/reviews/reviews.component";
 import Orders from "./pages/auth/orders/orders.component";
+import Menu from "./pages/auth/menu/menu.component";
 import Profile from "./pages/auth/profile/profile.component";
 import Settings from "./pages/auth/settings/settings.component";
 
@@ -15,6 +16,7 @@ import Header from "./components/header/header.component";
 import IndexPage from "./pages/noAuth/index/index.component";
 import OurStoryPage from "./pages/noAuth/our-story/our-story.component";
 import HowItWorksPage from "./pages/noAuth/how-it-works/how-it-works.component";
+import Login from "./pages/noAuth/login/login.component";
 import Footer from "./components/footer/footer.component";
 
 class App extends React.Component {
@@ -26,7 +28,7 @@ class App extends React.Component {
 		return (
 			<div>
 				{
-					this.state.currentUser ?
+					!this.state.currentUser ?
 						<div className='app'>
 							<SideMenu/>
 							<div className='content'>
@@ -34,6 +36,7 @@ class App extends React.Component {
 									<Route exact path='/home' component={ HomePage }/>
 									<Route exact path='/home/reviews' component={ Reviews }/>
 									<Route exact path='/orders' component={ Orders }/>
+									<Route exact path='/menu' component={ Menu }/>
 									<Route exact path='/profile' component={ Profile }/>
 									<Route path='/settings' component={ Settings }/>
 									<Redirect from='/' to='/home'/>
@@ -47,6 +50,7 @@ class App extends React.Component {
 								<Route exact path='/' component={ IndexPage }/>
 								<Route exact path='/our-story' component={ OurStoryPage }/>
 								<Route exact path='/how-it-works' component={ HowItWorksPage }/>
+								<Route exact path='/login' component={ Login }/>
 								<Redirect from='*' to='/'/>
 							</Switch>
 							<Footer/>

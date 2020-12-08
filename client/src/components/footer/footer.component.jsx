@@ -11,7 +11,7 @@ const Footer = () => (
 					<div className="footer_title_list sb_sofia">Banquet</div>
 					<div className="footer_option_list regular_sofia">Our Story</div>
 					<div className="footer_option_list regular_sofia">Press Kit</div>
-					<div className="footer_option_list regular_sofia">Careers</div>
+					{/*<div className="footer_option_list regular_sofia">Careers</div>*/}
 				</div>
 				<div className="footer_list_inner">
 					<div className="footer_title_list sb_sofia">Community</div>

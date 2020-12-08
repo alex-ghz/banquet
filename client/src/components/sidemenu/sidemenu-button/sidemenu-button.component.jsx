@@ -31,7 +31,7 @@ class SideMenuButton extends React.Component {
 						<span className='button_title'>{ this.props.title }</span>
 					</div>
 				</Link>
-				<div className='empty_div'/>
+				<div className='empty_div_bottom'/>
 			</div>
 		);
 	}

@@ -11,7 +11,7 @@ class Orders extends React.Component {
 		return (
 			<div className="order_div">
 				<div className="order_section">
-					<OrdersMenu/>
+					<OrdersMenu test='sadasda'/>
 					<OrdersDetails/>
 				</div>
 			</div>
