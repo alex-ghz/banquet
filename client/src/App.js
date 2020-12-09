@@ -17,6 +17,7 @@ import IndexPage from "./pages/noAuth/index/index.component";
 import OurStoryPage from "./pages/noAuth/our-story/our-story.component";
 import HowItWorksPage from "./pages/noAuth/how-it-works/how-it-works.component";
 import Login from "./pages/noAuth/login/login.component";
+import Register from "./pages/noAuth/register/register.component";
 import Footer from "./components/footer/footer.component";
 
 class App extends React.Component {
@@ -28,7 +29,7 @@ class App extends React.Component {
 		return (
 			<div>
 				{
-					!this.state.currentUser ?
+					this.state.currentUser ?
 						<div className='app'>
 							<SideMenu/>
 							<div className='content'>
@@ -51,6 +52,7 @@ class App extends React.Component {
 								<Route exact path='/our-story' component={ OurStoryPage }/>
 								<Route exact path='/how-it-works' component={ HowItWorksPage }/>
 								<Route exact path='/login' component={ Login }/>
+								<Route exact path='/register' component={ Register }/>
 								<Redirect from='*' to='/'/>
 							</Switch>
 							<Footer/>
