@@ -2,17 +2,68 @@ const express = require('express');
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
-	let {email} = req.body;
+	let { email, name, phoneNo, password } = req.body;
 
 	const User = Parse.Object.extend("User");
 	const query = new Parse.Query(User);
 
 	query.equalTo("email", email);
-	query.find().then((user) => {
-		res.json({msg: user});
-	}, (err) => {
-		res.json({msg: err, aa: 1});
-	});
+
+	const userExists = await query.count();
+
+	if ( userExists ) {
+		return res.status(405).json({ msg: "User with this email already exists!" });
+	} else {
+		const Menu = Parse.Object.extend("Menu");
+		const Chef = Parse.Object.extend("Chef");
+		const User = Parse.Object.extend("User");
+
+		const chef = new Chef();
+		const menu = new Menu();
+		const user = new User();
+
+		chef.set('name', name);
+		chef.set('phoneNo', phoneNo);
+		chef.set('online', false);
+		chef.set('menu', menu);
+
+		chef.save()
+			.then((chef) => {
+				user.set('chef', chef);
+				user.set('updatedAt', new Date());
+				user.set('activated', false);
+				user.set('username', email);
+				user.set('createdAt', new Date());
+				user.set('password', password);
+				user.set('email', email);
+
+				user.save()
+					.then((user) => {
+						return res.status(200).json(user);
+					})
+					.catch((err) => {
+						return res.status(405).json({ msg: "User object could not be created", err: err });
+					})
+			})
+			.catch((err) => {
+				return res.status(405).json({ msg: "Chef object could not be created", err: err });
+			});
+	}
+});
+
+router.post('/login', (req, res) => {
+	let { email, password } = req.body;
+
+	Parse.User.logIn(email, password)
+		 .then((user) => {
+			 return res.json(user);
+		 })
+		 .catch((err) => {
+			 return res.json({
+				 msg: err.message,
+				 err: err
+			 });
+		 });
 });
 
 module.exports = router;
