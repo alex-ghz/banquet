@@ -5,7 +5,6 @@ import './orders-menu.styles.scss';
 import OrdersList from "../orders-list/orders-list.component";
 
 const OrdersMenu = (props) => {
-	console.log(props.test);
 
 	return (
 		<div className="order_box">

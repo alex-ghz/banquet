@@ -1,0 +1,4 @@
+export const PageActionTypes = {
+	SET_CURRENT_PAGE: 'SET_CURRENT_PAGE',
+	SELECT_CURRENT_PAGE: 'SELECT_CURRENT_PAGE'
+}

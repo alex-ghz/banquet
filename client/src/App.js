@@ -27,7 +27,6 @@ import Footer from "./components/footer/footer.component";
 class App extends React.Component {
 
 	render() {
-		console.log(this.state)
 		return (
 			<div>
 				{

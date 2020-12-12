@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import axios from 'axios';
 
 import './login.styles.scss';
+
+import { setCurrentUser } from "../../../redux/user/user.actions";
 
 class Login extends React.Component {
 	constructor(props) {
@@ -21,12 +24,13 @@ class Login extends React.Component {
 	}
 
 	handleSubmit = async () => {
+		const { setCurrentUser } = this.props;
 		let { email, password } = this.state;
 
 		axios.post('/api/login', { email: email, password: password })
 			 .then((response) => response.data)
-			 .then((data) => {
-				 console.log(data);
+			 .then((user) => {
+				 setCurrentUser(user);
 			 })
 			 .catch((err) => {
 				 console.log('on error');
@@ -80,4 +84,8 @@ class Login extends React.Component {
 	}
 }
 
-export default Login;
+const mapDispatchProps = dispatch => ({
+	setCurrentUser: user => dispatch(setCurrentUser(user))
+});
+
+export default connect(null, mapDispatchProps)(Login);

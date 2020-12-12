@@ -1,8 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { FaHome, FaListAlt, FaList, FaUser } from "react-icons/all";
 import { Link } from 'react-router-dom';
 
 import './sidemenu-button.styles.scss';
+
+import {setCurrentPage} from "../../../redux/page/page.actions";
 
 class SideMenuButton extends React.Component {
 
@@ -25,9 +28,10 @@ class SideMenuButton extends React.Component {
 		return (
 			<div className='menu-button'>
 				<div className='empty_div'/>
-				<Link to={`/${this.props.title}`}>
-					<div className='menu_item bold_sofia selected'>
-						{this.getIcon(this.props.title)}
+				<Link to={ `/${ this.props.title }` } onClick={ () => this.props.setCurrentPage(this.props.title) }>
+					<div
+						className={ `menu_item bold_sofia ${ this.props.selected ? 'selected' : '' }` }>
+						{ this.getIcon(this.props.title) }
 						<span className='button_title'>{ this.props.title }</span>
 					</div>
 				</Link>
@@ -37,4 +41,8 @@ class SideMenuButton extends React.Component {
 	}
 }
 
-export default SideMenuButton;
+const mapDispatchProps = dispatch => ({
+	setCurrentPage: page => dispatch(setCurrentPage(page))
+});
+
+export default connect(null, mapDispatchProps)(SideMenuButton);
