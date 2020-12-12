@@ -1,38 +1,77 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
 import './login.styles.scss';
 
 class Login extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			email: '',
+			password: '',
+			err: null
+		};
+	}
+
+	handleChange = event => {
+		const { value, name } = event.target;
+		this.setState({ [name]: value });
+	}
+
+	handleSubmit = async () => {
+		let { email, password } = this.state;
+
+		axios.post('/api/login', { email: email, password: password })
+			 .then((response) => response.data)
+			 .then((data) => {
+				 console.log(data);
+			 })
+			 .catch((err) => {
+				 console.log('on error');
+				 console.log(err);
+			 })
+	}
 
 	render() {
 
 		return (
-			<div class="login-page">
-				<div class="login-page-inner">
-					<div class="left-content">
-						<div class="login_page_title bold_sofia">Log in to the Chef Dashboard</div>
-						<div class="login_page_text bold_sofia">Sell your home cooked dishes to your local community and earn an income on your own terms.</div>
+			<div className="login-page">
+				<div className="login-page-inner">
+					<div className="left-content">
+						<div className="login_page_title bold_sofia">Log in to the Chef Dashboard</div>
+						<div className="login_page_text bold_sofia">Sell your home cooked dishes to your local community
+							and earn an income on your own terms.
+						</div>
 					</div>
-					<div class="right-content">
-						<div class="right-con-inner">
-							<div class="login-buttons">
-							<Link to="/register">
-								<div class="signup-btn sb_sofia">Sign up</div>
-							</Link>
-							<Link to="/login">
-								<div class="login-btn sb_sofia btn_underline">Log In</div>
-							</Link>
+					<div className="right-content">
+						<div className="right-con-inner">
+							<div className="login-buttons">
+								<Link to="/register">
+									<div className="signup-btn sb_sofia">Sign up</div>
+								</Link>
+								<Link to="/login">
+									<div className="login-btn sb_sofia btn_underline">Log In</div>
+								</Link>
 							</div>
-							<p class="input_name medium_sofia">Name</p>
-							<input type="text" class="first_name_login medium_sofia" placeholder="User Name" name="first-name"/>
-							<p class="input_name medium_sofia">Email</p>
-							<input type="text" class="email_address_login medium_sofia" placeholder="User1@email.com" name="e-mail"/>
-							<p class="input_name medium_sofia">Password</p>
-							<input type="password" class="password_login medium_sofia" placeholder="Password" name="pwd"/>
-							<div class="signin-btn sb_sofia">
+							<p className="input_name medium_sofia">Name</p>
+							<input type="text" className="first_name_login medium_sofia" placeholder="User Name"
+								   name="first-name"/>
+							<p className="input_name medium_sofia">Email</p>
+							<input type="text" className="email_address_login medium_sofia"
+								   onChange={ this.handleChange }
+								   placeholder="User1@email.com" name="email"/>
+							<p className="input_name medium_sofia">Password</p>
+							<input type="password" onChange={ this.handleChange }
+								   className="password_login medium_sofia" placeholder="Password"
+								   name="password"/>
+							<div className="signin-btn sb_sofia" onClick={ this.handleSubmit }>
 								Sign Up
 							</div>
-							<p class="privacy_policy medium_sofia">By continuing you agree to our <span class="pp_color">T&amp;Cs.</span> You can also have a look at our <span class="pp_color">Privacy Policy.</span></p>
+							<p className="privacy_policy medium_sofia">By continuing you agree to our <span
+								className="pp_color">T&amp;Cs.</span> You can also have a look at our <span
+								className="pp_color">Privacy Policy.</span></p>
 						</div>
 					</div>
 				</div>

@@ -1,7 +1,11 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import {createStructuredSelector} from "reselect";
 
 import './App.css';
+
+import {selectCurrentUser} from './redux/user/user.selectors';
 
 import SideMenu from "./components/sidemenu/sidemenu/sidemenu.component";
 
@@ -21,15 +25,13 @@ import Register from "./pages/noAuth/register/register.component";
 import Footer from "./components/footer/footer.component";
 
 class App extends React.Component {
-	state = {
-		currentUser: null
-	};
 
 	render() {
+		console.log(this.state)
 		return (
 			<div>
 				{
-					this.state.currentUser ?
+					this.props.currentUser ?
 						<div className='app'>
 							<SideMenu/>
 							<div className='content'>
@@ -63,4 +65,8 @@ class App extends React.Component {
 	}
 }
 
-export default App;
+const mapStateToProps = createStructuredSelector({
+	currentUser: selectCurrentUser
+})
+
+export default connect(mapStateToProps)(App);
