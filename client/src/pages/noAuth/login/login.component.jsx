@@ -59,9 +59,6 @@ class Login extends React.Component {
 									<div className="login-btn sb_sofia btn_underline">Log In</div>
 								</Link>
 							</div>
-							<p className="input_name medium_sofia">Name</p>
-							<input type="text" className="first_name_login medium_sofia" placeholder="User Name"
-								   name="first-name"/>
 							<p className="input_name medium_sofia">Email</p>
 							<input type="text" className="email_address_login medium_sofia"
 								   onChange={ this.handleChange }
