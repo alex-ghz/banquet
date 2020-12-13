@@ -31,6 +31,8 @@ class SettingsLink extends React.Component {
 				return (<FaQuestionCircle className='settings_dash_icon'/>);
 			case 'feedback':
 				return (<FaSmile className='settings_dash_icon'/>);
+			default:
+				return null;
 		}
 	}
 

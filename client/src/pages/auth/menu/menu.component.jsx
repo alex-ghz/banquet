@@ -1,5 +1,4 @@
 import React from "react";
-import {FaPencilAlt} from "react-icons/all";
 
 import './menu.styles.scss';
 
