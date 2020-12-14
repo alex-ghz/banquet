@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-const { userGenerator } = require('../utils/user');
-
 router.post('/register', async (req, res) => {
 	let { email, name, phoneNo, password } = req.body;
 
