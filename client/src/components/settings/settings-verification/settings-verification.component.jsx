@@ -11,7 +11,7 @@ const SettingsVerification = () => (
 		<div className="settings_verification_certificate">
 			<div className="settings_certificate_title medium_sofia">
 				FOOD LICENCE
-				<div className="settings_certificate_photo"/>
+				{/*<div className="settings_certificate_photo"/>*/}
 			</div>
 			<div className="settings_certificate_title medium_sofia">
 				STATUS
@@ -27,7 +27,7 @@ const SettingsVerification = () => (
 		<div className="settings_verification_certificate settings_verification_certificate_last">
 			<div className="settings_certificate_title medium_sofia">
 				FOOD HYGEINE CERTIFICATE
-				<div className="settings_certificate_photo"/>
+				{/*<div className="settings_certificate_photo"/>*/}
 			</div>
 			<div className="settings_certificate_title medium_sofia">
 				STATUS

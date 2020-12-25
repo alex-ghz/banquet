@@ -1,5 +1,7 @@
 import React from 'react';
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/all";
+import { connect } from 'react-redux';
+import {createStructuredSelector} from "reselect";
 
 import './chef-dashboard.styles.scss';
 
@@ -7,8 +9,9 @@ import ChefDashboardCardSmall from "../chef-dashboard-card-small/chef-dashboard-
 import Reviews from "../../reviews/reviews/reviews.component";
 import GettingStarted from "../../getting-started/getting-started.component";
 import ChefDashboardNotification from "../chef-dashboard-notification/chef-dashboard-notification.component";
+import { getDashboardNotification } from "../../../redux/notification/notification.selectors";
 
-const ChefDashboard = () => {
+const ChefDashboard = ({dashboardNotification}) => {
 	const smallCards = [
 		{
 			id: "yourRatingCard",
@@ -36,12 +39,10 @@ const ChefDashboard = () => {
 		}
 	];
 
-	const displayNotification = true;
-
 	return (
 		<div className='home_section_inner'>
 			{
-				displayNotification ? <ChefDashboardNotification/> : null
+				dashboardNotification ? <ChefDashboardNotification/> : null
 			}
 			<div className="day_moment sb_sofia">
 				<AiOutlineLeft/>
@@ -59,4 +60,8 @@ const ChefDashboard = () => {
 	);
 };
 
-export default ChefDashboard;
+const mapStateToProps = createStructuredSelector({
+	dashboardNotification: getDashboardNotification
+});
+
+export default connect(mapStateToProps)(ChefDashboard);

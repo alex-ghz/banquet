@@ -9,10 +9,10 @@ const SettingsHelp = () => (
 			Live Chat
 			<FaChevronRight className='settings_menu_r_chevron'/>
 		</div>
-		<div className="settings_help_row regular_sofia">
-			FAQ
-			<FaChevronRight className='settings_menu_r_chevron'/>
-		</div>
+		{/*<div className="settings_help_row regular_sofia">*/}
+		{/*	FAQ*/}
+		{/*	<FaChevronRight className='settings_menu_r_chevron'/>*/}
+		{/*</div>*/}
 		<div className="settings_help_row regular_sofia">
 			Customer Support
 			<FaChevronRight className='settings_menu_r_chevron'/>
