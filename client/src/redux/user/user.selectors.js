@@ -21,3 +21,8 @@ export const selectChef = createSelector(
 	[selectCurrentUser],
 	(user) => user.chef
 );
+
+export const selectCurrentUserMenuId = createSelector(
+	[selectCurrentUser],
+	(user) => user.chef.menu.objectId
+);

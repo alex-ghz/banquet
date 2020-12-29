@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage';
 import userReducer from "./user/user.reducer";
 import pageReducer from "./page/page.reducer";
 import notificationReducer from "./notification/notification.reducer";
+import menuReducer from "./menu/menu.reducer";
 
 const persistConfig = {
 	key: 'root',
@@ -14,7 +15,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
 	user: userReducer,
 	page: pageReducer,
-	notification: notificationReducer
+	notification: notificationReducer,
+	menu: menuReducer
 });
 
 export default persistReducer(persistConfig, rootReducer);

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {createStructuredSelector} from "reselect";
+import { createStructuredSelector } from "reselect";
 
 import './App.css';
 
-import {selectCurrentUser} from './redux/user/user.selectors';
+import { selectCurrentUser } from './redux/user/user.selectors';
 
 import SideMenu from "./components/sidemenu/sidemenu/sidemenu.component";
 
