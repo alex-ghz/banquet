@@ -17,6 +17,7 @@ router.post('/register', async (req, res) => {
 		const Menu = Parse.Object.extend("Menu");
 		const Chef = Parse.Object.extend("Chef");
 		const User = Parse.Object.extend("User");
+		const ChefSettings = Parse.Object.extend("ChefSettings");
 		const Settings = Parse.Object.extend("UserSettings");
 
 		const chef = new Chef();
@@ -27,6 +28,7 @@ router.post('/register', async (req, res) => {
 		chef.set('phoneNo', phoneNo);
 		chef.set('online', false);
 		chef.set('menu', menu);
+		chef.set('settings', new ChefSettings());
 
 		chef.save()
 			.then((chef) => {
@@ -70,7 +72,7 @@ router.post('/login', (req, res) => {
 
 function sendGeneratedUser(user, res) {
 	user = {
-		currentUser: user,
+		user: user,
 		settings: null,
 		chef: null
 	};
@@ -78,23 +80,34 @@ function sendGeneratedUser(user, res) {
 	const Chef = Parse.Object.extend('Chef');
 	const queryChef = new Parse.Query(Chef);
 
-	queryChef.equalTo('objectId', user.currentUser.attributes.chef.id);
+	queryChef.equalTo('objectId', user.user.attributes.chef.id);
 
 	queryChef.find()
 			 .then((result) => {
-				 user.chef = result
+				 user.chef = result[0].attributes;
 
-				 const Settings = Parse.Object.extend("UserSettings");
-				 const querySettings = new Parse.Query(Settings);
+				 const ChefSettings = Parse.Object.extend("ChefSettings");
+				 const queryChefSettings = new Parse.Query(ChefSettings);
 
-				 querySettings.equalTo('objectId', user.currentUser.attributes.settings.id);
+				 queryChefSettings.equalTo('objectId', user.chef.settings.id);
 
-				 querySettings.find()
-							  .then((result) => {
-								  user.settings = result;
+				 queryChefSettings.find()
+					 .then(result => result[0])
+					 .then(result => {
+					 	user.chefSettings = result.attributes;
 
-								  res.json(user);
-							  });
+						 const Settings = Parse.Object.extend("UserSettings");
+						 const querySettings = new Parse.Query(Settings);
+
+						 querySettings.equalTo('objectId', user.user.attributes.settings.id);
+
+						 querySettings.find()
+									  .then((result) => {
+										  user.settings = result;
+
+										  res.json(user);
+									  });
+					 });
 			 });
 }
 

@@ -1,8 +1,7 @@
-import {UserActionTypes} from "./user.types";
+import { UserActionTypes } from "./user.types";
 
 const INITIAL_STATE = {
-	currentUser: null,
-	settings: null
+	currentUser: null
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -12,6 +11,14 @@ const userReducer = (state = INITIAL_STATE, action) => {
 				...state,
 				currentUser: action.payload
 			};
+		case UserActionTypes.SET_CHEF_SETTINGS:
+			return {
+				...state,
+				currentUser: {
+					...state.currentUser,
+					chefSettings: action.payload
+				}
+			}
 		default:
 			return state;
 	}

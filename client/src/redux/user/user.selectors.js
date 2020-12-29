@@ -11,3 +11,13 @@ export const selectUserSettings = createSelector(
 	[selectUser],
 	(user) => user.settings
 );
+
+export const selectChefSettings = createSelector(
+	[selectCurrentUser],
+	(user) => user.chefSettings
+);
+
+export const selectChef = createSelector(
+	[selectCurrentUser],
+	(user) => user.chef
+);

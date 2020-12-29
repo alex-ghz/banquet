@@ -3,6 +3,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 
 const ParseServer = require('parse-server').ParseServer;
 const ParseDashboard = require('parse-dashboard');
@@ -10,6 +11,7 @@ const ParseDashboard = require('parse-dashboard');
 if ( process.env.NODE_ENV !== 'production' ) require('dotenv').config();
 
 const apiRouter = require('./routes/api');
+const settingsRouter = require('./routes/settings');
 
 var app = express();
 const port = process.env.PORT || 5000;
@@ -19,6 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
+app.use(fileUpload());
 
 const databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
@@ -89,6 +92,7 @@ if ( process.env.NODE_ENV === 'production' ) {
 }
 
 app.use('/api', apiRouter);
+app.use('/settings', settingsRouter);
 app.use('/parse', parse);
 
 app.listen(port, error => {

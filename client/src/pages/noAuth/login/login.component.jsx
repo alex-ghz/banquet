@@ -30,6 +30,7 @@ class Login extends React.Component {
 		axios.post('/api/login', { email: email, password: password })
 			 .then((response) => response.data)
 			 .then((user) => {
+				 console.log(user);
 				 setCurrentUser(user);
 			 })
 			 .catch((err) => {

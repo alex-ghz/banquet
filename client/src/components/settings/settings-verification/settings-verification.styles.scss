@@ -54,6 +54,37 @@
   border-radius: 40px;
 }
 
+.settings_cerfiicate_status_error {
+  width: 16pt;
+  height: 16pt;
+  margin-top: 35px;
+  background: #ff2d55;
+  color: white;
+  border-radius: 40px;
+}
+
 .check_icon_certificate {
   padding: 2px;
+}
+
+.file_upload {
+  padding-top: 5px;
+  width: 310px;
+}
+
+.file {
+  margin-left: 5px;
+  padding-top: 10px;
+}
+
+.file2 {
+  display: none;
+}
+
+.container_button {
+  width: 150px;
+}
+
+.save_label {
+  display: block
 }
