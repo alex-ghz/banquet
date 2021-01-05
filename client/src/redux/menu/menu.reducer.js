@@ -2,8 +2,9 @@ import MenuActionTypes from "./menu.types";
 
 const INITIAL_STATE = {
 	categories: null,
-	isFetching: false,
-	errorMessage: undefined
+	isFetching: true,
+	errorMessage: undefined,
+	selectedCategory: undefined,
 };
 
 const menuReducer = (state = INITIAL_STATE, action) => {
@@ -17,13 +18,19 @@ const menuReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				isFetching: false,
-				categories: action.payload
+				categories: action.payload,
+				selectedCategory: action.payload[0]
 			}
 		case MenuActionTypes.FETCH_COLLECTION_FAILURE:
 			return {
 				...state,
 				isFetching: false,
 				errorMessage: action.payload
+			}
+		case MenuActionTypes.SET_SELECTED_CATEGORY:
+			return {
+				...state,
+				selectedCategory: action.payload
 			}
 		default:
 			return state;

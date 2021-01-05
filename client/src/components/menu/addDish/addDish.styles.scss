@@ -1,0 +1,256 @@
+.basic_popup_add, .basic_popup_edit {
+  position: fixed;
+  z-index: 1;
+  padding: 25px 0 25px 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.popup_add_inner, .popup_edit_inner {
+  width: 35%;
+  height: 95%;
+  background: #EFF9FF;
+  border-radius: 15px;
+  margin: 0 auto;
+  position: relative;
+  overflow-x: auto;
+}
+
+.add_to_menu_popup, .edit_category_popup {
+  padding: 23pt 26pt 23pt 26pt;
+}
+
+.item_products_details_popup {
+  display: flex;
+}
+
+.item_image_popup, .div_item_name_popup,
+.item_price_popup, .item_price_time, .item_number_popup, .item_description_popup,
+.item_category_popup, .item_allergen_popup, .popup_menu_title {
+  background: white;
+  border-radius: 15px;
+  color: #75797e;
+  padding: 12pt 15pt;
+  box-shadow: 8px 20px 30px -10px rgba(0, 0, 0, 0.1);
+}
+
+.item_image_popup {
+  max-height: 300pt;
+}
+
+.div_item_name_popup, .item_price_popup, .item_price_time,
+.item_number_popup, .item_description_popup {
+  margin-top: 22pt;
+  height: 80pt;
+}
+
+.item_category_popup {
+  height: 150pt;
+  margin-top: 22pt;
+}
+
+.item_allergen_popup {
+  margin-top: 22pt;
+  //min-height: 260pt;
+}
+
+.item_price_popup, .item_price_time {
+  width: 45%;
+}
+
+.item_price_popup {
+  margin-right: 10pt;
+}
+
+.item_image_icon {
+  margin-top: -18px;
+  text-align: right;
+}
+
+.item_image {
+  background: #F4F4F4;
+  height: 254pt;
+  border-radius: 10px;
+  margin-top: 25pt;
+  text-align: center;
+}
+
+.item_name_popup, .item_category_title_popup, .category_menu_title {
+  margin: 0;
+}
+
+.popup_item_name, .popup_item_price, .popup_item_time, .popup_item_number,
+.popup_item_description, .popup_category_name, .input_menu_title {
+  height: 50pt;
+  border: 0;
+  width: calc(100% - 2px);
+  margin-left: 4px;
+  box-shadow: -6px 10px 0px -7px #ebebeb, 8px 10px 0px -10px #ebebeb;
+  -webkit-transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s;
+  outline: none;
+  font-size: 16pt;
+  border-left: white;
+  color: #002439;
+}
+
+.popup_category_name {
+  height: 40pt;
+  padding-left: 50px;
+  width: calc(100% - 52px);
+}
+
+.popup_item_number {
+  text-align: center;
+}
+
+.input_menu_title {
+  height: 35pt;
+}
+
+.edit_category_popup {
+  position: relative;
+  min-height: 90%;
+}
+
+.popup_menu_title {
+  position: relative;
+  width: 80%;
+  margin-top: 10pt;
+}
+
+.trash_icon_btn {
+  font-size: 40px !important;
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  color: #ff2d55;
+}
+
+.popup_edit_bottom {
+  position: absolute;
+  width: 90%;
+  bottom: 0;
+}
+
+.popup_edit_add_btn {
+  width: 32pt;
+  height: 32pt;
+  border-radius: 40px;
+  border: 2px solid #ff2d55;
+  margin: 0 auto;
+  margin-top: 20pt;
+}
+
+.plus_icon_edit {
+  padding: 7px 0 0 9px;
+  font-size: 30px !important;
+  color: #ff2d55;
+}
+
+.arrow_open_menu_details, .arrow_close_menu_details {
+  position: absolute;
+  top: 15pt;
+  right: 20pt;
+  color: #ff2d55;
+  cursor: pointer;
+}
+
+.search_icon {
+  margin-top: -37px;
+  position: absolute;
+  font-size: 16pt !important;
+  color: #ff2d55;
+}
+
+.available_category {
+  font-size: 14pt;
+  color: #ff2d55;
+  border: 2px solid #ff2d55;
+  border-radius: 10px;
+  margin-top: 16pt;
+  width: 73pt;
+  height: 22pt;
+  text-align: center;
+}
+
+.selected_categories {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.selected_category {
+  font-size: 14pt;
+  color: white;
+  background: #ff2d55;
+  border-radius: 10px;
+  margin-top: 16pt;
+  padding: 2pt 6pt;
+  min-width: 23%;
+  margin-right: 7pt;
+}
+
+.x_btn_category {
+  font-size: 12pt !important;
+  padding: 0 0 5pt 12pt;
+}
+
+.item_allergens_list {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.item_allergen {
+  width: 43pt;
+  height: 43pt;
+  border-radius: 40px;
+  border: 2px solid #75797e;
+  margin: 20px 30px 15px 0;
+}
+
+.item_allergen_name {
+  margin: 60px 0 0 5px;
+  text-align: center;
+}
+
+.popup_add_save_btn, .popup_edit_save_btn, .popup_add_cancel_btn, .popup_edit_cancel_btn {
+  margin-top: 20pt;
+  box-shadow: 8px 20px 30px -10px rgba(0, 0, 0, 0.1);
+  font-size: 16pt;
+  border-radius: 15px;
+  text-align: center;
+  padding-top: 15px;
+  height: 35pt;
+  cursor: pointer;
+}
+
+.popup_add_save_btn, .popup_edit_save_btn {
+  color: white;
+  background: #ff2d55;
+}
+
+.popup_add_cancel_btn, .popup_edit_cancel_btn {
+  color: #0076FF;
+  background: white;
+}
+
+div.item_image > img {
+  max-width: 100%;
+  max-width: -moz-available; /* WebKit-based browsers will ignore this. */
+  max-width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  max-width: fill-available;
+  max-height: 100%;
+  max-height: -moz-available; /* WebKit-based browsers will ignore this. */
+  max-height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+  max-height: fill-available;
+}
+
+.imgFile {
+  display: none;
+}

@@ -15,6 +15,11 @@ export const fetchCollectionsFailure = errorMessage => ({
 	payload: errorMessage
 });
 
+export const setSelectedCategory = category => ({
+	type: MenuActionTypes.SET_SELECTED_CATEGORY,
+	payload: category
+});
+
 export const fetchCollectionStartAsync = menuId => {
 	return dispatch => {
 		axios.post('/menu/getMenu', {
@@ -22,7 +27,7 @@ export const fetchCollectionStartAsync = menuId => {
 			 })
 			 .then(result => result.data)
 			 .then(result => {
-				 dispatch(fetchCollectionsSuccess(result));
+				 dispatch(fetchCollectionsSuccess(result.menu));
 			 })
 			 .catch(error => dispatch(fetchCollectionsFailure(error)))
 	}

@@ -32,7 +32,6 @@ class SettingsAccount extends React.Component {
 
 	render() {
 		const currentUser = this.props.currentUser;
-		const chefSettings = this.props.chefSettings;
 		const chef = this.props.chef;
 
 		return (

@@ -6,7 +6,7 @@ import './menu.styles.scss';
 
 import MenuSection from "../../../components/menu/menu-section/menu-section.component";
 import WithSpinner from "../../../components/with-spinner/with-spinner.component";
-import { fetchCollectionStartAsync } from "../../../redux/menu/menu.actions";
+import { fetchCollectionStartAsync, fetchCollectionsStart } from "../../../redux/menu/menu.actions";
 import { selectIsCollectionFetching, selectIsCollectionsLoaded } from "../../../redux/menu/menu.selectors";
 import { selectCurrentUserMenuId } from "../../../redux/user/user.selectors";
 
@@ -15,15 +15,16 @@ const MenuSectionWithSpinner = WithSpinner(MenuSection);
 class Menu extends React.Component {
 
 	componentDidMount() {
-		let { fetchCollectionsStartAsync, menuId } = this.props;
+		let { fetchCollectionsStartAsync, fetchCollectionsStart, menuId } = this.props;
 		fetchCollectionsStartAsync(menuId);
 	}
 
 	render() {
+		let { isCollectionFetching } = this.props;
 
 		return (
 			<div>
-				<MenuSectionWithSpinner isLoading={ true }/>
+				<MenuSectionWithSpinner isLoading={ isCollectionFetching }/>
 			</div>
 		);
 	}
@@ -33,9 +34,10 @@ const mapStateToProps = createStructuredSelector({
 	isCollectionFetching: selectIsCollectionFetching,
 	isCollectionsLoaded: selectIsCollectionsLoaded,
 	menuId: selectCurrentUserMenuId
-})
+});
 
 const mapDispatchToProps = dispatch => ({
+	fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
 	fetchCollectionsStartAsync: menuId => dispatch(fetchCollectionStartAsync(menuId))
 });
 
