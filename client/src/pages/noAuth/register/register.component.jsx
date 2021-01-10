@@ -46,7 +46,7 @@ class Register extends React.Component {
 
 		return (
 			<div className="login-page">
-				<img src={ LoginBackground } alt=""/>
+				<img className="login-page-img" src={ LoginBackground } alt=""/>
 				<div className="login-page-inner">
 					<div className="left-content">
 						<div className="login_page_title bold_sofia">Earn from your kitchen today.</div>

@@ -7,20 +7,26 @@
 
 .index_hero {
   height: 400pt;
-  background: #f1f1f1;
+  position: relative;
+}
+
+.index-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   border-radius: 20pt;
-  //background-image: url("/images/main-1.jpg");
 }
 
 .index_hero_text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-size: 40pt;
   color: white;
   width: 75%;
   margin: 0 auto;
   text-align: center;
-  display: flex;
-  align-items: center;
-  height: 100%;
 }
 
 .text_par {
@@ -92,7 +98,13 @@
 .index_third_img {
   background: #f1f1f1;
   height: 300pt;
+}
+
+.index-third-img {
   border-radius: 20pt;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .index_third_title {
@@ -112,7 +124,14 @@
 .index_last {
   background: #f1f1f1;
   height: 420pt;
+  position: relative;
+}
+
+.index-last-img {
   border-radius: 20pt;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .index_last_text {
@@ -120,10 +139,14 @@
   font-size: 30pt;
   width: 37%;
   padding: 35pt 0 0 48pt;
-  margin-bottom: 200pt;
+  position: absolute;
+  top: 0;
 }
 
 .last_btn_home {
   width: 164pt;
   margin: 0 auto;
+  position: absolute;
+  bottom: 40pt;
+  left: 45%;
 }

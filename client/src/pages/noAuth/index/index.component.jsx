@@ -10,7 +10,7 @@ const IndexPage = () => (
 	<div>
 		<div className="index_content_section">
 			<div className="index_hero bold_sofia">
-				<img src={ Main1 } alt=""/>
+				<img className="index-hero-img" src={ Main1 } alt=""/>
 				<div className="index_hero_text">
 					Home cooked meals made by local chefs - on demand.
 				</div>
@@ -50,12 +50,12 @@ const IndexPage = () => (
 				</div>
 			</div>
 			<div className="index_third_img">
-				<img src={ Main2 } alt=""/>
+				<img className="index-third-img" src={ Main2 } alt=""/>
 			</div>
 		</div>
 		<div className="index_content_section index_last_content">
 			<div className="index_last bold_sofia">
-				<img src={ Main3 } alt=""/>
+				<img className="index-last-img" src={ Main3 } alt=""/>
 				<div className="index_last_text">
 					How joining Banquet is changing lives
 				</div>

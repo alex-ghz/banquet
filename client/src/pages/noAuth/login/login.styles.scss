@@ -1,17 +1,26 @@
 .login-page {
-    background: #ff2d55;
-    border-radius: 20pt;
     width: 90%;
     margin: 0 auto;
     margin-bottom: 80pt;
+    position: relative;
+}
+
+.login-page-img {
+    height: 700pt;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 20pt;
 }
 
 .login-page-inner {
     display: flex;
     justify-content: space-around;
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
-    padding: 68pt 0 68pt 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .login_page_title {
