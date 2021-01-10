@@ -19,6 +19,28 @@ const userReducer = (state = INITIAL_STATE, action) => {
 					chefSettings: action.payload
 				}
 			}
+		case UserActionTypes.SET_CHEF_PROFILE_IMG:
+			return {
+				...state,
+				currentUser: {
+					...state.currentUser,
+					chef: {
+						...state.currentUser.chef,
+						profilePhotoURL: action.payload
+					}
+				}
+			}
+		case UserActionTypes.SET_CHEF_DESCRIPTION:
+			return {
+				...state,
+				currentUser: {
+					...state.currentUser,
+					chef: {
+						...state.currentUser.chef,
+						description: action.payload
+					}
+				}
+			}
 		default:
 			return state;
 	}

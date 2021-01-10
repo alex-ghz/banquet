@@ -1,11 +1,16 @@
 import React from 'react';
 
+import Main1 from '../../../assets/images/main-1.jpg';
+import Main2 from '../../../assets/images/main-2.jpg'
+import Main3 from '../../../assets/images/main-3.jpg'
+
 import './index.styles.scss';
 
 const IndexPage = () => (
 	<div>
 		<div className="index_content_section">
 			<div className="index_hero bold_sofia">
+				<img src={ Main1 } alt=""/>
 				<div className="index_hero_text">
 					Home cooked meals made by local chefs - on demand.
 				</div>
@@ -44,10 +49,13 @@ const IndexPage = () => (
 					Our Story
 				</div>
 			</div>
-			<div className="index_third_img"/>
+			<div className="index_third_img">
+				<img src={ Main2 } alt=""/>
+			</div>
 		</div>
 		<div className="index_content_section index_last_content">
 			<div className="index_last bold_sofia">
+				<img src={ Main3 } alt=""/>
 				<div className="index_last_text">
 					How joining Banquet is changing lives
 				</div>

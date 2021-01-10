@@ -34,7 +34,7 @@ class AddDish extends React.Component {
 		this.setState({
 			imageUrl: URL.createObjectURL(event.target.files[0]),
 			image: event.target.files[0]
-		})
+		});
 	}
 
 	handleInputChange(event) {

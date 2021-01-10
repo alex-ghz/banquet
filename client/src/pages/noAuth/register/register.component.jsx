@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from "axios";
 
+import LoginBackground from '../../../assets/images/signupLogin.jpg'
+
 import './register.styles.scss';
+
 import { setCurrentUser } from "../../../redux/user/user.actions";
 
 class Register extends React.Component {
@@ -43,6 +46,7 @@ class Register extends React.Component {
 
 		return (
 			<div className="login-page">
+				<img src={ LoginBackground } alt=""/>
 				<div className="login-page-inner">
 					<div className="left-content">
 						<div className="login_page_title bold_sofia">Earn from your kitchen today.</div>

@@ -30,4 +30,4 @@ export const selectCurrentUserMenuId = createSelector(
 export const selectChefId = createSelector(
 	[selectUser],
 	(user) => user.currentUser.user.chef.objectId
-)
+);

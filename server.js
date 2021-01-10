@@ -13,6 +13,7 @@ if ( process.env.NODE_ENV !== 'production' ) require('dotenv').config();
 const apiRouter = require('./routes/api');
 const settingsRouter = require('./routes/settings');
 const menuRouter = require('./routes/menu');
+const profileRouter = require('./routes/profile');
 
 var app = express();
 const port = process.env.PORT || 5000;
@@ -95,6 +96,7 @@ if ( process.env.NODE_ENV === 'production' ) {
 app.use('/api', apiRouter);
 app.use('/settings', settingsRouter);
 app.use('/menu', menuRouter);
+app.use('/profile', profileRouter);
 app.use('/parse', parse);
 
 app.listen(port, error => {

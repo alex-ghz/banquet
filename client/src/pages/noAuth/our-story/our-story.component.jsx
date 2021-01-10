@@ -1,5 +1,9 @@
 import React from 'react';
 
+import ourStory1 from '../../../assets/images/ourstory1.jpg';
+import ourStory2 from '../../../assets/images/ourstory2.jpg';
+import ourStory3 from '../../../assets/images/ourstory3.jpg';
+
 import './our-story.styles.scss';
 
 const OurStoryPage = () => (
@@ -15,7 +19,9 @@ const OurStoryPage = () => (
 					Where it all started..
 				</div>
 				<div className="story_page_section_content">
-					<div className="story_page_image"/>
+					<div className="story_page_image">
+						<img src={ ourStory1 } alt=""/>
+					</div>
 					<div className="story_page_text_container_first">
 						<p className="story_page_text regular_sofia">
 							When Banquet’s co-founder and CEO Benjamin Appleby began selling home-made Caribbean dishes
@@ -51,7 +57,9 @@ const OurStoryPage = () => (
 							international cuisine created within our vibrant Banquet community.
 						</p>
 					</div>
-					<div className="story_page_image_second"/>
+					<div className="story_page_image_second">
+						<img src={ ourStory2 } alt=""/>
+					</div>
 				</div>
 			</div>
 			<div className="story_page_section">
@@ -59,7 +67,9 @@ const OurStoryPage = () => (
 					Where we’re heading
 				</div>
 				<div className="story_page_section_content_last">
-					<div className="story_page_image_third"/>
+					<div className="story_page_image_third">
+						<img src={ ourStory3 } alt=""/>
+					</div>
 					<p className="story_page_text regular_sofia">
 						To the moon of course! well, maybe in the future but for now we’re focusing on expanding
 						throughout cities across Europe and the U.S shortly, to provide the freedom and discovery of the

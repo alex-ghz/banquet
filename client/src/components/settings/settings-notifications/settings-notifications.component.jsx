@@ -35,7 +35,7 @@ class SettingsNotifications extends React.Component {
 			<div className="settings_notifications_inner">
 				{/*<div className="settings_notification_type_title sb_sofia">Push Notifications</div>*/ }
 				{/*<div className="settings_notification_toggle regular_sofia">*/ }
-				{/*	Notify me when someone favourites my profile*/ }
+				{/*	Notify me when someone favourites my profile.js*/ }
 				{/*	<label className="switch switch_notifications">*/ }
 				{/*		<input type="checkbox"/>*/ }
 				{/*		<span className="slider slider_notifications round"/>*/ }

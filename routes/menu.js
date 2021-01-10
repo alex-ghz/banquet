@@ -75,6 +75,7 @@ router.post('/addDish', (req, res) => {
 											   dish.set("price", parseInt(price, 10));
 											   dish.set("available", false);
 											   dish.set("name", name);
+											   dish.set("allergens", allergen);
 											   dish.set("imgURL", result.url());
 											   dish.set("description", description);
 											   dish.set("category", category);
@@ -92,9 +93,7 @@ router.post('/addDish', (req, res) => {
 
 										   })
 						  })
-			 })
-
-	console.log(req.body);
+			 });
 });
 
 categoriesSyncer = (menu, dbCategories, categories) => {
