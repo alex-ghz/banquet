@@ -8,6 +8,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
+  margin-top: 34px;
 }
 
 .profile_delivery_section, .profile_collection_section {
@@ -20,6 +21,17 @@
   height: 20pt;
   padding: 10pt 0 10pt 0;
   margin-top: 34px;
+}
+
+.profile_delivery_section2 {
+  width: 48%;
+  border: 1px solid #d4e7ef;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  cursor: pointer;
+  height: 38px;
+  padding: 10pt 0 10pt 0;
 }
 
 .profile_icon {
@@ -35,8 +47,11 @@
   text-align: center;
 }
 
+.check_div_profile_sel, .check_div_profile2_sel {
+  border-color:#4bd964;
+}
+
 .chkMarkProfile, .chkMarkProfile2 {
-  display: none !important;
   color: #4bd964;
   padding-top: 2px;
 }
@@ -75,4 +90,12 @@
 .locarr {
   font-size: 20pt !important;
   padding-right: 40px;
+}
+
+.postcode-selector {
+  width: 300px;
+}
+
+.hiddenComp {
+  display: none;
 }

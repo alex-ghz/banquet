@@ -14,13 +14,10 @@ class ProfileDescription extends React.Component {
 		super(props);
 
 		this.state = {
-			description: "",
-			initial: "",
-			modified: false
+			description: ""
 		};
 
 		this.handleOnChange = this.handleOnChange.bind(this);
-		this.handleSave = this.handleSave.bind(this);
 	}
 
 	componentDidMount() {
@@ -29,42 +26,18 @@ class ProfileDescription extends React.Component {
 
 		if ( !!description ) {
 			this.setState({
-				description: description,
-				initial: description
+				description: description
 			});
 		}
 	}
 
 	handleOnChange(event) {
 		const { value, name } = event.target;
-		this.setState({ [name]: value.trim(), modified: true });
+		this.setState({ [name]: value.trim() });
 
-		if ( this.state.initial === this.state.description ) {
-			this.setState({
-				modified: false
-			});
-		}
-	}
-
-	handleSave() {
-		const chefId = this.props.chefId;
-
-		axios.post('/profile/saveData', {
-				 chefId: chefId,
-				 key: 'description',
-				 data: this.state.description
-			 })
-			 .then(response => response.data)
-			 .then(data => {
-				 if ( data.done ) {
-					 this.props.setProfileDescription(this.state.description);
-				 }
-
-				 this.setState({
-					 initial: this.state.description,
-					 modified: false
-				 });
-			 });
+		this.props.handleChange("description", {
+			description: this.state.description
+		});
 	}
 
 	render() {
@@ -82,13 +55,6 @@ class ProfileDescription extends React.Component {
 				<div className="profile_section_border">
 					<div className="profile_section_edit">
 						<p className="first_profile_paragraph medium_sofia p_other_color">MY CHEF DESCRIPTION</p>
-						{
-							this.state.modified ?
-								<p className="edit_btn_profile medium_sofia" onClick={ this.handleSave }>Save
-									changes</p>
-								:
-								null
-						}
 					</div>
 					<textarea name="description" className="chef_description_text regular_sofia"
 							  placeholder="Hello! I am..."

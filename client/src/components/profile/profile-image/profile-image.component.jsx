@@ -16,11 +16,9 @@ class ProfileImage extends React.Component {
 
 		this.state = {
 			profileImg: null,
-			imageFile: null
 		};
 
 		this.handleProfileImgUpload = this.handleProfileImgUpload.bind(this);
-		this.saveChefProfileImage = this.saveChefProfileImage.bind(this);
 	}
 
 	componentDidMount() {
@@ -37,37 +35,43 @@ class ProfileImage extends React.Component {
 	handleProfileImgUpload(event) {
 		this.setState({
 			profileImg: URL.createObjectURL(event.target.files[0]),
-			imageFile: event.target.files[0]
 		});
 
-		this.saveChefProfileImage();
-	}
-
-	saveChefProfileImage() {
 		setTimeout(() => {
 			if ( !this.state.profileImg ) {
 				return;
 			}
-			this.saveChefData("imageFile", "profileImg");
-		}, 200)
-
+			this.props.handleChange('image', {
+				file: event.target.files[0]
+			});
+		}, 200);
 	}
 
-	saveChefData(statePath, key) {
-		const chefId = this.props.chefId;
-		const formData = new FormData();
-
-		formData.append("key", key);
-		formData.append("file", this.state[statePath]);
-		formData.append("chefId", chefId);
-
-		axios.post("/profile/saveData", formData)
-			 .then(response => response.data)
-			 .then(data => data.photoUrl)
-			 .then(photoUrl => {
-				 this.props.setProfileImage(photoUrl);
-			 });
-	}
+	// saveChefProfileImage() {
+	// 	setTimeout(() => {
+	// 		if ( !this.state.profileImg ) {
+	// 			return;
+	// 		}
+	// 		this.saveChefData("imageFile", "profileImg");
+	// 	}, 200)
+	//
+	// }
+	//
+	// saveChefData(statePath, key) {
+	// 	const chefId = this.props.chefId;
+	// 	const formData = new FormData();
+	//
+	// 	formData.append("key", key);
+	// 	formData.append("file", this.state[statePath]);
+	// 	formData.append("chefId", chefId);
+	//
+	// 	axios.post("/profile/saveData", formData)
+	// 		 .then(response => response.data)
+	// 		 .then(data => data.photoUrl)
+	// 		 .then(photoUrl => {
+	// 			 this.props.setProfileImage(photoUrl);
+	// 		 });
+	// }
 
 	render() {
 
