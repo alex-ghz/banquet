@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 import './profile.styles.scss';
 
@@ -6,10 +7,10 @@ import ProfileImage from "../../../components/profile/profile-image/profile-imag
 import ProfileDescription from "../../../components/profile/profile-description/profile-description.component";
 import ProfileDelivery from "../../../components/profile/profile-delivery/profile-delivery.component";
 import ProfileCategory from "../../../components/profile/profile-category/profile-category.component";
-import WithSpinner from "../../../components/with-spinner/with-spinner.component";
+import WithSpinnerButton from "../../../components/with-spinner-button/with-spinner-button.components";
 
 const SaveButton = (props) => (<div className="save_btn_profile bold_sofia" onClick={props.onClick}>Save changes</div>);
-const SaveWithSpinner = WithSpinner(SaveButton);
+const SaveWithSpinner = WithSpinnerButton(SaveButton);
 
 class Profile extends React.Component {
 
@@ -30,7 +31,8 @@ class Profile extends React.Component {
 				pickup: false,
 				deliveryRadius: 5
 			},
-			category: null
+			category: null,
+			submitted: false
 		}
 
 		this.handleChanges = this.handleChanges.bind(this);
@@ -44,7 +46,9 @@ class Profile extends React.Component {
 	}
 
 	handleSave() {
-		console.log(this.state);
+		this.setState({
+			submitted: true
+		});
 	}
 
 	render() {
@@ -60,7 +64,7 @@ class Profile extends React.Component {
 					<ProfileCategory/>
 					<div className="last_section_profile">
 						<div className="profile_updated_last medium_sofia">Last Updated on 12/05/2020</div>
-						<SaveWithSpinner isLoading={ false } onClick={ this.handleSave }/>
+						<SaveWithSpinner isLoading={ this.state.submitted } onClick={ this.handleSave }/>
 					</div>
 				</div>
 			</div>
