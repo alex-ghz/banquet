@@ -77,7 +77,7 @@ input:checked + .slider_menu:before {
 }
 
 .slider_notifications {
-  background: #dee3e6;
+  background: red;
   border: 1px solid #778e9c;
 }
 
@@ -86,7 +86,7 @@ input:checked + .slider_menu:before {
 }
 
 input:checked + .slider_notifications {
-  background-color: #ff2d55;
+  background-color: white;
   border-color: #ff2d55;
 }
 
