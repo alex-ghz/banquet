@@ -90,7 +90,7 @@ class ProfileDelivery extends React.Component {
 								<div>
 									<div className="delivery_collection_div">
 										<input type="text" name="address"
-											   className="profile_delivery_section regular_sofia"
+											   className="profile_delivery_section address-new-del-section regular_sofia"
 											   placeholder="Enter address" onChange={ this.handleOnChangeAddress }/>
 									</div>
 									{

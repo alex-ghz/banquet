@@ -95,3 +95,21 @@
   font-size: 12pt !important;
   padding: 0 0 5pt 12pt;
 }
+
+.profile-category-div {
+  position: relative;
+  display: flex;
+}
+
+.addcat_btn_profile {
+  background: #ff2d55;
+  color: #fff;
+  font-size: 14pt;
+  border-radius: 15px;
+  width: 150px;
+  height: 38px;
+  text-align: center;
+  padding: 10px 5px 0;
+  position: absolute;
+  right: 0;
+}

@@ -46,7 +46,7 @@ class ProfileCategory extends React.Component {
 						<p className="item_category_title_popup medium_sofia">CATEGORY</p>
 						<div class="profile-category-div">
 							<input placeholder="" type="text" defaultValue={ this.state.tempCategory } onChange={ this.handleInputChange } name="tempCategory" className="popup_category_name sb_sofia"/>
-							<div class="save_btn_profile bold_sofia">Save changes</div>
+							<div class="addcat_btn_profile bold_sofia">Add category</div>
 						</div>
 						<div className="selected_categories">
 							<div className="selected_category selected_category_profile bold_sofia">
