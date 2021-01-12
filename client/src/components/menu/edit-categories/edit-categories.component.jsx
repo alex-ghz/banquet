@@ -86,18 +86,20 @@ class EditCategories extends React.Component {
 			<div className="basic_popup_edit">
 				<div className="popup_edit_inner">
 					<div className="edit_category_popup">
-						{
-							categories.map((category, index, arr) => <EditCategoryInput key={ index }
-																						category={ category }
-																						handleChange={ this.handleChange }/>)
-						}
-						{/*<FaTrash className='trash_icon_btn'/>*/ }
-						<div className="popup_edit_add_btn" onClick={ this.handleAdd }>
-							<FaPlus className='plus_icon_edit'/>
-						</div>
-						<div className="popup_edit_bottom">
-							<div className="popup_edit_save_btn medium_sofia" onClick={ this.handleSave }>Save</div>
-							<div className="popup_edit_cancel_btn medium_sofia" onClick={ this.handleCancel }>Cancel
+						<div className="edit_category_scroll">
+							{
+								categories.map((category, index, arr) => <EditCategoryInput key={ index }
+																							category={ category }
+																							handleChange={ this.handleChange }/>)
+							}
+							{/*<FaTrash className='trash_icon_btn'/>*/ }
+							<div className="popup_edit_add_btn" onClick={ this.handleAdd }>
+								<FaPlus className='plus_icon_edit'/>
+							</div>
+							<div className="popup_edit_bottom">
+								<div className="popup_edit_save_btn medium_sofia" onClick={ this.handleSave }>Save</div>
+								<div className="popup_edit_cancel_btn medium_sofia" onClick={ this.handleCancel }>Cancel
+								</div>
 							</div>
 						</div>
 					</div>
