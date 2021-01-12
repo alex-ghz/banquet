@@ -89,7 +89,7 @@ class ProfileImage extends React.Component {
 						this.state.profileImg ?
 							<label htmlFor="profileImg">
 								<div className="main_profile_img">
-									<img src={ this.state.profileImg } alt="Profile"/>
+									<img className="profileImgLogged" src={ this.state.profileImg } alt="Profile"/>
 								</div>
 							</label>
 							:

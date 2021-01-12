@@ -135,3 +135,7 @@
   height: 800px;
   overflow-y: auto;
 }
+
+.edit_category_scroll::-webkit-scrollbar {
+  display: none;
+}
