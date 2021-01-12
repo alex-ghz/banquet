@@ -14,6 +14,8 @@ class ProfileCategory extends React.Component {
 		}
 
 		this.handleInputChange = this.handleInputChange.bind(this);
+		this.handleAddCategory = this.handleAddCategory.bind(this);
+		this.handleRemoveCategory = this.handleRemoveCategory.bind(this);
 	}
 
 	handleAddCategory() {
@@ -31,6 +33,12 @@ class ProfileCategory extends React.Component {
 		this.setState({ [name]: value });
 	}
 
+	handleRemoveCategory(categoryName) {
+		this.setState({
+			categories: this.state.categories.filter(category => category !== categoryName)
+		});
+	}
+
 	render() {
 
 		return (
@@ -44,19 +52,26 @@ class ProfileCategory extends React.Component {
 				<div className="profile_section_border">
 					<div className="item_category_popup category_profile">
 						<p className="item_category_title_popup medium_sofia">CATEGORY</p>
-						<div className="profile-category-div">
-							<input placeholder="" type="text" defaultValue={ this.state.tempCategory } onChange={ this.handleInputChange } name="tempCategory" className="popup_category_name sb_sofia"/>
-							<div className="addcat_btn_profile bold_sofia">Add category</div>
-						</div>
+						{
+							this.state.categories.length < 4 ?
+								<div className="profile-category-div">
+									<input placeholder="" type="text" value={ this.state.tempCategory } onChange={ this.handleInputChange } name="tempCategory"
+										   className="popup_category_name sb_sofia"/>
+									<div className="addcat_btn_profile bold_sofia" onClick={ this.handleAddCategory }>Add category</div>
+								</div>
+								: null
+						}
 						<div className="selected_categories">
-							<div className="selected_category selected_category_profile bold_sofia">
-								Caribbean
-								<FaTimes className='x_btn_category'/>
-							</div>
-							<div className="selected_category selected_category_profile bold_sofia">
-								Local produce
-								<FaTimes className='x_btn_category'/>
-							</div>
+							{
+								this.state.categories.map(category => (
+									<div key={ category } className="selected_category selected_category_profile bold_sofia">
+										<span className="category_cap">
+										{ category }
+										</span>
+										<FaTimes className='x_btn_category' onClick={ () => this.handleRemoveCategory(category) }/>
+									</div>
+								))
+							}
 						</div>
 					</div>
 				</div>
