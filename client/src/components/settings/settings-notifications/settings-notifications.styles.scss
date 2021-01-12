@@ -73,11 +73,12 @@ input:checked + .slider_menu:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
-  border-color: white;
+  border-color: #ff2d55;
+  background: #ff2d55;
 }
 
 .slider_notifications {
-  background: red;
+  background: white;
   border: 1px solid #778e9c;
 }
 
