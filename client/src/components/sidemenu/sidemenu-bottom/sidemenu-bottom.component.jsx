@@ -9,7 +9,7 @@ const SideMenuBottom = () => (
 		</div>
 		<label className="switch">
 			<input type="checkbox"/>
-			<span className="slider round"/>
+			<span className="slider slider_sidemen round"/>
 		</label>
 	</div>
 );
