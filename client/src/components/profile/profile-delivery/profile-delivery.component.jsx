@@ -155,7 +155,7 @@ class ProfileDelivery extends React.Component {
 																<span class="delivery_radius regular_sofia">Delivery cost</span>
 																<div class="delivery_collection_select_inner">
 																	<div class="delivery_section_right_text">
-																		<input type="text" class="input-cost regular_sofia"/>
+																		<input type="number" class="input-cost regular_sofia"/>
 																	</div>
 																</div>
 															</div>
