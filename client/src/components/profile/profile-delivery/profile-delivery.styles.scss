@@ -62,6 +62,8 @@
 .delivery_colection_section_location {
   color: #98A7AF;
   width: 48%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .delivery_radius {
@@ -85,6 +87,21 @@
   color: #ff2d55;
   width: 35%;
   cursor: pointer;
+}
+
+.delivery-options-profile {
+  width: 45%;
+}
+
+.input-cost {
+    height: 20pt;
+    border: none;
+    font-size: 14pt;
+    color: #ff2d55;
+}
+
+.input-cost:focus {
+  outline: none;
 }
 
 .locarr {

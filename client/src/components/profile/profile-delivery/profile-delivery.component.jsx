@@ -132,22 +132,32 @@ class ProfileDelivery extends React.Component {
 														<input className="hiddenComp" type="checkbox" name="delivery" id="delivery_id" defaultValue={ this.state.delivery }
 															   onChange={ this.handleOnChangeCheckbox }/>
 														<div className="delivery_colection_section_location medium_sofia">
-															<span className="delivery_radius regular_sofia">Set delivery radius</span>
-															<div className="delivery_collection_select_inner">
-																<select value={this.state.deliveryRadius} onChange={this.handleRadiusChange} className="delivery_location regular_sofia">
-																	<option value="5">5 miles</option>
-																	<option value="10">10 miles</option>
-																	<option value="15">15 miles</option>
-																	<option value="20">20 miles</option>
-																	<option value="25">25 miles</option>
-																	<option value="30">30 miles</option>
-																	<option value="35">35 miles</option>
-																	<option value="40">40 miles</option>
-																	<option value="45">45 miles</option>
-																	<option value="50">50 miles</option>
-																	<option value="55">55 miles</option>
-																	<option value="60">60 miles</option>
-																</select>
+															<div className="delivery-options-profile">
+																<span className="delivery_radius regular_sofia">Set delivery radius</span>
+																<div className="delivery_collection_select_inner">
+																	<select value={this.state.deliveryRadius} onChange={this.handleRadiusChange} className="delivery_location regular_sofia">
+																		<option value="5">5 miles</option>
+																		<option value="10">10 miles</option>
+																		<option value="15">15 miles</option>
+																		<option value="20">20 miles</option>
+																		<option value="25">25 miles</option>
+																		<option value="30">30 miles</option>
+																		<option value="35">35 miles</option>
+																		<option value="40">40 miles</option>
+																		<option value="45">45 miles</option>
+																		<option value="50">50 miles</option>
+																		<option value="55">55 miles</option>
+																		<option value="60">60 miles</option>
+																	</select>
+																</div>
+															</div>
+															<div className="delivery-options-profile">
+																<span class="delivery_radius regular_sofia">Delivery cost</span>
+																<div class="delivery_collection_select_inner">
+																	<div class="delivery_section_right_text">
+																		<input type="text" class="input-cost regular_sofia"/>
+																	</div>
+																</div>
 															</div>
 														</div>
 													</div>
