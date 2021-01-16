@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import './sidemenu-button.styles.scss';
 
-import {setCurrentPage} from "../../../redux/page/page.actions";
+import { setCurrentPage } from "../../../redux/page/page.actions";
 
 class SideMenuButton extends React.Component {
 
@@ -28,7 +28,7 @@ class SideMenuButton extends React.Component {
 		return (
 			<div className='menu-button'>
 				<div className='empty_div'/>
-				<Link className={ this.props.title==='orders' ? 'orders-sidemenu' : ''} to={ `/${ this.props.title }` } onClick={ () => this.props.setCurrentPage(this.props.title) }>
+				<Link className={ this.props.title === 'orders' ? 'orders-sidemenu' : '' } to={ `/${ this.props.title }` } onClick={ () => this.props.setCurrentPage(this.props.title) }>
 					<div
 						className={ `menu_item bold_sofia ${ this.props.selected ? 'selected' : '' }` }>
 						{ this.getIcon(this.props.title) }
