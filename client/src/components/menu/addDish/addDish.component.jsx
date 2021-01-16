@@ -16,6 +16,7 @@ class AddDish extends React.Component {
 		super(props);
 
 		this.state = {
+			objectId: null,
 			imageUrl: null,
 			image: null,
 			name: '',
@@ -28,6 +29,31 @@ class AddDish extends React.Component {
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleSaveDish = this.handleSaveDish.bind(this);
 		this.handleCancel = this.handleCancel.bind(this);
+	}
+
+	componentDidMount() {
+		const { dishId } = this.props;
+
+		if ( !!dishId === false ) {
+			return;
+		}
+
+
+		axios.post('/menu/getDish', {
+				 dishId: dishId
+			 })
+			 .then(response => response.data)
+			 .then(data => data.dish)
+			 .then(dish => {
+				 this.setState({
+					 objectId: dishId,
+					 imageUrl: !!dish.imgURL ? dish.imgURL : null,
+					 name: !!dish.name ? dish.name : null,
+					 price: !!dish.price ? dish.price : null,
+					 allergen: !!dish.allergens ? dish.allergens : null,
+					 description: !!dish.description ? dish.description : ''
+				 });
+			 })
 	}
 
 	handleImageUpload(event) {
@@ -44,6 +70,7 @@ class AddDish extends React.Component {
 
 	handleCancel() {
 		this.setState({
+			objectId: null,
 			imageUrl: null,
 			image: null,
 			name: '',
@@ -58,7 +85,14 @@ class AddDish extends React.Component {
 	handleSaveDish() {
 		const formData = new FormData();
 
-		formData.append("file", this.state.image);
+		if ( this.state.image !== null ) {
+			formData.append("fileAdded", "true");
+			formData.append("file", this.state.image);
+		} else {
+			formData.append("fileAdded", "false");
+		}
+
+		formData.append("dishId", this.state.objectId)
 		formData.append("name", this.state.name);
 		formData.append("price", this.state.price);
 		formData.append("allergen", this.state.allergen);
@@ -72,7 +106,7 @@ class AddDish extends React.Component {
 				 fetchCollectionsStartAsync(menuId);
 
 				 this.handleCancel();
-			 })
+			 });
 	}
 
 	render() {
@@ -101,7 +135,7 @@ class AddDish extends React.Component {
 						</div>
 						<div className="div_item_name_popup">
 							<p className="item_name_popup medium_sofia">ITEM NAME</p>
-							<input name="name" type="text" defaultValue="" onChange={ this.handleInputChange }
+							<input name="name" type="text" defaultValue={ this.state.name } onChange={ this.handleInputChange }
 								   className="popup_item_name sb_sofia"/>
 						</div>
 						{/*<div className="item_products_details_popup">*/ }
@@ -119,12 +153,12 @@ class AddDish extends React.Component {
 						{/*</div>*/ }
 
 						<div className="item_description_popup medium_sofia">ITEM PRICE (<FaPoundSign/>)
-							<input name="price" type="text" defaultValue="" onChange={ this.handleInputChange }
+							<input name="price" type="text" defaultValue={ this.state.price } onChange={ this.handleInputChange }
 								   className="popup_item_price sb_sofia"/>
 						</div>
 						<div className="item_description_popup">
 							<p className="item_name_popup medium_sofia">DESCRIPTION</p>
-							<input placeholder="" name="description" type="text" defaultValue=""
+							<input placeholder="" name="description" type="text" defaultValue={ this.state.description }
 								   onChange={ this.handleInputChange }
 								   className="popup_item_description sb_sofia"/>
 						</div>
@@ -145,7 +179,7 @@ class AddDish extends React.Component {
 						<div className="item_allergen_popup">
 							<div className="item_allergen_tile medium_sofia">ALLERGEN INFO</div>
 							<div className="item_allergens_list">
-								<input placeholder="" name="allergen" type="text" defaultValue=""
+								<input placeholder="" name="allergen" type="text" defaultValue={ this.state.allergen }
 									   onChange={ this.handleInputChange }
 									   className="popup_item_description sb_sofia"/>
 								{/*<div className="item_allergen medium_sofia">*/ }

@@ -10,7 +10,7 @@ router.post('/update', async (req, res) => {
 	queryChef.get(chefId)
 			 .then(chef => {
 				 if ( fileAdded === 'true' ) {
-					 saveChefPhoto()
+					 saveChefPhoto(req.files.file)
 						 .then(photoUrl => {
 							 chef.set("profilePhotoURL", photoUrl);
 							 saveChefDetails(chef, req.body, () => {

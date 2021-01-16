@@ -21,11 +21,13 @@ class MenuSection extends React.Component {
 		this.state = {
 			displayEditCategories: false,
 			displayAddDish: false,
+			dishToEdit: null,
 			categories: []
 		}
 
 		this.handleEditCategories = this.handleEditCategories.bind(this);
 		this.handleSectionClick = this.handleSectionClick.bind(this);
+		this.handleEditDish = this.handleEditDish.bind(this);
 		this.handleAddDish = this.handleAddDish.bind(this);
 	}
 
@@ -37,8 +39,16 @@ class MenuSection extends React.Component {
 
 	handleAddDish() {
 		this.setState({
-			displayAddDish: !this.state.displayAddDish
+			displayAddDish: !this.state.displayAddDish,
+			dishToEdit: null
 		})
+	}
+
+	handleEditDish(id) {
+		this.setState({
+			dishToEdit: id,
+			displayAddDish: true
+		});
 	}
 
 	handleSectionClick(event) {
@@ -75,24 +85,12 @@ class MenuSection extends React.Component {
 								}
 							})
 						}
-						{/*{*/ }
-						{/*	menuCategories ?*/ }
-						{/*		menuCategories.map(category => {*/ }
-						{/*			if ( category ) {*/ }
-						{/*				return (*/ }
-						{/*					<div key={ category + Math.floor(Math.random() * Math.floor(100)) }*/ }
-						{/*						 className="product_category mains_category sb_sofia">{ category.toUpperCase() }</div>*/ }
-						{/*				);*/ }
-						{/*			}*/ }
-						{/*		})*/ }
-						{/*		: null*/ }
-
 					</div>
 					<div className="categories_bar"/>
 					<div className="add_menu_item_btn medium_sofia" onClick={ this.handleAddDish }>Add menu Item</div>
 					<div className="menu_products_inner">
 						{
-							this.props.dishes.map(dish => <MenuCard key={ dish.objectId } dish={ dish }/>)
+							this.props.dishes.map(dish => <MenuCard key={ dish.objectId } dish={ dish } editDish={ this.handleEditDish }/>)
 						}
 					</div>
 				</div>
@@ -101,7 +99,7 @@ class MenuSection extends React.Component {
 						<EditCategories handleCancel={ this.handleEditCategories }/> : null
 				}
 				{
-					this.state.displayAddDish ? <AddDish handleCancel={ this.handleAddDish }/> : null
+					this.state.displayAddDish ? <AddDish handleCancel={ this.handleAddDish } dishId={ this.state.dishToEdit }/> : null
 				}
 			</div>
 		);

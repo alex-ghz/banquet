@@ -35,6 +35,23 @@ router.post('/getMenu', async (req, res) => {
 
 });
 
+router.post('/getDish', (req, res) => {
+	const { dishId } = req.body;
+
+	if ( !!dishId === false ) {
+		return;
+	}
+
+	const Dish = Parse.Object.extend("Dish");
+	const dishQuery = new Parse.Query(Dish);
+
+	dishQuery.get(dishId)
+			 .then(dish => {
+				 res.json({ dish: dish.attributes });
+			 });
+
+});
+
 router.post('/saveCategories', (req, res) => {
 	const { menuId, categories } = req.body;
 
@@ -49,52 +66,121 @@ router.post('/saveCategories', (req, res) => {
 });
 
 router.post('/addDish', (req, res) => {
-	const { name, price, allergen, description, chefId, categoryId } = req.body;
-	const file = req.files.file;
-	const userFileName = Date.now() + '.' + getFileExtension(file.name);
+	const { dishId } = req.body;
 
-	const data = Array.from(Buffer.from(file.data, 'binary'));
-	const parseFile = new Parse.File(userFileName, data);
-
-	parseFile.save()
-			 .then(result => {
-				 const Chef = Parse.Object.extend("Chef");
-				 const queryChef = new Parse.Query(Chef);
-
-				 queryChef.get(chefId)
-						  .then(chef => {
-							  const MenuCategory = Parse.Object.extend("MenuCategory");
-							  const categoryQuery = new Parse.Query(MenuCategory);
-
-							  categoryQuery.get(categoryId)
-										   .then(category => {
-											   const Dish = Parse.Object.extend("Dish");
-											   const dish = new Dish();
-
-											   dish.set("chef", chef);
-											   dish.set("price", parseInt(price, 10));
-											   dish.set("available", false);
-											   dish.set("name", name);
-											   dish.set("allergens", allergen);
-											   dish.set("imgURL", result.url());
-											   dish.set("description", description);
-											   dish.set("category", category);
-
-											   dish.save()
-												   .then(newDish => {
-													   const categoryRelation = category.relation("dishes");
-													   categoryRelation.add(newDish);
-
-													   category.save()
-															   .then(result => {
-																   res.json({ res: result });
-															   })
-												   });
-
-										   })
-						  })
-			 });
+	if ( dishId === 'null' ) {
+		addDish(req, res);
+	} else {
+		editDish(req, res);
+	}
 });
+
+addDish = (req, res) => {
+	const { fileAdded } = req.body;
+
+	if ( fileAdded === 'true' ) {
+		saveImage(req.files.file)
+			.then(photoUrl => {
+				saveDish(req, res, photoUrl);
+			});
+	} else {
+		saveDish(req, res);
+	}
+}
+
+editDish = (req, res) => {
+	const { fileAdded } = req.body;
+
+	if ( fileAdded === 'true' ) {
+		saveImage(req.files.file)
+			.then(photoUrl => {
+				saveEditedDish(req, res, photoUrl);
+			});
+	} else {
+		saveEditedDish(req, res);
+	}
+}
+
+function saveEditedDish(req, res, photoUrl = null) {
+	const { name, price, allergen, description, dishId } = req.body;
+
+	const Dish = Parse.Object.extend("Dish");
+	const dishQuery = new Parse.Query(Dish);
+
+	dishQuery.get(dishId)
+		.then(dish => {
+			dish.set("price", parseInt(price, 10));
+			dish.set("name", name);
+			dish.set("allergens", allergen);
+			dish.set("description", description);
+
+			if ( photoUrl !== null ) {
+				dish.set("imgURL", photoUrl);
+			}
+
+			dish.save()
+				.then(updatedDish => {
+					res.json({msg: "ok"});
+				});
+		});
+}
+
+function saveDish(req, res, photoUrl = null) {
+	const { name, price, allergen, description, chefId, categoryId } = req.body;
+
+	const Chef = Parse.Object.extend("Chef");
+	const queryChef = new Parse.Query(Chef);
+
+	queryChef.get(chefId)
+			 .then(chef => {
+				 const MenuCategory = Parse.Object.extend("MenuCategory");
+				 const categoryQuery = new Parse.Query(MenuCategory);
+
+				 categoryQuery.get(categoryId)
+							  .then(category => {
+								  const Dish = Parse.Object.extend("Dish");
+								  const dish = new Dish();
+
+								  dish.set("chef", chef);
+								  dish.set("price", parseInt(price, 10));
+								  dish.set("available", false);
+								  dish.set("name", name);
+								  dish.set("allergens", allergen);
+								  dish.set("description", description);
+								  dish.set("category", category);
+
+								  if ( photoUrl !== null ) {
+									  dish.set("imgURL", photoUrl);
+								  }
+
+								  dish.save()
+									  .then(newDish => {
+										  const categoryRelation = category.relation("dishes");
+										  categoryRelation.add(newDish);
+
+										  category.save()
+												  .then(result => {
+													  res.json({ res: result });
+												  });
+									  });
+
+							  });
+			 });
+}
+
+function saveImage(file) {
+	return new Promise(resolve => {
+		const userFileName = file.name;
+
+		const data = Array.from(Buffer.from(file.data, 'binary'));
+		const parseFile = new Parse.File(userFileName, data);
+
+		parseFile.save()
+				 .then(result => {
+					 resolve(result.url());
+				 });
+	});
+}
 
 categoriesSyncer = (menu, dbCategories, categories) => {
 	return new Promise(resolve => {
