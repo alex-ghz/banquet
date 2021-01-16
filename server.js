@@ -84,6 +84,12 @@ const dashboard = new ParseDashboard({
 	"trustProxy": 1
 }, options);
 
+app.use('/api', apiRouter);
+app.use('/settings', settingsRouter);
+app.use('/menu', menuRouter);
+app.use('/profile', profileRouter);
+app.use('/parse', parse);
+
 app.use('/dashboard', dashboard);
 console.log(process.env.NODE_ENV)
 if ( process.env.NODE_ENV === 'production' ) {
@@ -92,12 +98,6 @@ if ( process.env.NODE_ENV === 'production' ) {
 		res.sendFile(path.join(__dirname, 'client/build', 'index.html'))
 	});
 }
-
-app.use('/api', apiRouter);
-app.use('/settings', settingsRouter);
-app.use('/menu', menuRouter);
-app.use('/profile', profileRouter);
-app.use('/parse', parse);
 
 app.listen(port, error => {
 	if ( error ) throw error;
