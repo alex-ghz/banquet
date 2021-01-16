@@ -196,7 +196,7 @@ class ProfileDelivery extends React.Component {
 																	</select>
 																</div>
 															</div>
-															<div className="delivery-options-profile">
+															<div className="delivery-options-profile delivery-options-center">
 																<span className="delivery_radius regular_sofia">Delivery cost (<FaPoundSign/>)</span>
 																<div className="delivery_collection_select_inner">
 																	<div className="delivery_section_right_text">
