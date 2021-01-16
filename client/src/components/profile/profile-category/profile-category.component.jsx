@@ -83,7 +83,7 @@ class ProfileCategory extends React.Component {
 										<span className="category_cap">
 										{ category }
 										</span>
-										<FaTimes className='x_btn_category' onClick={ () => this.handleRemoveCategory(category) }/>
+										<FaTimes className='x_btn_category_profile' onClick={ () => this.handleRemoveCategory(category) }/>
 									</div>
 								))
 							}
