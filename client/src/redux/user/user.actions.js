@@ -19,3 +19,8 @@ export const setChefDescription = description => ({
 	type: UserActionTypes.SET_CHEF_DESCRIPTION,
 	payload: description
 });
+
+export const setChef = chef => ({
+	type: UserActionTypes.SET_CHEF,
+	payload: chef
+})

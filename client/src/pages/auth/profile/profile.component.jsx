@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import axios from "axios";
 
-
 import './profile.styles.scss';
 
 import { selectChef, selectChefId } from "../../../redux/user/user.selectors";
+import { setChef } from "../../../redux/user/user.actions";
 
 import ProfileImage from "../../../components/profile/profile-image/profile-image.component";
 import ProfileDescription from "../../../components/profile/profile-description/profile-description.component";
@@ -52,7 +52,10 @@ class Profile extends React.Component {
 				description: !!chef.description ? chef.description : ''
 			},
 			delivery: {
-				postcode: null,
+				postcode: !!chef.postcode ? {
+					label: chef.postcode,
+					value: chef.postcode
+				} : "",
 				address: !!chef.address ? chef.address : "",
 				delivery: !!chef.delivery ? chef.delivery : false,
 				pickup: !!chef.pickup ? chef.pickup : false,
@@ -60,8 +63,6 @@ class Profile extends React.Component {
 			},
 			categories: !!chef.cuisineType ? chef.cuisineType : [],
 		});
-
-		console.log(chef.description);
 	}
 
 	handleChanges(path, obj) {
@@ -92,7 +93,15 @@ class Profile extends React.Component {
 		formData.append("chefId", chefId);
 
 		axios.post('/profile/update', formData)
-			 .then(response => console.log(response));
+			 .then(response => response.data)
+			 .then(data => data.newChef)
+			 .then(chef => {
+				 this.props.setChef(chef);
+
+				 this.setState({
+					 submitted: false
+				 });
+			 });
 
 	}
 
@@ -101,8 +110,6 @@ class Profile extends React.Component {
 	}
 
 	render() {
-		const state = this.state;
-
 		return (
 			<div className='profile_section'>
 				<div className="profile_section_title bold_sofia">
@@ -110,9 +117,9 @@ class Profile extends React.Component {
 				</div>
 				<div className='profile_section_inner'>
 					<ProfileImage handleChange={ this.handleChanges }/>
-					<ProfileDescription state={ state.description } handleChange={ this.handleChanges }/>
-					<ProfileDelivery state={ state.delivery } handleChange={ this.handleChanges }/>
-					<ProfileCategory state={ state.categories } handleChange={ this.handleChanges }/>
+					<ProfileDescription handleChange={ this.handleChanges }/>
+					<ProfileDelivery handleChange={ this.handleChanges }/>
+					<ProfileCategory handleChange={ this.handleChanges }/>
 					<div className="last_section_profile">
 						<div className="profile_updated_last medium_sofia">Last Updated on 12/05/2020</div>
 						<SaveWithSpinner isLoading={ this.state.submitted } onClick={ this.handleSave }/>
@@ -128,4 +135,8 @@ const mapStateToProps = createStructuredSelector({
 	chefId: selectChefId
 });
 
-export default connect(mapStateToProps)(Profile);
+const mapDispatchProps = dispatch => ({
+	setChef: chef => dispatch(setChef(chef))
+});
+
+export default connect(mapStateToProps, mapDispatchProps)(Profile);

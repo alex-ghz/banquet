@@ -1,7 +1,10 @@
 import React from 'react';
-import { FaSearch, FaTimes } from "react-icons/all";
+import { FaTimes } from "react-icons/all";
+import { connect } from 'react-redux';
+import { createStructuredSelector } from "reselect";
 
 import './profile-category.styles.scss';
+import { selectChef } from "../../../redux/user/user.selectors";
 
 class ProfileCategory extends React.Component {
 
@@ -19,10 +22,10 @@ class ProfileCategory extends React.Component {
 	}
 
 	componentDidMount() {
-		const state = this.props.state;
+		const chef = this.props.chef;
 
 		this.setState({
-			categories: state
+			categories: !!chef.cuisineType ? chef.cuisineType : []
 		});
 	}
 
@@ -92,4 +95,8 @@ class ProfileCategory extends React.Component {
 	}
 }
 
-export default ProfileCategory;
+const mapStateToProps = createStructuredSelector({
+	chef: selectChef
+});
+
+export default connect(mapStateToProps)(ProfileCategory);
