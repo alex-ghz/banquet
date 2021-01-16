@@ -15,14 +15,14 @@ const OrdersMenu = (props) => {
 				</div>
 				<div className="order_box_status">
 					In progress
-					<div className="order_status_notifications">1</div>
+					<div className="order_status_notifications">0</div>
 				</div>
 				<div className="order_box_status order_box_no_border">
 					Done
 					<div className="order_status_notifications">0</div>
 				</div>
 			</div>
-			<OrdersList/>
+			{/*<OrdersList/>*/}
 		</div>
 	)
 };

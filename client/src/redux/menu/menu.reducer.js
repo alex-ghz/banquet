@@ -2,7 +2,7 @@ import MenuActionTypes from "./menu.types";
 
 const INITIAL_STATE = {
 	categories: null,
-	isFetching: true,
+	isFetching: false,
 	errorMessage: undefined,
 	selectedCategory: undefined,
 };

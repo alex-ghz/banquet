@@ -1,12 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import axios from "axios";
 import { createStructuredSelector } from "reselect";
 
 import './profile-description.styles.scss';
 
-import { selectChef, selectChefId } from "../../../redux/user/user.selectors";
-import { setChefDescription } from "../../../redux/user/user.actions";
+import { selectChef } from "../../../redux/user/user.selectors";
 
 class ProfileDescription extends React.Component {
 
@@ -33,8 +31,10 @@ class ProfileDescription extends React.Component {
 
 	handleOnChange(event) {
 		const { value, name } = event.target;
-		this.setState({ [name]: value.trim() });
+		this.setState({ [name]: value.trim() }, this.updateParent);
+	}
 
+	updateParent() {
 		this.props.handleChange("description", {
 			description: this.state.description
 		});
@@ -67,12 +67,7 @@ class ProfileDescription extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-	chef: selectChef,
-	chefId: selectChefId
+	chef: selectChef
 });
 
-const mapDispatchToProps = dispatch => ({
-	setProfileDescription: description => dispatch(setChefDescription(description))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileDescription);
+export default connect(mapStateToProps)(ProfileDescription);

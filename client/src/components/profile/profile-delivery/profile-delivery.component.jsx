@@ -14,7 +14,12 @@ class ProfileDelivery extends React.Component {
 		super(props);
 
 		this.state = {
-			selectedPostCode: null,
+			postcode: {
+				value: null,
+				label: null,
+				latitude: null,
+				longitude: null,
+			},
 			address: null,
 			delivery: false,
 			pickup: false,
@@ -27,10 +32,28 @@ class ProfileDelivery extends React.Component {
 		this.handleRadiusChange = this.handleRadiusChange.bind(this);
 	}
 
-	handleOnChangePostCode(postCode) {
+	componentDidMount() {
+		const state = this.props.state;
+
 		this.setState({
-			selectedPostCode: postCode
+			...state
 		});
+	}
+
+	handleOnChangePostCode(postCode) {
+		axios.get(`https://api.postcodes.io/postcodes/${ postCode.value }`)
+			 .then(response => response.data)
+			 .then(data => data.result)
+			 .then(result => {
+				 this.setState({
+					 postcode: {
+						 value: postCode.value,
+						 label: postCode.label,
+						 latitude: result.latitude,
+						 longitude: result.longitude,
+					 }
+				 }, this.updateParent)
+			 });
 	}
 
 	loadPostCodeOptions(inputText, cb) {
@@ -48,22 +71,22 @@ class ProfileDelivery extends React.Component {
 
 	handleOnChangeAddress(event) {
 		const { value, name } = event.target;
-
-		this.setState({ [name]: value.trim() });
-		this.props.handleChange("delivery", this.state);
+		this.setState({ [name]: value.trim() }, this.updateParent);
 	}
 
 	handleOnChangeCheckbox(event) {
 		const { name } = event.target;
-		this.setState({ [name]: !this.state[name] });
-		this.props.handleChange("delivery", this.state);
+		this.setState({ [name]: !this.state[name] }, this.updateParent);
 	}
 
 	handleRadiusChange(event) {
 		const { value } = event.target;
 		this.setState({
 			deliveryRadius: parseInt(value, 10)
-		});
+		}, this.updateParent);
+	}
+
+	updateParent() {
 		this.props.handleChange("delivery", this.state);
 	}
 
@@ -77,7 +100,7 @@ class ProfileDelivery extends React.Component {
 						<AsyncSelect
 							className='postcode-selector'
 							components={ animatedComponent }
-							value={ this.state.selectedPostCode }
+							value={ { value: this.state.postcode.value, label: this.state.postcode.label } }
 							onChange={ this.handleOnChangePostCode }
 							placeholder={ "Enter postcode" }
 							// isDisabled={ !!this.state.selectedPostCode }
@@ -85,7 +108,7 @@ class ProfileDelivery extends React.Component {
 						/>
 					</div>
 					{
-						this.state.selectedPostCode ?
+						this.state.postcode.value ?
 							(
 								<div>
 									<div className="delivery_collection_div">

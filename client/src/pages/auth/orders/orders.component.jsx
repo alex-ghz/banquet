@@ -12,7 +12,7 @@ class Orders extends React.Component {
 			<div className="order_div">
 				<div className="order_section">
 					<OrdersMenu test='sadasda'/>
-					<OrdersDetails/>
+					{/*<OrdersDetails/>*/}
 				</div>
 			</div>
 

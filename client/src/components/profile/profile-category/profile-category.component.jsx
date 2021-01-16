@@ -18,6 +18,14 @@ class ProfileCategory extends React.Component {
 		this.handleRemoveCategory = this.handleRemoveCategory.bind(this);
 	}
 
+	componentDidMount() {
+		const state = this.props.state;
+
+		this.setState({
+			categories: state
+		});
+	}
+
 	handleAddCategory() {
 		this.setState({
 			categories: [
@@ -25,7 +33,7 @@ class ProfileCategory extends React.Component {
 				this.state.tempCategory
 			],
 			tempCategory: ""
-		});
+		}, this.updateParent);
 	}
 
 	handleInputChange(event) {
@@ -36,7 +44,11 @@ class ProfileCategory extends React.Component {
 	handleRemoveCategory(categoryName) {
 		this.setState({
 			categories: this.state.categories.filter(category => category !== categoryName)
-		});
+		}, this.updateParent);
+	}
+
+	updateParent() {
+		this.props.handleChange("categories", this.state.categories);
 	}
 
 	render() {

@@ -15,8 +15,12 @@ const MenuSectionWithSpinner = WithSpinner(MenuSection);
 class Menu extends React.Component {
 
 	componentDidMount() {
-		let { fetchCollectionsStartAsync, fetchCollectionsStart, menuId } = this.props;
-		fetchCollectionsStartAsync(menuId);
+		let { fetchCollectionsStartAsync, isCollectionFetching, fetchCollectionsStart, menuId } = this.props;
+
+		if ( !isCollectionFetching ) {
+			fetchCollectionsStart();
+			fetchCollectionsStartAsync(menuId);
+		}
 	}
 
 	render() {
