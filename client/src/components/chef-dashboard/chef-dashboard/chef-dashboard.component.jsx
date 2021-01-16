@@ -16,7 +16,7 @@ const ChefDashboard = ({dashboardNotification}) => {
 		{
 			id: "yourRatingCard",
 			title: "Your Rating",
-			value: "5.0",
+			value: "0.0",
 			description: "out of 5"
 		},
 		{

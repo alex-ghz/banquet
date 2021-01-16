@@ -1,12 +1,33 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import './sidemenu-bottom.styles.scss';
 
+import { selectUserId } from "../../../redux/user/user.selectors";
+import { createStructuredSelector } from "reselect";
+
 class SideMenuBottom extends React.Component {
+
+	constructor(props) {
+		super(props);
+
+		this.handleLogout = this.handleLogout.bind(this);
+	}
 
 	handleLogout() {
 		localStorage.clear();
 		window.location.href = '/';
+
+		// const { userId } = this.props;
+		//
+		// axios.post('/api/logout', {
+		// 	userId: userId
+		// }).then(result => {
+		// 	console.log(result);
+		//
+		// 	localStorage.clear();
+		// 	window.location.href = '/';
+		// })
 	}
 
 	render() {
@@ -22,7 +43,7 @@ class SideMenuBottom extends React.Component {
 						<span className="slider slider_sidemen round"/>
 					</label>
 				</div>
-				<div className="log-out-side sb_sofia">
+				<div className="log-out-side sb_sofia" onClick={ this.handleLogout }>
 					Log out
 				</div>
 			</div>
@@ -30,4 +51,8 @@ class SideMenuBottom extends React.Component {
 	}
 }
 
-export default SideMenuBottom;
+const mapStateToProps = createStructuredSelector({
+	userId: selectUserId
+});
+
+export default connect(mapStateToProps)(SideMenuBottom);

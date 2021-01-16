@@ -81,7 +81,7 @@
   font-size: 16pt;
   color: #ff2d55;
   float: right;
-  margin: -72% 20px 0 0;
+  cursor: pointer;
 }
 .pencil_icon {
   padding: 0 10px 0 12px;
@@ -89,6 +89,8 @@
 .product_name {
   font-size: 16pt;
   color: #002439;
+  max-width: 325px;
+  overflow: hidden;
 }
 .product_time {
   margin: -23px 10px 0 0;

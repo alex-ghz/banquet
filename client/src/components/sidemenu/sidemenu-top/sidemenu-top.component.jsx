@@ -26,7 +26,7 @@ const SideMenuTop = ({ setCurrentPage, currentPage }) => {
 				</Link>
 			</div>
 			<div className="menu_arrows">
-				{ sideMenuArrow }
+				{/*{ sideMenuArrow }*/}
 			</div>
 		</div>
 	);
