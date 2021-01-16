@@ -87,13 +87,14 @@
   border-radius: 10px;
   margin-top: 16pt;
   padding: 2pt 6pt;
-  min-width: 9%;
+  min-width: unset;
   margin-right: 7pt;
+  cursor: pointer;
 }
 
 .x_btn_category {
   font-size: 12pt !important;
-  padding: 0 0 5pt 12pt;
+  padding-left: 10pt;
 }
 
 .profile-category-div {
