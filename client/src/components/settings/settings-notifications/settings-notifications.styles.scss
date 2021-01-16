@@ -60,8 +60,8 @@
 
 input:checked + .slider,
 input:checked + .slider_menu {
-  background-color: #4bd964;
-  border-color: white;
+  background-color: #d0d0d0;
+  border-color: #fe154c;
 }
 
 input:focus + .slider {
@@ -79,12 +79,7 @@ input:checked + .slider_menu:before {
 
 .slider_notifications {
   background: white;
-  /*border: 1px solid #778e9c;*/
 }
-
-/*.slider_notifications:before {
-  border: 1px solid #778e9c;
-}*/
 
 input:checked + .slider_notifications {
   background-color: #d0d0d0;
