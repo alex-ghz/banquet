@@ -246,11 +246,11 @@ div.item_image > img {
   max-width: 100%;
   max-width: -moz-available; /* WebKit-based browsers will ignore this. */
   max-width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-  max-width: fill-available;
+  //max-width: fill-available;
   max-height: 100%;
   max-height: -moz-available; /* WebKit-based browsers will ignore this. */
   max-height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-  max-height: fill-available;
+  //max-height: fill-available;
 }
 
 .imgFile {

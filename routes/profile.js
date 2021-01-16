@@ -16,7 +16,7 @@ router.post('/update', async (req, res) => {
 							 saveChefDetails(chef, req.body, () => {
 								 chef.save()
 									 .then(result => {
-										 res.json({ msg: "ok" });
+										 res.json({ newChef: result.attributes });
 									 })
 							 });
 						 });
@@ -24,7 +24,7 @@ router.post('/update', async (req, res) => {
 					 saveChefDetails(chef, req.body, () => {
 						 chef.save()
 							 .then(result => {
-								 res.json({ msg: "ok" });
+								 res.json({ newChef: result.attributes });
 							 })
 					 });
 				 }
@@ -50,7 +50,6 @@ function saveChefDetails(chef, body, cb) {
 		description,
 		delivery,
 		categories,
-		address,
 	} = body;
 
 	chef.set("description", description);
@@ -59,8 +58,10 @@ function saveChefDetails(chef, body, cb) {
 	const deliveryObject = JSON.parse(delivery);
 
 	chef.set("deliveryRadius", deliveryObject.deliveryRadius);
+	chef.set("deliveryCost", deliveryObject.deliveryCost);
 	chef.set("delivery", deliveryObject.delivery);
 	chef.set("pickup", deliveryObject.pickup);
+	chef.set("address", deliveryObject.address);
 
 	const point = new Parse.GeoPoint({
 		latitude: deliveryObject.postcode.latitude,
@@ -69,7 +70,6 @@ function saveChefDetails(chef, body, cb) {
 
 	chef.set("location", point);
 	chef.set("postcode", deliveryObject.postcode.value);
-	chef.set("address", address);
 
 	cb();
 }

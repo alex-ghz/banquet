@@ -41,6 +41,14 @@ const userReducer = (state = INITIAL_STATE, action) => {
 					}
 				}
 			}
+		case UserActionTypes.SET_CHEF:
+			return {
+				...state,
+				currentUser: {
+					...state.currentUser,
+					chef: action.payload
+				}
+			}
 		default:
 			return state;
 	}
