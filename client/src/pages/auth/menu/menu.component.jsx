@@ -24,11 +24,12 @@ class Menu extends React.Component {
 	}
 
 	render() {
-		let { isCollectionFetching } = this.props;
+		let { isCollectionsLoaded, isCollectionFetching } = this.props;
+		let isLoading = isCollectionsLoaded === true && isCollectionFetching === false;
 
 		return (
 			<div>
-				<MenuSectionWithSpinner isLoading={ isCollectionFetching }/>
+				<MenuSectionWithSpinner isLoading={ !isLoading }/>
 			</div>
 		);
 	}

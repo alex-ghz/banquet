@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import axios from "axios";
 
+
 import './profile.styles.scss';
 
 import { selectChef, selectChefId } from "../../../redux/user/user.selectors";
@@ -92,6 +93,10 @@ class Profile extends React.Component {
 
 		axios.post('/profile/update', formData)
 			 .then(response => console.log(response));
+
+	}
+
+	resizeImage(file) {
 
 	}
 

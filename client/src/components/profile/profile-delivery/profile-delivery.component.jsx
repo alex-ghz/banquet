@@ -74,6 +74,11 @@ class ProfileDelivery extends React.Component {
 		this.setState({ [name]: value.trim() }, this.updateParent);
 	}
 
+	handleChange(event) {
+		const { name, value } = event.target;
+		this.setState({ [name]: value }, this.updateParent);
+	}
+
 	handleOnChangeCheckbox(event) {
 		const { name } = event.target;
 		this.setState({ [name]: !this.state[name] }, this.updateParent);
@@ -158,7 +163,7 @@ class ProfileDelivery extends React.Component {
 															<div className="delivery-options-profile">
 																<span className="delivery_radius regular_sofia">Set delivery radius</span>
 																<div className="delivery_collection_select_inner">
-																	<select value={this.state.deliveryRadius} onChange={this.handleRadiusChange} className="delivery_location regular_sofia">
+																	<select value={ this.state.deliveryRadius } onChange={ this.handleRadiusChange } className="delivery_location regular_sofia">
 																		<option value="5">5 miles</option>
 																		<option value="10">10 miles</option>
 																		<option value="15">15 miles</option>
