@@ -1,7 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from "reselect";
+import axios from "axios";
 
 import './menu-card.styles.scss';
 import { FaPencilAlt } from "react-icons/all";
+import { selectCurrentUserMenuId } from "../../../redux/user/user.selectors";
+import { fetchCollectionStartAsync } from "../../../redux/menu/menu.actions";
 
 class MenuCard extends React.Component {
 
@@ -9,11 +14,24 @@ class MenuCard extends React.Component {
 		super(props);
 
 		this.handleEditDish = this.handleEditDish.bind(this);
+		this.handleDishAvailability = this.handleDishAvailability.bind(this);
 	}
 
 	handleEditDish() {
 		const { dish, editDish } = this.props;
 		editDish(dish.objectId);
+	}
+
+	handleDishAvailability() {
+		let { menuId, dish, fetchCollectionsStartAsync } = this.props;
+
+		axios.post('/menu/dishAvailability', {
+				 dishId: dish.objectId,
+				 value: !dish.available
+			 })
+			 .then(response => {
+				 fetchCollectionsStartAsync(menuId);
+			 })
 	}
 
 	render() {
@@ -38,7 +56,7 @@ class MenuCard extends React.Component {
 						Item available
 					</div>
 					<label className="switch">
-						<input type="checkbox"/>
+						<input type="checkbox" defaultChecked={ dish.available } onChange={ this.handleDishAvailability }/>
 						<span className="slider_menu round"/>
 					</label>
 				</div>
@@ -47,4 +65,12 @@ class MenuCard extends React.Component {
 	}
 }
 
-export default MenuCard;
+const mapStateToProps = createStructuredSelector({
+	menuId: selectCurrentUserMenuId
+});
+
+const mapDispatchToProps = dispatch => ({
+	fetchCollectionsStartAsync: menuId => dispatch(fetchCollectionStartAsync(menuId))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MenuCard);

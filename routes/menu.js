@@ -35,6 +35,27 @@ router.post('/getMenu', async (req, res) => {
 
 });
 
+router.post('/dishAvailability', (req, res) => {
+	const { dishId, value } = req.body;
+
+	if ( !!dishId === false ) {
+		return;
+	}
+
+	const Dish = Parse.Object.extend("Dish");
+	const dishQuery = new Parse.Query(Dish);
+
+	dishQuery.get(dishId)
+			 .then(dish => {
+				 dish.set("available", value);
+
+				 dish.save()
+					 .then(response => {
+						 res.json({ msg: "ok" });
+					 });
+			 });
+});
+
 router.post('/getDish', (req, res) => {
 	const { dishId } = req.body;
 
@@ -108,21 +129,21 @@ function saveEditedDish(req, res, photoUrl = null) {
 	const dishQuery = new Parse.Query(Dish);
 
 	dishQuery.get(dishId)
-		.then(dish => {
-			dish.set("price", parseInt(price, 10));
-			dish.set("name", name);
-			dish.set("allergens", allergen);
-			dish.set("description", description);
+			 .then(dish => {
+				 dish.set("price", parseInt(price, 10));
+				 dish.set("name", name);
+				 dish.set("allergens", allergen);
+				 dish.set("description", description);
 
-			if ( photoUrl !== null ) {
-				dish.set("imgURL", photoUrl);
-			}
+				 if ( photoUrl !== null ) {
+					 dish.set("imgURL", photoUrl);
+				 }
 
-			dish.save()
-				.then(updatedDish => {
-					res.json({msg: "ok"});
-				});
-		});
+				 dish.save()
+					 .then(updatedDish => {
+						 res.json({ msg: "ok" });
+					 });
+			 });
 }
 
 function saveDish(req, res, photoUrl = null) {
