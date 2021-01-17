@@ -18,6 +18,28 @@ router.post('/uploadFile', (req, res) => {
 
 });
 
+router.post('/addPayment', (req, res) => {
+	const { settingsId, data } = req.body;
+
+	if ( !!settingsId === false ) {
+		return;
+	}
+
+	const ChefSettings = Parse.Object.extend("ChefSettings");
+	const queryChefSettings = new Parse.Query(ChefSettings);
+
+	queryChefSettings.get(settingsId)
+					 .then(settings => {
+						 settings.set("payment", data);
+
+						 settings.save()
+								 .then(result => {
+									 res.json({ msg: "ok" });
+								 });
+					 });
+
+});
+
 router.post('/setChefFile', (req, res) => {
 	let { settingsId, file, fileUrl } = req.body;
 
@@ -45,7 +67,7 @@ router.post('/setChefFile', (req, res) => {
 });
 
 router.post('/chef', (req, res) => {
-	let {settingsId, settingName, value} = req.body;
+	let { settingsId, settingName, value } = req.body;
 
 	const ChefSettings = Parse.Object.extend("ChefSettings");
 	const queryChefSettings = new Parse.Query(ChefSettings);

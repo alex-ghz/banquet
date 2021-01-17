@@ -79,6 +79,10 @@
   justify-content: space-between;
 }
 
+.settings_row_pointer {
+  cursor: pointer;
+}
+
 .settings_menu_r_chevron {
   color: #ff2d55;
 }
@@ -88,7 +92,6 @@
   border-bottom: 2px solid #f5f5f5;
   font-size: 16pt;
   align-items: center;
-  cursor: pointer;
 }
 
 .new_payment_input {
