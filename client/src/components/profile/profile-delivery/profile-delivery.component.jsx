@@ -27,7 +27,8 @@ class ProfileDelivery extends React.Component {
 			delivery: false,
 			pickup: false,
 			deliveryRadius: 5,
-			deliveryCost: 0
+			deliveryCost: 0,
+			pickupInstructions: ''
 		};
 
 		this.handleOnChangePostCode = this.handleOnChangePostCode.bind(this);
@@ -49,7 +50,8 @@ class ProfileDelivery extends React.Component {
 			delivery: !!chef.delivery ? chef.delivery : false,
 			pickup: !!chef.pickup ? chef.pickup : false,
 			deliveryRadius: !!chef.deliveryRadius ? chef.deliveryRadius : 5,
-			deliveryCost: !!chef.deliveryCost ? chef.deliveryCost : 0
+			deliveryCost: !!chef.deliveryCost ? chef.deliveryCost : 0,
+			pickupInstructions: !!chef.pickupInstructions ? chef.pickupInstructions : ''
 		}, () => {
 			if ( !!this.state.postcode.value ) {
 				this.handleOnChangePostCode(this.state.postcode);
@@ -125,7 +127,6 @@ class ProfileDelivery extends React.Component {
 							value={ { value: this.state.postcode.value, label: this.state.postcode.label } }
 							onChange={ this.handleOnChangePostCode }
 							placeholder={ "Enter postcode" }
-							// isDisabled={ !!this.state.selectedPostCode }
 							loadOptions={ this.loadPostCodeOptions }
 						/>
 					</div>
@@ -161,6 +162,15 @@ class ProfileDelivery extends React.Component {
 														<input className="hiddenComp" type="checkbox" name="pickup" id="pickup_id" defaultValue={ this.state.pickup }
 															   onChange={ this.handleOnChangeCheckbox }/>
 													</div>
+													{
+														this.state.pickup ?
+															<textarea name="pickupInstructions" className="chef_description_text regular_sofia"
+																	  placeholder="Collection instructions..."
+																	  defaultValue={ this.state.pickupInstructions }
+																	  onChange={ this.handleChange }/>
+																	  : null
+													}
+
 													<div className="delivery_collection_div">
 														<label htmlFor="delivery_id" className="profile_delivery_section regular_sofia">
 															<FaShoppingBasket className='profile_icon'/>

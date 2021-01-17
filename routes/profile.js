@@ -57,8 +57,11 @@ function saveChefDetails(chef, body, cb) {
 
 	const deliveryObject = JSON.parse(delivery);
 
+	console.log(deliveryObject)
+
 	chef.set("deliveryRadius", deliveryObject.deliveryRadius);
 	chef.set("deliveryCost", deliveryObject.deliveryCost);
+	chef.set("pickupInstructions", deliveryObject.pickupInstructions)
 	chef.set("delivery", deliveryObject.delivery);
 	chef.set("pickup", deliveryObject.pickup);
 	chef.set("address", deliveryObject.address);
