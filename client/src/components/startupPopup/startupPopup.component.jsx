@@ -117,6 +117,7 @@ class StartupPopup extends React.Component {
 		const { value, name } = event.target;
 		this.setState({
 			dob: {
+				...this.state.dob,
 				[name]: value
 			}
 		})
@@ -126,6 +127,7 @@ class StartupPopup extends React.Component {
 		const { value, name } = event.target;
 		this.setState({
 			payment: {
+				...this.state.payment,
 				[name]: value
 			}
 		});
