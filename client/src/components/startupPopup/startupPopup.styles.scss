@@ -1,0 +1,268 @@
+.basic_popup {
+  position: fixed;
+  z-index: 1;
+  padding: 25px 0 25px 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.popup_inner {
+  width: 40%;
+  height: 95%;
+  background: white;
+  border-radius: 15px;
+  margin: 0 auto;
+  position: relative;
+  overflow-x: auto;
+}
+
+.first_popup, .second_popup,
+.third_popup, .fourth_popup {
+  padding: 25pt 50pt 25px 50pt;
+}
+
+.popup_title {
+  font-size: 28pt;
+  color: #002439;
+  line-height: 37pt;
+}
+
+.popup_subtitle {
+  font-size: 16pt;
+  color: #002439;
+  margin: 12pt 0 70pt 0;
+}
+
+.popup_subtitle_second {
+  border-bottom: 1px solid #f5f5f5;
+  padding-bottom: 20pt;
+  margin: 12pt 0 35pt 0;
+}
+
+.popup_third_text_first, .popup_third_text,
+.popup_third_text_last {
+  font-size: 16pt;
+  color: #002439;
+}
+
+.popup_third_text_first {
+  margin-top: 25pt
+}
+
+.popup_third_text {
+  margin: 15pt 0 15pt 0;
+}
+
+.popup_third_text_last {
+  margin-bottom: 12pt
+}
+
+.skip_btn {
+  font-size: 14pt;
+  color: #ff2d55;
+  position: absolute;
+  top: 25pt;
+  right: 30pt;
+  cursor: pointer;
+}
+
+.bank_icon {
+  color: #002439;
+  font-size: 19pt !important;
+}
+
+/*.popup_third_option {
+    width: 96%;
+}*/
+.popup_third_option_inner {
+  font-size: 14pt;
+  color: #002439;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /*width: 90%;
+  margin: 0 auto;*/
+  padding: 10px 15px 10px 15px;
+  height: 70pt;
+  margin-bottom: 3px;
+  cursor: pointer;
+}
+
+.popup_third_option_inner_checked {
+  border: 3px solid #ff2d55;
+  border-radius: 15px;
+  padding: 7px 12px 7px 12px;
+}
+
+.notregistered_msg {
+  background: transparent;
+  font-size: 14pt;
+  color: white;
+  padding: 8pt 15pt;
+  border-radius: 10px;
+  margin-top: 30pt;
+}
+
+.notregistered_msg_color {
+  background: #74a8c9;
+}
+
+.option_uncheck1, .option_uncheck2 {
+  border: 3px solid #e6e6e6;
+  border-radius: 40px;
+  width: 23px;
+  height: 23px;
+  text-align: center;
+  margin-left: 10px;
+}
+
+.option_check {
+  color: #9bff1e;
+  border: 3px solid #9bff1e;
+}
+
+.check_icn1, .check_icn2 {
+  display: none !important;
+  padding-top: 3px;
+}
+
+.popup_success {
+  background: #4CD964;
+  width: 58.8pt;
+  height: 58.8pt;
+  border-radius: 40px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+.checkMark {
+  font-size: 65px !important;
+  color: white;
+  padding: 8px;
+}
+
+.birth_inputs {
+  display: flex;
+  justify-content: space-between;
+  width: 96%;
+}
+
+.input_username, .input_dob,
+.input_number {
+  margin: 25px 0 15px 0;
+}
+
+.username, .mobile_number,
+.month, .day, .year,
+.accountHolder, .sortCode,
+.accountNumber, .bankName {
+  font-size: 14pt;
+  width: 85%;
+  background: #f2faff;
+  border: 1px solid #ff2d55;
+  height: 55pt;
+  padding: 0 35px 0 35px;
+  border-radius: 15px;
+  color: #75797e;
+  outline: none;
+}
+
+.month {
+  width: 20%;
+}
+
+.day {
+  width: 10%;
+}
+
+.year {
+  width: 15%;
+}
+
+.sort_code_inner {
+  width: 35%;
+}
+
+.account_nr_inner {
+  width: 45%;
+  margin-right: 25px;
+}
+
+.phone_number::-webkit-outer-spin-button,
+.phone_number::-webkit-inner-spin-button,
+.mobile_number::-webkit-outer-spin-button,
+.mobile_number::-webkit-inner-spin-button,
+.day::-webkit-outer-spin-button,
+.day::-webkit-inner-spin-button,
+.year::-webkit-outer-spin-button,
+.year::-webkit-inner-spin-button,
+.sortCode::-webkit-outer-spin-button,
+.sortCode::-webkit-inner-spin-button,
+.accountNumber::-webkit-outer-spin-button,
+.accountNumber::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.next_btn_popup {
+  background: #ff2d55;
+  font-size: 16pt;
+  padding-top: 19px;
+  color: white;
+  border-radius: 15px;
+  text-align: center;
+  height: 40pt;
+  margin-top: 35px;
+  width: 20%;
+  margin: 60px 0 60px 76%;
+  cursor: pointer;
+  box-shadow: 5px 10px 21px 6px rgba(0, 0, 0, 0.1);
+}
+
+.next_btn_popup_third {
+  width: 100%;
+  margin: 40px 0 40px 0;
+}
+
+.next_btn_popup_fourth {
+  width: 100%;
+  margin: 95px 0 70px 0;
+}
+
+.progress_bar {
+  background: #d0f2ff;
+  height: 15px;
+  border-radius: 40px;
+  width: 96%;
+  z-index: 0;
+}
+
+.progress_bar_inner {
+  background: #4cd964;
+  height: 15px;
+  border-radius: 40px;
+  width: 25%;
+  z-index: 1;
+}
+
+.progress_bar_inner_second {
+  width: 50%;
+}
+
+.progress_bar_inner_third {
+  width: 75%;
+}
+
+.progress_bar_inner_fourth {
+  width: 100%;
+}
+
+.option_check > .check_icn1,
+.option_check > .check_icn2 {
+  display: block !important;
+}

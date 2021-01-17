@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.post('/update', async (req, res) => {
+router.post('/update', (req, res) => {
 	const { fileAdded, chefId } = req.body;
 
 	const Chef = Parse.Object.extend("Chef");
@@ -31,6 +31,43 @@ router.post('/update', async (req, res) => {
 			 });
 });
 
+router.post('/updatePopup', (req, res) => {
+	const {
+		chefId,
+		settingsId,
+		name,
+		dob,
+		phoneNo,
+		payment
+	} = req.body;
+
+	const Chef = Parse.Object.extend("Chef");
+	const queryChef = new Parse.Query(Chef);
+
+	queryChef.get(chefId)
+			 .then(chef => {
+				 chef.set("name", name);
+				 chef.set("phoneNo", phoneNo);
+
+				 chef.save()
+					 .then(chef => {
+						 const ChefSettings = Parse.Object.extend("ChefSettings");
+						 const queryChefSettings = new Parse.Query(ChefSettings);
+
+						 queryChefSettings.get(settingsId)
+										  .then(settings => {
+											  settings.set("dob", dob);
+											  settings.set("payment", payment);
+
+											  settings.save()
+													  .then(() => {
+														  res.json({ msg: "ok" });
+													  });
+										  });
+					 });
+			 });
+});
+
 function saveChefPhoto(file) {
 	return new Promise(resolve => {
 		const userFileName = file.name;
@@ -56,8 +93,6 @@ function saveChefDetails(chef, body, cb) {
 	chef.set("cuisineType", JSON.parse(categories));
 
 	const deliveryObject = JSON.parse(delivery);
-
-	console.log(deliveryObject)
 
 	chef.set("deliveryRadius", deliveryObject.deliveryRadius);
 	chef.set("deliveryCost", deliveryObject.deliveryCost);

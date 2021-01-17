@@ -49,6 +49,14 @@ const userReducer = (state = INITIAL_STATE, action) => {
 					chef: action.payload
 				}
 			}
+		case UserActionTypes.DISABLE_NEW_POPUP:
+			return {
+				...state,
+				currentUser: {
+					...state.currentUser,
+					newUser: false
+				}
+			}
 		default:
 			return state;
 	}

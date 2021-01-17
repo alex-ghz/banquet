@@ -23,4 +23,8 @@ export const setChefDescription = description => ({
 export const setChef = chef => ({
 	type: UserActionTypes.SET_CHEF,
 	payload: chef
-})
+});
+
+export const disableNewPopup = () => ({
+	type: UserActionTypes.DISABLE_NEW_POPUP
+});

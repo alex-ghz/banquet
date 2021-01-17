@@ -43,7 +43,7 @@ router.post('/register', async (req, res) => {
 
 						user.save()
 							.then((user) => {
-								sendGeneratedUser(user, res);
+								sendGeneratedUser({ user: user, newUser: true }, res);
 							})
 							.catch((err) => {
 								return res.status(405).json({ msg: "User object could not be created", err: err });
@@ -61,7 +61,7 @@ router.post('/login', (req, res) => {
 
 	Parse.User.logIn(email, password)
 		 .then((user) => {
-			 sendGeneratedUser(user, res);
+			 sendGeneratedUser({ user: user }, res);
 		 })
 		 .catch((err) => {
 			 return {
@@ -124,9 +124,10 @@ function getMenu() {
 
 function sendGeneratedUser(user, res) {
 	user = {
-		user: user,
+		user: user.user,
 		settings: null,
-		chef: null
+		chef: null,
+		newUser: !!user.newUser
 	};
 
 	const Chef = Parse.Object.extend('Chef');
