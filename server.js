@@ -77,8 +77,8 @@ const dashboard = new ParseDashboard({
 	],
 	"users": [
 		{
-			"user":"username",
-			"pass":"password"
+			"user":"admin",
+			"pass":"lzsmkm"
 		}
 	],
 	"trustProxy": 1
