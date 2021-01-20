@@ -23,6 +23,8 @@ import HowItWorksPage from "./pages/noAuth/how-it-works/how-it-works.component";
 import Login from "./pages/noAuth/login/login.component";
 import Register from "./pages/noAuth/register/register.component";
 import Footer from "./components/footer/footer.component";
+import TermsAndConditions from "./pages/noAuth/terms-and-conditions/terms-and-conditions.components";
+import Privacy from "./pages/noAuth/privacy/privacy.component";
 
 class App extends React.Component {
 
@@ -54,6 +56,8 @@ class App extends React.Component {
 								<Route exact path='/how-it-works' component={ HowItWorksPage }/>
 								<Route exact path='/login' component={ Login }/>
 								<Route exact path='/register' component={ Register }/>
+								<Route exact path='/terms-and-conditions' component={ TermsAndConditions }/>
+								<Route exact path='/privacy' component={ Privacy }/>
 								<Redirect from='*' to='/'/>
 							</Switch>
 							<Footer/>
