@@ -38,7 +38,12 @@ class Register extends React.Component {
 						err: response.filter(value => !!value)
 					}, () => {
 						if ( this.state.err.length === 0 ) {
-							axios.post('/api/register', { email: email, password: password, name: name, phoneNo: phoneNo })
+							axios.post('/api/register', {
+									 email: email,
+									 password: password,
+									 name: name,
+									 phoneNo: phoneNo
+								 })
 								 .then((response) => response.data)
 								 .then((user) => {
 									 setCurrentUser(user);
@@ -144,12 +149,14 @@ class Register extends React.Component {
 								!!this.state.err.length ?
 									<div
 										className="privacy_policy errMsg">{ this.state.err.map(err => (
-										<p className="errP" key={err}>{ err }</p>)) }</div>
+										<p className="errP" key={ err }>{ err }</p>)) }</div>
 									: null
 							}
-							<p className="privacy_policy medium_sofia">By continuing you agree to our <span
-								className="pp_color">T&amp;Cs.</span> You can also have a look at our <span
-								className="pp_color">Privacy Policy.</span></p>
+							<p className="privacy_policy medium_sofia">By continuing you agree to our <Link
+								to="/terms-and-conditions"><span
+								className="pp_color">T&amp;Cs.</span></Link> You can also have a look at our <Link
+								to="/privacy"><span
+								className="pp_color">Privacy Policy.</span></Link></p>
 						</div>
 					</div>
 				</div>

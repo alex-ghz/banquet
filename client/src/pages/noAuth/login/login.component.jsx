@@ -79,9 +79,11 @@ class Login extends React.Component {
 									<div className="privacy_policy errMsg">{ this.state.err }</div>
 									: null
 							}
-							<p className="privacy_policy medium_sofia">By continuing you agree to our <span
-								className="pp_color">T&amp;Cs.</span> You can also have a look at our <span
-								className="pp_color">Privacy Policy.</span></p>
+							<p className="privacy_policy medium_sofia">By continuing you agree to our <Link
+								to="/terms-and-conditions"><span
+								className="pp_color">T&amp;Cs.</span></Link> You can also have a look at our <Link
+								to="/privacy"><span
+								className="pp_color">Privacy Policy.</span></Link></p>
 						</div>
 					</div>
 				</div>
