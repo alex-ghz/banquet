@@ -18,7 +18,7 @@ class Register extends React.Component {
 			email: '',
 			password: '',
 			phoneNo: '',
-			err: null
+			err: []
 		};
 	}
 
@@ -31,16 +31,74 @@ class Register extends React.Component {
 		const { setCurrentUser } = this.props;
 		let { name, email, password, phoneNo } = this.state;
 
-		axios.post('/api/register', { email: email, password: password, name: name, phoneNo: phoneNo })
-			 .then((response) => response.data)
-			 .then((user) => {
-				 setCurrentUser(user);
-			 })
-			 .catch((err) => {
-				 this.setState({
-					 err: err.response.data.msg
-				 });
-			 })
+		this.setState({ err: [] }, () => {
+			this.validate()
+				.then(response => {
+					this.setState({
+						err: response.filter(value => !!value)
+					}, () => {
+						if ( this.state.err.length === 0 ) {
+							axios.post('/api/register', { email: email, password: password, name: name, phoneNo: phoneNo })
+								 .then((response) => response.data)
+								 .then((user) => {
+									 setCurrentUser(user);
+								 })
+								 .catch((err) => {
+									 this.setState({
+										 err: [err.response.data.msg]
+									 });
+								 })
+						}
+					});
+				});
+		});
+	}
+
+	validate() {
+		return new Promise(resolve => {
+			const { name, email, password, phoneNo } = this.state;
+
+			let promises = [];
+
+			promises.push(new Promise(resolve1 => {
+				let reg = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+				if ( !reg.test(password) ) {
+					resolve1('Password not strong enough!');
+				} else {
+					resolve1();
+				}
+			}));
+
+			promises.push(new Promise(resolve2 => {
+				let emailReg = new RegExp("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\\]?)$")
+				if ( !emailReg.test(email) ) {
+					resolve2('Email not valid!');
+				} else {
+					resolve2();
+				}
+			}));
+
+			promises.push(new Promise(resolve3 => {
+				if ( name.trim() === '' ) {
+					resolve3('Name is not valid!');
+				} else {
+					resolve3();
+				}
+			}));
+
+			promises.push(new Promise(resolve4 => {
+				if ( phoneNo.trim() === '' ) {
+					resolve4('Phone number is not valid!');
+				} else {
+					resolve4();
+				}
+			}));
+
+			Promise.all(promises)
+				   .then(values => {
+					   resolve(values);
+				   })
+		});
 	}
 
 	render() {
@@ -83,8 +141,10 @@ class Register extends React.Component {
 								Sign Up
 							</div>
 							{
-								this.state.err ?
-									<div className="privacy_policy errMsg">{ this.state.err }</div>
+								!!this.state.err.length ?
+									<div
+										className="privacy_policy errMsg">{ this.state.err.map(err => (
+										<p className="errP" key={err}>{ err }</p>)) }</div>
 									: null
 							}
 							<p className="privacy_policy medium_sofia">By continuing you agree to our <span

@@ -64,19 +64,12 @@ router.post('/login', (req, res) => {
 			 sendGeneratedUser({ user: user }, res);
 		 })
 		 .catch((err) => {
-			 return {
+			 return res.status(405).json({
 				 msg: err.message,
 				 err: err
-			 };
+			 });
 		 });
 });
-
-router.post('/test', (req, res) => {
-	getMenu()
-		.then(menu => {
-			res.json({ data: menu });
-		})
-})
 
 function getMenu() {
 	return new Promise(resolve => {

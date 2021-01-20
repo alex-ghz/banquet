@@ -35,9 +35,10 @@ class Login extends React.Component {
 				 setCurrentUser(user);
 			 })
 			 .catch((err) => {
-				 console.log('on error');
-				 console.log(err);
-			 })
+				 this.setState({
+					 err: err.response.data.msg
+				 });
+			 });
 	}
 
 	render() {
@@ -73,6 +74,11 @@ class Login extends React.Component {
 							<div className="signin-btn sb_sofia" onClick={ this.handleSubmit }>
 								Sign In
 							</div>
+							{
+								!!this.state.err ?
+									<div className="privacy_policy errMsg">{ this.state.err }</div>
+									: null
+							}
 							<p className="privacy_policy medium_sofia">By continuing you agree to our <span
 								className="pp_color">T&amp;Cs.</span> You can also have a look at our <span
 								className="pp_color">Privacy Policy.</span></p>
