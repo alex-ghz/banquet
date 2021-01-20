@@ -71,7 +71,7 @@ class Login extends React.Component {
 								   className="password_login medium_sofia" placeholder="Password"
 								   name="password"/>
 							<div className="signin-btn sb_sofia" onClick={ this.handleSubmit }>
-								Sign Up
+								Sign In
 							</div>
 							<p className="privacy_policy medium_sofia">By continuing you agree to our <span
 								className="pp_color">T&amp;Cs.</span> You can also have a look at our <span
