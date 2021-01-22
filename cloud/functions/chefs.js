@@ -1,21 +1,70 @@
-Parse.Cloud.define('getChefs', (request) => {
+Parse.Cloud.define('getChefs', async (request) => {
 	const { location, delivery, pickup } = request.params;
+	let chefs = [];
 
-	const chefsThatOfferDelivery = new Parse.Query("Chef");
-	chefsThatOfferDelivery.equalTo("delivery", delivery);
+	if ( delivery === false && pickup === false ) {
+		return chefs;
+	}
 
-	const chefsAvailableForPickup = new Parse.Query("Chef");
-	chefsAvailableForPickup.equalTo("pickup", pickup);
+	if ( delivery && !!location === false ) {
+		return chefs;
+	}
 
-	const mainQuery = Parse.Query.or(chefsThatOfferDelivery, chefsAvailableForPickup);
+	if ( delivery === true && pickup === true ) {
 
-	mainQuery.find()
-			 .then(chefs => {
+		const chefsThatOfferDelivery = new Parse.Query("Chef");
+		chefsThatOfferDelivery.equalTo("delivery", true);
 
-			 })
-			 .catch(err => {
+		const chefsAvailableForPickup = new Parse.Query("Chef");
+		chefsAvailableForPickup.equalTo("pickup", true);
 
-			 });
+		const ChefsQuery = Parse.Query.or(chefsThatOfferDelivery, chefsAvailableForPickup);
+
+		chefs.push(...await ChefsQuery.find());
+	} else {
+		const ChefsQuery = new Parse.Query("Chef");
+
+		if ( delivery && delivery === true ) {
+			ChefsQuery.equalTo("delivery", true);
+		}
+
+		if ( pickup && pickup === true ) {
+			ChefsQuery.equalTo("pickup", true);
+		}
+
+		chefs.push(...await ChefsQuery.find());
+	}
+
+	return chefs.filter(chef => {
+
+		if ( pickup && delivery === false ) {
+			return true;
+		}
+
+		if ( chef.attributes.delivery === false ) {
+			return true;
+		}
+
+		if ( !!chef.attributes.deliveryRadius === false ) {
+			return false;
+		}
+
+		if ( !!chef.attributes.location === false ) {
+			return false;
+		}
+
+		const lat1 = location.lat || 0,
+			lon1 = location.lon || 0,
+			lat2 = chef.attributes.location.latitude,
+			lon2 = chef.attributes.location.longitude;
+
+		if ( chef.attributes.deliveryRadius < getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) ) {
+			return false;
+		}
+
+		return true;
+	});
+
 });
 
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
