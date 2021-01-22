@@ -43,6 +43,7 @@ const parse = new ParseServer({
 	javascriptKey: process.env.JAVASCRIPT_KEY || "NOT USED",
 	masterKey: process.env.MASTER_KEY || 'master', //Add your master key here. Keep it secret!
 	serverURL: process.env.SERVER_URL || 'http://localhost:5000/parse',  // Don't forget to change to https if needed
+	cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
 	liveQuery: {
 		classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
 	},
@@ -89,8 +90,8 @@ app.use('/settings', settingsRouter);
 app.use('/menu', menuRouter);
 app.use('/profile', profileRouter);
 app.use('/parse', parse);
-
 app.use('/dashboard', dashboard);
+
 if ( process.env.NODE_ENV === 'production' ) {
 	app.use(express.static(path.join(__dirname, 'client/build')));
 	app.get('*', (req, res) => {

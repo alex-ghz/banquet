@@ -16,7 +16,7 @@ const Reviews = () => (
 				Reviews
 			</div>
 			<div className="flex_reviews">
-				<ReviewCard/>
+				{/*<ReviewCard/>*/}
 			</div>
 		</div>
 	</div>
