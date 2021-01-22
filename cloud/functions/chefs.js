@@ -37,14 +37,6 @@ Parse.Cloud.define('getChefs', async (request) => {
 
 	return chefs.filter(chef => {
 
-		if ( pickup && delivery === false ) {
-			return true;
-		}
-
-		if ( chef.attributes.delivery === false ) {
-			return true;
-		}
-
 		if ( !!chef.attributes.deliveryRadius === false ) {
 			return false;
 		}
@@ -63,7 +55,15 @@ Parse.Cloud.define('getChefs', async (request) => {
 		}
 
 		if ( getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) < 16 ) {
-			return false;
+			return true;
+		}
+
+		if ( chef.attributes.delivery === false ) {
+			return true;
+		}
+
+		if ( pickup && delivery === false ) {
+			return true;
 		}
 
 		return true;
