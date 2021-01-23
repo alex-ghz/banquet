@@ -157,4 +157,17 @@ function sendGeneratedUser(user, res) {
 			 });
 }
 
+router.post('/test', (req, res) => {
+	const { location, delivery, pickup } = req.body;
+
+	Parse.Cloud.run('createOrder', {
+		location: location,
+		delivery: delivery,
+		pickup: pickup
+	})
+		.then(result => {
+			res.json({result: result});
+		})
+});
+
 module.exports = router;

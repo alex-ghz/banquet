@@ -54,8 +54,8 @@ Parse.Cloud.define('getChefs', async (request) => {
 			return false;
 		}
 
-		if ( getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) < 16 ) {
-			return true;
+		if ( getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) > 16 ) {
+			return false;
 		}
 
 		if ( chef.attributes.delivery === false ) {

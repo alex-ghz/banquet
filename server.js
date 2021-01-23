@@ -14,6 +14,7 @@ const apiRouter = require('./routes/api');
 const settingsRouter = require('./routes/settings');
 const menuRouter = require('./routes/menu');
 const profileRouter = require('./routes/profile');
+const ordersRouter = require('./routes/orders');
 
 var app = express();
 const port = process.env.PORT || 5000;
@@ -27,7 +28,7 @@ app.use(fileUpload());
 
 const databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
-if (!databaseUri) {
+if ( !databaseUri ) {
 	console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
@@ -78,8 +79,8 @@ const dashboard = new ParseDashboard({
 	],
 	"users": [
 		{
-			"user":"admin",
-			"pass":"lzsmkm"
+			"user": "admin",
+			"pass": "lzsmkm"
 		}
 	],
 	"trustProxy": 1
@@ -89,6 +90,7 @@ app.use('/api', apiRouter);
 app.use('/settings', settingsRouter);
 app.use('/menu', menuRouter);
 app.use('/profile', profileRouter);
+app.use('/orders', ordersRouter);
 app.use('/parse', parse);
 app.use('/dashboard', dashboard);
 
