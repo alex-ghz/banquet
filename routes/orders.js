@@ -3,27 +3,27 @@ const router = express.Router();
 
 router.put('/acceptOrder', (req, res) => {
 	let { orderNo, chefId } = req.body;
-	changeOrderStatus(chefId, orderNo, "inProgress", res);
+	changeOrderStatusWrapper(chefId, orderNo, "inProgress", res);
 });
 
 router.put('/declineOrder', (req, res) => {
 	let { orderNo, chefId } = req.body;
-	changeOrderStatus(chefId, orderNo, "canceled", res);
+	changeOrderStatusWrapper(chefId, orderNo, "canceled", res);
 });
 
 router.put('/delivering', (req, res) => {
 	let { orderNo, chefId } = req.body;
-	changeOrderStatus(chefId, orderNo, "delivering", res);
+	changeOrderStatusWrapper(chefId, orderNo, "delivering", res);
 });
 
 router.put('/pickupReady', (req, res) => {
 	let { orderNo, chefId } = req.body;
-	changeOrderStatus(chefId, orderNo, "pickupReady", res);
+	changeOrderStatusWrapper(chefId, orderNo, "pickupReady", res);
 });
 
 router.put('/complete', (req, res) => {
 	let { orderNo, chefId } = req.body;
-	changeOrderStatus(chefId, orderNo, "complete", res);
+	changeOrderStatusWrapper(chefId, orderNo, "complete", res);
 });
 
 router.get('/details', (req, res) => {
@@ -112,42 +112,59 @@ router.get('/items', (req, res) => {
 			 })
 });
 
-function changeOrderStatus(chefId, orderNo, newStatus, res) {
-	if ( !!orderNo === false && !!chefId === false ) {
-		return res.status(400).json({ err: "Missing parameters" });
-	}
+function changeOrderStatusWrapper(chefId, orderNo, newStatus, res) {
+	changeOrderStatus(chefId, orderNo, newStatus)
+		.then(order => {
+			res.status(200).json({ msg: "ok" });
 
-	const Chef = Parse.Object.extend("Chef");
-	const queryChef = new Parse.Query(Chef);
+			notifyClient(order)
+				.then(response => {
+					console.log(response);
+				});
+		})
+		.catch(err => {
+			return res.status(400).json({ err: err });
+		});
+}
 
-	queryChef.get(chefId)
-			 .then(chef => {
-				 const Order = Parse.Object.extend("Order");
-				 const queryOrder = new Parse.Query(Order);
+function changeOrderStatus(chefId, orderNo, newStatus) {
+	return new Promise((resolve, reject) => {
+		if ( !!orderNo === false && !!chefId === false ) {
+			reject("Missing parameters");
+		}
 
-				 queryOrder.equalTo("chef", chef);
-				 queryOrder.equalTo("orderNo", orderNo);
+		const Chef = Parse.Object.extend("Chef");
+		const queryChef = new Parse.Query(Chef);
 
-				 queryOrder.find()
-						   .then(orders => orders[0])
-						   .then(order => {
-							   order.set("status", newStatus);
+		queryChef.get(chefId)
+				 .then(chef => {
+					 const Order = Parse.Object.extend("Order");
+					 const queryOrder = new Parse.Query(Order);
 
-							   order.save()
-									.then(() => {
-										return res.status(200).json({ msg: "ok" });
-									})
-									.catch(() => {
-										return res.status(500).json({ err: "Something went wrong at updating order" });
-									})
-						   })
-						   .catch(err => {
-							   return res.status(400).json({ err: "No order found with these params" });
-						   })
-			 })
-			 .catch(err => {
-				 return res.status(400).json({ err: "No chef found with this id" });
-			 })
+					 queryOrder.equalTo("chef", chef);
+					 queryOrder.equalTo("orderNo", orderNo);
+
+					 queryOrder.find()
+							   .then(orders => orders[0])
+							   .then(order => {
+								   order.set("status", newStatus);
+
+								   order.save()
+										.then(() => {
+											resolve(order);
+										})
+										.catch(() => {
+											reject("Something went wrong at updating order");
+										})
+							   })
+							   .catch(err => {
+								   reject("No order found with these params");
+							   })
+				 })
+				 .catch(err => {
+					 reject("No chef found with this id");
+				 });
+	});
 }
 
 const groupBy = (xs, key) => {
@@ -254,19 +271,19 @@ function notifyClient(order) {
 
 		queryUser.equalTo("client", order.get("client"));
 
-		console.log(order.get("client"))
-
 		queryUser.find()
 				 .then(users => users[0])
 				 .then(user => {
-					 console.log(user)
 					 const Session = Parse.Object.extend("_Session");
 					 const querySession = new Parse.Query(Session);
+
+					 querySession.equalTo("user", user);
 					 querySession.descending("createdAt");
 
 					 querySession.find({ useMasterKey: true })
 								 .then(sessions => sessions[0])
 								 .then(session => {
+
 									 const pushQuery = new Parse.Query(Parse.Installation);
 									 pushQuery.equalTo("installationId", session.get("installationId"));
 
@@ -274,10 +291,14 @@ function notifyClient(order) {
 											  where: pushQuery,
 											  data: {
 												  alert: {
-													  "title": "Push title",
-													  "body": "Push body"
+													  "title": "Banquet",
+													  "body": getNotificationMessage(order.get("status"))
 												  },
 												  sound: "default",
+												  custom: {
+													  orderId: order.id,
+													  newState: order.get("status")
+												  }
 											  }
 										  }, { useMasterKey: true })
 										  .then(result => {
@@ -290,12 +311,29 @@ function notifyClient(order) {
 								 })
 								 .catch(err => {
 									 resolve(err);
-								 })
+								 });
 				 })
 				 .catch(err => {
 					 resolve(err);
-				 })
+				 });
 	});
+}
+
+function getNotificationMessage(orderStatus) {
+	switch ( orderStatus ) {
+		case 'inProgress':
+			return 'The chef has started preparing your order';
+		case 'delivering':
+			return 'Your order is ready and out for delivery';
+		case 'pickupReady':
+			return 'Your order is ready for pickup';
+		case 'complete':
+			return 'Your order is complete. Enjoy!';
+		case 'canceled':
+			return 'Your order has been cancelled';
+		default:
+			return '';
+	}
 }
 
 
@@ -310,7 +348,6 @@ router.post('/test', (req, res) => {
 	queryOrder.find()
 			  .then(results => results[0])
 			  .then(result => {
-				  // console.log(result)
 				  notifyClient(result)
 					  .then(result => {
 						  res.json({ data: result })
