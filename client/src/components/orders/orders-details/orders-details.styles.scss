@@ -99,8 +99,21 @@
 }
 
 .order_panel_detail {
-  display: flex;
-  justify-content: space-between;
+  border-bottom: 1px solid #98A7AF;
+  position: relative;
+  margin: 15px 0 15px 0;
+}
+
+.order_panel_detail::after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 110px;
+  border: 1px solid white;
+}
+
+.order_panel_product_name {
+  width: 75%;
 }
 
 .order_panel_category {
@@ -111,16 +124,15 @@
 .product_qty {
   font-size: 16pt;
   text-align: right;
+  margin: 0 0 0 45px;
 }
 
 .order_panel_detail_right {
   display: flex;
-  justify-content: space-between;
-  text-align: left;
-  width: 85%;
-  padding: 55px 0 18px 0;
-  font-size: 16pt;
-  border-bottom: 1px solid #98A7AF;
+    justify-content: space-between;
+    width: 100%;
+    padding: 35px 0 18px 0;
+    font-size: 16pt;
 }
 
 .order_panel_total {
