@@ -273,10 +273,11 @@ function notifyClient(order) {
 									 Parse.Push.send({
 											  where: pushQuery,
 											  data: {
-												  alert: "New Ticket Added",
+												  alert: {
+													  "title": "Push title",
+													  "body": "Push body"
+												  },
 												  sound: "default",
-												  "content-available": 1,
-												  push_type: "background"
 											  }
 										  }, { useMasterKey: true })
 										  .then(result => {
