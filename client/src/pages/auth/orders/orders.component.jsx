@@ -16,6 +16,10 @@ const OrdersSectionSpinner = WithSpinner(OrdersSection);
 class Orders extends React.Component {
 
 	componentDidMount() {
+		this.updateSection()
+	}
+
+	updateSection = () => {
 		let { fetchOrdersStart, fetchOrdersStartAsync, isFetching, chefId } = this.props;
 
 		if ( !isFetching ) {
@@ -30,7 +34,7 @@ class Orders extends React.Component {
 
 		return (
 			<div>
-				<OrdersSectionSpinner isLoading={ !isLoading }/>
+				<OrdersSectionSpinner isLoading={ !isLoading } reupdate={this.updateSection}/>
 			</div>
 		);
 	}

@@ -1,6 +1,86 @@
 const express = require('express');
 const router = express.Router();
 
+router.put('/acceptOrder', (req, res) => {
+	let { orderNo, chefId } = req.body;
+	changeOrderStatus(chefId, orderNo, "inProgress", res);
+});
+
+router.put('/declineOrder', (req, res) => {
+	let { orderNo, chefId } = req.body;
+	changeOrderStatus(chefId, orderNo, "canceled", res);
+});
+
+router.put('/delivering', (req, res) => {
+	let { orderNo, chefId } = req.body;
+	changeOrderStatus(chefId, orderNo, "delivering", res);
+});
+
+router.put('/pickupReady', (req, res) => {
+	let { orderNo, chefId } = req.body;
+	changeOrderStatus(chefId, orderNo, "pickupReady", res);
+});
+
+router.put('/complete', (req, res) => {
+	let { orderNo, chefId } = req.body;
+	changeOrderStatus(chefId, orderNo, "complete", res);
+});
+
+router.get('/details', (req, res) => {
+	const { orderNo } = req.query;
+
+	if ( !!orderNo === false ) {
+		return res.status(400).json({ err: "No order number provided" });
+	}
+
+	const Order = Parse.Object.extend("Order");
+	const queryOrder = new Parse.Query(Order);
+
+	queryOrder.equalTo("orderNo", parseInt(orderNo, 10));
+
+	queryOrder.find()
+			  .then(results => results[0])
+			  .then(order => {
+				  getAddress(order.get("address"))
+					  .then(address => {
+						  getClient(order.get("client"))
+							  .then(client => {
+								  getDishes(order.get("items"))
+									  .then(dishes => {
+										  Promise.all(dishes)
+												 .then(dishes => {
+													 return res.status(200).json({
+														 data: {
+															 orderType: order.get("delivery") ? "DELIVERY" : "PICKUP",
+															 placedAt: order.get("createdAt"),
+															 deliveryTo: address,
+															 customerNote: order.get("notes"),
+															 customerInfo: client,
+															 status: order.get("status"),
+															 itemsRaw: order.get("items"),
+															 dishes: groupBy(dishes, "category")
+														 }
+													 });
+												 })
+									  })
+									  .catch(err => {
+										  return res.status(500).json({ err: "Err at dishes search" });
+									  })
+							  })
+							  .catch(err => {
+								  return res.status(500).json({ err: "Client could not be found" });
+							  })
+					  })
+					  .catch(err => {
+						  return res.status(500).json({ err: "Address of the order was not found" });
+					  })
+			  })
+			  .catch(err => {
+				  return res.status(400).json({ err: "Something went wrong went searching for the order" });
+			  })
+
+});
+
 router.get('/items', (req, res) => {
 	const { chefId } = req.query;
 
@@ -21,7 +101,7 @@ router.get('/items', (req, res) => {
 				 queryOrder.find()
 						   .then(orders => {
 							   let groupedOrdersByStatus = groupBy(orders.map(order => order.attributes), 'status');
-							   res.status(200).json({orders: groupedOrdersByStatus})
+							   res.status(200).json({ orders: groupedOrdersByStatus })
 						   })
 						   .catch(err => {
 							   return res.json(400).json({ err: "Something went wrong at orders search" });
@@ -32,11 +112,158 @@ router.get('/items', (req, res) => {
 			 })
 });
 
+function changeOrderStatus(chefId, orderNo, newStatus, res) {
+	if ( !!orderNo === false && !!chefId === false ) {
+		return res.status(400).json({ err: "Missing parameters" });
+	}
+
+	const Chef = Parse.Object.extend("Chef");
+	const queryChef = new Parse.Query(Chef);
+
+	queryChef.get(chefId)
+			 .then(chef => {
+				 const Order = Parse.Object.extend("Order");
+				 const queryOrder = new Parse.Query(Order);
+
+				 queryOrder.equalTo("chef", chef);
+				 queryOrder.equalTo("orderNo", orderNo);
+
+				 queryOrder.find()
+						   .then(orders => orders[0])
+						   .then(order => {
+							   order.set("status", newStatus);
+
+							   order.save()
+									.then(() => {
+										return res.status(200).json({ msg: "ok" });
+									})
+									.catch(() => {
+										return res.status(500).json({ err: "Something went wrong at updating order" });
+									})
+						   })
+						   .catch(err => {
+							   return res.status(400).json({ err: "No order found with these params" });
+						   })
+			 })
+			 .catch(err => {
+				 return res.status(400).json({ err: "No chef found with this id" });
+			 })
+}
+
 const groupBy = (xs, key) => {
 	return xs.reduce(function (rv, x) {
 		(rv[x[key]] = rv[x[key]] || []).push(x);
 		return rv;
 	}, {});
 };
+
+function getAddress(address) {
+	return new Promise((resolve, reject) => {
+		const Address = Parse.Object.extend("Address");
+		const queryAddress = new Parse.Query(Address);
+
+		queryAddress.equalTo("objectId", address.id);
+
+		queryAddress.find()
+					.then(results => {
+						if ( results.length === 0 ) {
+							return [].push(null);
+						}
+
+						return results;
+					})
+					.then(results => results[0])
+					.then(address => resolve(address))
+					.catch(err => reject(err));
+	});
+}
+
+function getClient(client) {
+	return new Promise((resolve, reject) => {
+		const Client = Parse.Object.extend("Client");
+		const queryClient = new Parse.Query(Client);
+
+		queryClient.equalTo("objectId", client.id);
+
+		queryClient.find()
+				   .then(results => results[0])
+				   .then(client => resolve({
+					   name: !!client.get("name") ? client.get("name") : '',
+					   phoneNo: !!client.get("phoneNo") ? client.get("phoneNo") : ''
+				   }))
+				   .catch(err => reject(err));
+	});
+}
+
+function getDishes(dishesIds) {
+	return new Promise((resolve, reject) => {
+		const Dish = Parse.Object.extend("Dish");
+		const queryDish = new Parse.Query(Dish);
+		const occ = countOccurencies(dishesIds);
+
+		queryDish.containedIn("objectId", dishesIds);
+
+		queryDish.find()
+				 .then(dishes => resolve(dishes.map(dish => {
+					 return getCategory(dish.get("category"))
+						 .then(category => {
+							 return {
+								 name: dish.get("name"),
+								 price: dish.get("price"),
+								 category: category,
+								 qty: occ[dish.id]
+							 }
+						 })
+						 .catch(err => reject(err));
+				 })))
+				 .catch(err => reject(err));
+	});
+}
+
+function getCategory(category) {
+	return new Promise((resolve, reject) => {
+		const MenuCategory = Parse.Object.extend("MenuCategory");
+		const queryMenuCategory = new Parse.Query(MenuCategory);
+
+		queryMenuCategory.equalTo("objectId", category.id);
+
+		queryMenuCategory.find()
+						 .then(results => results[0])
+						 .then(category => resolve(category.get("name")))
+						 .catch(err => reject(err));
+	});
+}
+
+function countOccurencies(arr) {
+	let occ = [];
+
+	arr.forEach(elem => {
+		if ( !!occ[elem] === false ) {
+			occ[elem] = 0;
+		}
+		occ[elem]++;
+	});
+
+	return occ;
+}
+
+function notifyClient(order) {
+	const User = Parse.Object.extend("User");
+	const queryUser = new Parse.Query(User);
+
+	queryUser.equalTo("client", order.get("client"));
+
+	queryUser.find()
+		.then(user => {
+			const Session = Parse.Object.extend("")
+		})
+		.catch(err => {
+			console.log(err);
+		})
+}
+
+router.get('/test', (req, res) => {
+	notifyClient('ad');
+});
 
 module.exports = router;
