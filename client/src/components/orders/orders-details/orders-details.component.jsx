@@ -272,13 +272,28 @@ class OrdersDetails extends React.Component {
 										<div className="order_panel_product_name">Dish Name</div>
 										<div className="order_panel_product_price">£0.00</div>
 									</div>
+									<div className="order_panel_detail_right medium_sofia">
+										<p className="product_qty medium_sofia">0 x</p>
+										<div className="order_panel_product_name">Dish Name</div>
+										<div className="order_panel_product_price">£0.00</div>
+									</div>
+									<div className="order_panel_detail_right medium_sofia">
+										<p className="product_qty medium_sofia">0 x</p>
+										<div className="order_panel_product_name">Dish Name</div>
+										<div className="order_panel_product_price">£0.00</div>
+									</div>
 								</div>
 								<div className="order_panel_detail">
 									<div className="order_panel_detail_left">
 										<div className="order_panel_category sb_sofia">SIDES</div>
-										<p className="product_qty medium_sofia">0 x</p>
 									</div>
 									<div className="order_panel_detail_right medium_sofia">
+										<p className="product_qty medium_sofia">0 x</p>
+										<div className="order_panel_product_name">Dish Name</div>
+										<div className="order_panel_product_price">£0.00</div>
+									</div>
+									<div className="order_panel_detail_right medium_sofia">
+										<p className="product_qty medium_sofia">0 x</p>
 										<div className="order_panel_product_name">Dish Name</div>
 										<div className="order_panel_product_price">£0.00</div>
 									</div>
