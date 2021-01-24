@@ -248,22 +248,74 @@ function countOccurencies(arr) {
 }
 
 function notifyClient(order) {
-	const User = Parse.Object.extend("User");
-	const queryUser = new Parse.Query(User);
+	return new Promise(resolve => {
+		const User = Parse.Object.extend("User");
+		const queryUser = new Parse.Query(User);
 
-	queryUser.equalTo("client", order.get("client"));
+		queryUser.equalTo("client", order.get("client"));
 
-	queryUser.find()
-		.then(user => {
-			const Session = Parse.Object.extend("")
-		})
-		.catch(err => {
-			console.log(err);
-		})
+		console.log(order.get("client"))
+
+		queryUser.find()
+				 .then(users => users[0])
+				 .then(user => {
+					 console.log(user)
+					 const Session = Parse.Object.extend("_Session");
+					 const querySession = new Parse.Query(Session);
+					 querySession.descending("createdAt");
+
+					 querySession.find({ useMasterKey: true })
+								 .then(sessions => sessions[0])
+								 .then(session => {
+									 const pushQuery = new Parse.Query(Parse.Installation);
+									 pushQuery.equalTo("installationId", session.get("installationId"));
+
+									 Parse.Push.send({
+											  where: pushQuery,
+											  data: {
+												  alert: "New Ticket Added",
+												  sound: "default",
+												  "content-available": 1,
+												  push_type: "background"
+											  }
+										  }, { useMasterKey: true })
+										  .then(result => {
+											  resolve(result);
+										  })
+										  .catch(err => {
+											  resolve(err);
+										  })
+
+								 })
+								 .catch(err => {
+									 resolve(err);
+								 })
+				 })
+				 .catch(err => {
+					 resolve(err);
+				 })
+	});
 }
 
-router.get('/test', (req, res) => {
-	notifyClient('ad');
+
+router.post('/test', (req, res) => {
+	const { orderId } = req.body;
+
+	const Order = Parse.Object.extend("Order");
+	const queryOrder = new Parse.Query(Order);
+
+	queryOrder.equalTo("objectId", orderId);
+
+	queryOrder.find()
+			  .then(results => results[0])
+			  .then(result => {
+				  // console.log(result)
+				  notifyClient(result)
+					  .then(result => {
+						  res.json({ data: result })
+
+					  })
+			  })
 });
 
 module.exports = router;

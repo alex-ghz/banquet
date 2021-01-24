@@ -35,7 +35,7 @@ if ( !databaseUri ) {
 // Database
 Parse = require('parse/node');
 Parse.serverURL = process.env.SERVER_URL || 'http://localhost:5000/parse'; // This is your Server URL
-Parse.initialize(process.env.APP_ID || 'app', process.env.JAVASCRIPT_KEY || "NOT USED");
+Parse.initialize(process.env.APP_ID || 'app', process.env.JAVASCRIPT_KEY || "NOT USED", process.env.MASTER_KEY || "Not used");
 
 const parse = new ParseServer({
 	databaseURI: databaseUri || 'mongodb+srv://test:test@cluster0.mtjj2.mongodb.net/Chef?retryWrites=true&w=majority',
@@ -51,12 +51,12 @@ const parse = new ParseServer({
 	push: {
 		ios: [
 			{
-				pfx: 'stagingDevelopment.p12', // Dev PFX or P12
+				pfx: 'banquetStaging.p12', // Dev PFX or P12
 				bundleId: process.env.BUNDLE_ID || '',
 				production: false // Dev
 			},
 			{
-				pfx: 'stagingDistribution.p12', // Prod PFX or P12
+				pfx: 'banquetProd.p12', // Prod PFX or P12
 				bundleId: process.env.BUNDLE_ID || '',
 				production: true // Prod
 			}
