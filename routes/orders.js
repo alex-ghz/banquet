@@ -290,6 +290,7 @@ function notifyClient(order) {
 									 Parse.Push.send({
 											  where: pushQuery,
 											  data: {
+												  push_type: "background",
 												  "content-available": 1,
 												  custom: {
 													  orderId: order.id,
