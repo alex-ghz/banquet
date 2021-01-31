@@ -145,7 +145,6 @@ class SettingsVerification extends React.Component {
 
 	render() {
 		let chefSettings = this.props.chefSettings;
-		console.log(chefSettings);
 
 		return (
 			<div className="settings_verification_inner">
