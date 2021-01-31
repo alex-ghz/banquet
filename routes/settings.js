@@ -110,9 +110,107 @@ router.post('/chef', (req, res) => {
 					 });
 });
 
-function getFileExtension(fileName) {
-	let arr = fileName.split('.');
-	return arr[arr.length - 1];
+router.post('/acceptingOrders', async (req, res) => {
+	const { chefId, newValue } = req.body;
+
+	if ( !!chefId === false || newValue === undefined ) {
+		return res.status(400).json({ err: "Invalid parameters." });
+	}
+
+	const Chef = Parse.Object.extend("Chef");
+	const queryChef = new Parse.Query(Chef);
+
+	queryChef.get(chefId)
+			 .then(chef => {
+			 	if ( newValue === false ) {
+					chef.set("online", false);
+					chef.save()
+						.then(chef => {
+							return res.status(200).json({ chef: chef });
+						})
+						.catch(err => {
+							return res.status(500).json({ err: "Error at toggling option." })
+						});
+				} else {
+					checkChefSettingsForAcceptingOrders(chef.get("settings"))
+						.then(() => {
+							if ( !!chef.get("activated") === false || chef.get("activated") === false ) {
+								return res.status(400).json({ err: "Your account was not activated" });
+							}
+
+							checkChefDishes(chef)
+								.then(count => {
+									if ( count === 0 ) {
+										return res.status(400).json({ err: "No dish available for pickup/delivery" });
+									}
+
+									chef.set("online", true);
+
+									chef.save()
+										.then(chef => {
+											return res.status(200).json({ chef: chef });
+										})
+										.catch(err => {
+											return res.status(500).json({ err: "Error at toggling option." })
+										});
+
+								})
+								.catch(err => {
+									return res.status(400).json({ err: err });
+								})
+						})
+						.catch(err => {
+							return res.status(400).json({ err: err });
+						});
+				}
+			 })
+			 .catch(err => {
+				 return res.status(400).json({ err: "Chef not found in db." });
+			 });
+});
+
+function checkChefSettingsForAcceptingOrders(chefSettings) {
+	return new Promise((resolve, reject) => {
+		const ChefSettings = Parse.Object.extend("ChefSettings");
+		const queryChefSettings = new Parse.Query(ChefSettings);
+
+		queryChefSettings.get(chefSettings.id)
+						 .then(settings => {
+							 if ( settings.get("copy_of_id_status") !== 'verified' ) {
+								 reject("Copy of id is not added/verified.");
+							 }
+							 if ( settings.get("food_hygeine_certificate_status") !== 'verified' ) {
+								 reject("Copy of food hygiene is not added/verified.");
+							 }
+							 if ( settings.get("food_license_status") !== 'verified' ) {
+								 reject("Food license is not added/verified.");
+							 }
+
+							 resolve();
+						 })
+						 .catch(err => {
+							 reject("Settings not found");
+						 })
+	});
+}
+
+function checkChefDishes(chef) {
+	return new Promise((resolve, reject) => {
+		const Dish = Parse.Object.extend("Dish");
+		const queryDish = new Parse.Query(Dish);
+
+		queryDish.equalTo("chef", chef);
+
+		queryDish.find()
+				 .then(dishes => {
+					 resolve(dishes.filter(dish => {
+						 return dish.get("available");
+					 }).length);
+				 })
+				 .catch(err => {
+					 reject(err);
+				 });
+	});
 }
 
 module.exports = router;

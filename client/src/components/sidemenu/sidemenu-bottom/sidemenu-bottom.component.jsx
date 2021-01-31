@@ -1,33 +1,60 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import axios from "axios";
 
 import './sidemenu-bottom.styles.scss';
 
-import { selectUserId } from "../../../redux/user/user.selectors";
+import { selectUserId, selectChefAcceptingOrders, selectChefId } from "../../../redux/user/user.selectors";
+import { setChef } from "../../../redux/user/user.actions";
 import { createStructuredSelector } from "reselect";
+import Swal from "sweetalert2";
 
 class SideMenuBottom extends React.Component {
 
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			acceptingOrders: false
+		}
+
 		this.handleLogout = this.handleLogout.bind(this);
+		this.handleToggle = this.handleToggle.bind(this);
+	}
+
+	componentDidMount() {
+		this.setState({
+			acceptingOrders: this.props.acceptingOrders
+		})
 	}
 
 	handleLogout() {
 		localStorage.clear();
 		window.location.href = '/';
+	}
 
-		// const { userId } = this.props;
-		//
-		// axios.post('/api/logout', {
-		// 	userId: userId
-		// }).then(result => {
-		// 	console.log(result);
-		//
-		// 	localStorage.clear();
-		// 	window.location.href = '/';
-		// })
+	handleToggle() {
+		let newValue = !this.state.acceptingOrders;
+
+		axios.post('/settings/acceptingOrders', {
+				 chefId: this.props.chefId,
+				 newValue: newValue
+			 })
+			 .then(response => response.data)
+			 .then(data => data.chef)
+			 .then(chef => {
+				 this.props.setChef(chef);
+				 this.setState({
+					 acceptingOrders: newValue
+				 });
+			 })
+			 .catch(err => {
+				 Swal.fire({
+					 icon: 'error',
+					 title: 'Oops...',
+					 text: err.response.data.err,
+				 });
+			 });
 	}
 
 	render() {
@@ -39,8 +66,10 @@ class SideMenuBottom extends React.Component {
 						Accepting orders
 					</div>
 					<label className="switch">
-						<input type="checkbox"/>
-						<span className="slider slider_sidemen round"/>
+						<input type="checkbox"
+							   checked={ this.state.acceptingOrders }
+							   onChange={ this.handleToggle }/>
+						<span className="slider_menu round"/>
 					</label>
 				</div>
 				<div className="log-out-side sb_sofia" onClick={ this.handleLogout }>
@@ -52,7 +81,13 @@ class SideMenuBottom extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-	userId: selectUserId
+	userId: selectUserId,
+	acceptingOrders: selectChefAcceptingOrders,
+	chefId: selectChefId
 });
 
-export default connect(mapStateToProps)(SideMenuBottom);
+const mapDispatchToProps = dispatch => ({
+	setChef: chef => dispatch(setChef(chef))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SideMenuBottom);

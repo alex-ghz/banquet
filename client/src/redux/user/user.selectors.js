@@ -47,3 +47,9 @@ export const selectChefName = createSelector(
 	user => user.currentUser.chef.name
 );
 
+export const selectChefAcceptingOrders = createSelector(
+	[selectUser],
+	user => user.currentUser.chef.online
+);
+
+
