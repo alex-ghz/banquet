@@ -1,45 +1,11 @@
 Parse.Cloud.define('getChefs', async (request) => {
-	const { location, delivery, pickup } = request.params;
+	const { location } = request.params;
 	let chefs = [];
+	const ChefsQuery = new Parse.Query("Chef");
 
-	if ( delivery === false && pickup === false ) {
-		return chefs;
-	}
-
-	if ( delivery && !!location === false ) {
-		return chefs;
-	}
-
-	if ( delivery === true && pickup === true ) {
-
-		const chefsThatOfferDelivery = new Parse.Query("Chef");
-		chefsThatOfferDelivery.equalTo("delivery", true);
-
-		const chefsAvailableForPickup = new Parse.Query("Chef");
-		chefsAvailableForPickup.equalTo("pickup", true);
-
-		const ChefsQuery = Parse.Query.or(chefsThatOfferDelivery, chefsAvailableForPickup);
-
-		chefs.push(...await ChefsQuery.find());
-	} else {
-		const ChefsQuery = new Parse.Query("Chef");
-
-		if ( delivery && delivery === true ) {
-			ChefsQuery.equalTo("delivery", true);
-		}
-
-		if ( pickup && pickup === true ) {
-			ChefsQuery.equalTo("pickup", true);
-		}
-
-		chefs.push(...await ChefsQuery.find());
-	}
+	chefs.push(...await ChefsQuery.find());
 
 	return chefs.filter(chef => {
-
-		if ( !!chef.attributes.deliveryRadius === false ) {
-			return false;
-		}
 
 		if ( !!chef.attributes.location === false ) {
 			return false;
@@ -50,20 +16,8 @@ Parse.Cloud.define('getChefs', async (request) => {
 			lat2 = chef.attributes.location.latitude,
 			lon2 = chef.attributes.location.longitude;
 
-		if ( chef.attributes.deliveryRadius < getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) * 1.6 ) {
-			return false;
-		}
-
 		if ( getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) > 16 ) {
 			return false;
-		}
-
-		if ( chef.attributes.delivery === false ) {
-			return true;
-		}
-
-		if ( pickup && delivery === false ) {
-			return true;
 		}
 
 		return true;
