@@ -207,7 +207,7 @@ class SettingsVerification extends React.Component {
 						COPY OF ID
 						<div className='file_upload'>
 							{
-								this.state.file2 ?
+								this.state.file3 ?
 									<div>
 										<div className="save_btn_profile bold_sofia" onClick={ this.onUploadFile3 }>Save
 											changes
@@ -216,8 +216,8 @@ class SettingsVerification extends React.Component {
 									:
 									<div className="container_button">
 										<label className="save_btn_profile save_label bold_sofia"
-											   htmlFor="file2">Upload</label>
-										<input type="file" id="file2" className="file2"
+											   htmlFor="file3">Upload</label>
+										<input type="file" id="file3" className="file2"
 											   onChange={ this.onFileChange3 }/>
 									</div>
 							}
