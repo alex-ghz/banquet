@@ -61,7 +61,15 @@ router.post('/login', (req, res) => {
 
 	Parse.User.logIn(email, password)
 		 .then((user) => {
-			 sendGeneratedUser({ user: user }, res);
+		 	const hasClientAccount = !!user.get("client");
+
+		 	if ( !hasClientAccount ) {
+				sendGeneratedUser({ user: user }, res);
+			} else {
+		 		return res.status(400).json({
+					msg: "Cannot login with client credentials"
+				});
+			}
 		 })
 		 .catch((err) => {
 			 return res.status(405).json({
