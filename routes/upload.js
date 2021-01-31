@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+const FileType = require('file-type');
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
@@ -20,8 +21,15 @@ router.post('/image', async (req, res) => {
 			return res.status(400).json({ err: err });
 		}
 
-		const name = uuidv4();
+		const acceptedFileTypes = ['jpg', 'png'];
+
 		const { image } = req.files;
+		const type = await FileType.fromBuffer(image.data);
+		const name = uuidv4() + type.ext;
+
+		if ( !acceptedFileTypes.includes(type.ext) ) {
+			return res.status(400).json({err: "Please upload a valid image. (.jpg/png)"});
+		}
 
 		const uploadParams = {
 			Bucket: process.env.AWS_BUCKET_NAME,

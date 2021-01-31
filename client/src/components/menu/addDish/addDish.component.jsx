@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import { FaCamera, FaPoundSign } from "react-icons/all";
 import { createStructuredSelector } from "reselect";
 
+
 import './addDish.styles.scss';
 
 import { selectChefId, selectCurrentUserMenuId } from "../../../redux/user/user.selectors";
 import { selectActiveCategory, selectSelectedCategory } from "../../../redux/menu/menu.selectors";
 import { fetchCollectionStartAsync } from "../../../redux/menu/menu.actions";
+import Swal from "sweetalert2";
 
 class AddDish extends React.Component {
 
@@ -58,6 +60,7 @@ class AddDish extends React.Component {
 
 	handleImageUpload(event) {
 		this.setState({
+			previousUrl: this.state.imageUrl,
 			imageUrl: URL.createObjectURL(event.target.files[0]),
 			image: event.target.files[0]
 		}, () => {
@@ -77,8 +80,16 @@ class AddDish extends React.Component {
 						 });
 					 })
 					 .catch(err => {
-						 console.log('err');
-						 console.log(err);
+						 this.setState({
+							 imageUrl: this.state.previousUrl,
+							 imageFile: null
+						 });
+
+						 Swal.fire({
+							 icon: 'error',
+							 title: 'Oops...',
+							 text: err.response.data.err,
+						 });
 					 });
 			}, 500);
 		});

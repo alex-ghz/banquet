@@ -3,6 +3,7 @@ import { FaCamera } from "react-icons/all";
 import { connect } from 'react-redux';
 import { createStructuredSelector } from "reselect";
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 import './profile-image.styles.scss';
 
@@ -33,6 +34,7 @@ class ProfileImage extends React.Component {
 
 	handleProfileImgUpload(event) {
 		this.setState({
+			previousUrl: this.state.profileImg,
 			profileImg: URL.createObjectURL(event.target.files[0]),
 			imageFile: event.target.files[0]
 		}, () => {
@@ -48,7 +50,8 @@ class ProfileImage extends React.Component {
 					 .then(data => data.url)
 					 .then(url => {
 					 	this.setState({
-							profileImg: url
+							profileImg: url,
+							imageFile: null
 						}, () => {
 					 		//@TODO update chef client
 							this.props.handleChange("image", {
@@ -57,8 +60,16 @@ class ProfileImage extends React.Component {
 						});
 					 })
 					 .catch(err => {
-						 console.log('err');
-						 console.log(err);
+					 	this.setState({
+							profileImg: this.state.previousUrl,
+							imageFile: null
+						});
+
+						 Swal.fire({
+							 icon: 'error',
+							 title: 'Oops...',
+							 text: err.response.data.err,
+						 });
 					 });
 			}, 300);
 
