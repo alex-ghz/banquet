@@ -52,17 +52,19 @@ class SettingsVerification extends React.Component {
 
 		setChefSettings({
 			...this.props.chefSettings,
-			[`${this.state.map[file]}_status`]: 'submitted'
+			[`${ this.state.map[file] }_status`]: 'submitted',
+			[`${ this.state.map[file] }_date`]: new Date()
 		});
 
 		axios.post('setChefFile', {
-			settingsId: settingsId,
-			file: this.state.map[file],
-			fileUrl: fileUrl
-		})
-			.then(response => {
-				console.log(response);
-			})
+				 settingsId: settingsId,
+				 file: this.state.map[file],
+				 data: new Date(),
+				 fileUrl: fileUrl
+			 })
+			 .then(response => {
+				 console.log(response);
+			 })
 	}
 
 	onUploadFile1 = () => this.onUploadFile('file1');
@@ -128,8 +130,22 @@ class SettingsVerification extends React.Component {
 		}
 	}
 
+	getDate = (date) => {
+		if ( !!date === false ) {
+			return null;
+		}
+
+		date = new Date(date);
+		const day = (date.getDate() < 10 ? '0' : '') + date.getDate(),
+			month = (date.getMonth() < 10 ? '0' : '') + (date.getMonth() + 1),
+			yead = date.getFullYear();
+
+		return day + ' / ' + month + ' / ' + yead;
+	}
+
 	render() {
 		let chefSettings = this.props.chefSettings;
+		console.log(chefSettings);
 
 		return (
 			<div className="settings_verification_inner">
@@ -165,7 +181,8 @@ class SettingsVerification extends React.Component {
 						<div className="settings_certificate_status_type medium_sofia">
 							{ this.getStatus(chefSettings.food_license_status) }
 							<br/>
-							<span className="settings_cerficiate_status_date medium_sofia">06 / 06 /2019</span>
+							<span
+								className="settings_cerficiate_status_date medium_sofia">{ this.getDate(chefSettings.food_license_date) }</span>
 						</div>
 					</div>
 					{ this.getStatusIcon(chefSettings.food_license_status) }
@@ -197,7 +214,8 @@ class SettingsVerification extends React.Component {
 						<div className="settings_certificate_status_type medium_sofia">
 							{ this.getStatus(chefSettings.food_hygeine_certificate_status) }
 							<br/>
-							<span className="settings_cerficiate_status_date medium_sofia">06 / 06 /2019</span>
+							<span
+								className="settings_cerficiate_status_date medium_sofia">{ this.getDate(chefSettings.food_hygeine_certificate_date) }</span>
 						</div>
 					</div>
 					{ this.getStatusIcon(chefSettings.food_hygeine_certificate_status) }
@@ -229,7 +247,8 @@ class SettingsVerification extends React.Component {
 						<div className="settings_certificate_status_type medium_sofia">
 							{ this.getStatus(chefSettings.copy_of_id_status) }
 							<br/>
-							<span className="settings_cerficiate_status_date medium_sofia">06 / 06 /2019</span>
+							<span
+								className="settings_cerficiate_status_date medium_sofia">{ this.getDate(chefSettings.copy_of_id_date) }</span>
 						</div>
 					</div>
 					{ this.getStatusIcon(chefSettings.copy_of_id_status) }

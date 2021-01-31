@@ -61,7 +61,7 @@ router.post('/addPayment', (req, res) => {
 });
 
 router.post('/setChefFile', (req, res) => {
-	let { settingsId, file, fileUrl } = req.body;
+	let { settingsId, file, fileUrl, data } = req.body;
 
 	const ChefSettings = Parse.Object.extend("ChefSettings");
 	const queryChefSettings = new Parse.Query(ChefSettings);
@@ -73,6 +73,7 @@ router.post('/setChefFile', (req, res) => {
 					 .then(result => {
 
 						 result.set(`${ file }_status`, 'submitted');
+						 result.set(`${ file }_date`, data);
 						 result.set(file, fileUrl);
 
 						 result.save()
