@@ -1,73 +1,46 @@
 const express = require('express');
 const router = express.Router();
 
-const aws = require('aws-sdk');
-const multerS3 = require('multer-s3');
 const multer = require('multer');
-const path = require('path');
+const { v4: uuidv4 } = require('uuid');
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 
-const s3 = new aws.S3({
-	accessKeyId: 'AKIAUUI4QUDGM4O2L4HP',
-	secretAccessKey: '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',
-	Bucket: 'banqueteatsphotos'
+const s3 = new S3Client({
+	credentials: {
+		accessKeyId: process.env.AWS_ACCESS_KEY,
+		secretAccessKey: process.env.AWS_SECRET_KEY,
+	},
+	region: process.env.AWS_BUCKET_REGION
 });
+const upload = multer({ storage: multer.memoryStorage() });
 
-const profileImgUpload = multer({
-	storage: multerS3({
-		s3: s3,
-		bucket: 'banqueteatsphotos',
-		acl: 'public-read',
-		key: function (req, file, cb) {
-			cb(null, path.basename(file.originalname, path.extname(file.originalname)) + '-' + Date.now() + path.extname(file.originalname));
-		}
-	}),
-	limits: { fileSize: 2000000 },
-	fileFilter: function (req, file, cb) {
-		checkFileType(file, cb);
-	}
-}).single('profileImage');
-
-function checkFileType(file, cb) {
-	// Allowed ext
-	const filetypes = /jpeg|jpg|png|gif/;
-	// Check ext
-	const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-	// Check mime
-	const mimetype = filetypes.test(file.mimetype);
-	if ( mimetype && extname ) {
-		return cb(null, true);
-	} else {
-		cb('Error: Images Only!');
-	}
-}
-
-router.post('/file', profileImgUpload,(req, res) => {
-	profileImgUpload(req, res, (err) => {
-		console.log('err: ');
-		console.log(err);
-
-		console.log(req.files)
-		console.log(req.file)
-
+router.post('/image', async (req, res) => {
+	upload.single('image')(req, res, async (err) => {
 		if ( err ) {
-			console.log('err found');
-		} else {
-			// If File not found
-			if( req.file === undefined ){
-				console.log( 'Error: No File Selected!' );
-				res.json( 'Error: No File Selected' );
-			} else {
-				// If Success
-				const imageName = req.file.key;
-				const imageLocation = req.file.location;
-				console.log(req.file);
-				res.json( {
-					image: imageName,
-					location: imageLocation
-				} );
-			}
+			return res.status(400).json({ err: err });
 		}
-	})
+
+		const name = uuidv4();
+		const { image } = req.files;
+
+		const uploadParams = {
+			Bucket: process.env.AWS_BUCKET_NAME,
+			Key: name,
+			Body: image.data,
+			ACL: 'public-read',
+		};
+
+		try {
+			await s3.send(new PutObjectCommand(uploadParams));
+			res.status(200).json({
+				file: name,
+				url: `https://${ process.env.AWS_BUCKET_NAME }.s3.eu-west-2.amazonaws.com/${ name }`
+			})
+		} catch ( err ) {
+			console.log("s3 err", err);
+			res.status(500).json({ err: err });
+		}
+	});
 });
 
 module.exports = router;

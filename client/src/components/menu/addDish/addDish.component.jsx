@@ -60,6 +60,27 @@ class AddDish extends React.Component {
 		this.setState({
 			imageUrl: URL.createObjectURL(event.target.files[0]),
 			image: event.target.files[0]
+		}, () => {
+			setTimeout(() => {
+				const image = this.state.image;
+				const form = new FormData();
+
+				form.append('image', image, image.name);
+
+				axios.post('/upload/image', form, { headers: { 'Content-Type': 'multipart/form-data' } })
+					 .then(result => result.data)
+					 .then(data => data.url)
+					 .then(url => {
+						 this.setState({
+							 imageUrl: url,
+							 image: null
+						 });
+					 })
+					 .catch(err => {
+						 console.log('err');
+						 console.log(err);
+					 });
+			}, 500);
 		});
 	}
 
@@ -85,13 +106,7 @@ class AddDish extends React.Component {
 	handleSaveDish() {
 		const formData = new FormData();
 
-		if ( this.state.image !== null ) {
-			formData.append("fileAdded", "true");
-			formData.append("file", this.state.image);
-		} else {
-			formData.append("fileAdded", "false");
-		}
-
+		formData.append("file", this.state.imageUrl);
 		formData.append("dishId", this.state.objectId)
 		formData.append("name", this.state.name);
 		formData.append("price", this.state.price);
@@ -138,20 +153,6 @@ class AddDish extends React.Component {
 							<input name="name" type="text" defaultValue={ this.state.name } onChange={ this.handleInputChange }
 								   className="popup_item_name sb_sofia"/>
 						</div>
-						{/*<div className="item_products_details_popup">*/ }
-						{/*	<div className="item_price_popup medium_sofia">ITEM PRICE*/ }
-						{/*		<input name="price" type="text" defaultValue="" onChange={ this.handleInputChange }*/ }
-						{/*			   className="popup_item_price sb_sofia"/>*/ }
-						{/*	</div>*/ }
-						{/*	<div className="item_price_time medium_sofia">AVERAGE PREP TIME*/ }
-						{/*		<input placeholder="" name="avgTime" type="text" defaultValue="" className="popup_item_time sb_sofia"/>*/ }
-						{/*	</div>*/ }
-						{/*</div>*/ }
-						{/*<div className="item_number_popup">*/ }
-						{/*	<p className="item_name_popup medium_sofia">NUMBER OF ITEM AVAILABLE</p>*/ }
-						{/*	<input placeholder="" name="qty" type="text" defaultValue="" className="popup_item_number sb_sofia"/>*/ }
-						{/*</div>*/ }
-
 						<div className="item_description_popup medium_sofia">ITEM PRICE (<FaPoundSign/>)
 							<input name="price" type="text" defaultValue={ this.state.price } onChange={ this.handleInputChange }
 								   className="popup_item_price sb_sofia"/>
@@ -162,71 +163,12 @@ class AddDish extends React.Component {
 								   onChange={ this.handleInputChange }
 								   className="popup_item_description sb_sofia"/>
 						</div>
-						{/*<div className="item_category_popup">*/ }
-						{/*	<p className="item_category_title_popup medium_sofia">CATEGORY</p>*/ }
-						{/*	<input placeholder="" type="text" defaultValue="" className="popup_category_name sb_sofia"/>*/ }
-						{/*	<FaSearch className="search_icon"/>*/ }
-						{/*	<div className="available_category bold_sofia">Organic</div>*/ }
-						{/*	<div className="selected_categories">*/ }
-						{/*		<div className="selected_category bold_sofia">Caribbean*/ }
-						{/*			<FaSearch className="x_btn_category"/>*/ }
-						{/*		</div>*/ }
-						{/*		<div className="selected_category bold_sofia">Local produce*/ }
-						{/*			<FaTimes className="x_btn_category"/>*/ }
-						{/*		</div>*/ }
-						{/*	</div>*/ }
-						{/*</div>*/ }
 						<div className="item_allergen_popup">
 							<div className="item_allergen_tile medium_sofia">ALLERGEN INFO</div>
 							<div className="item_allergens_list">
 								<input placeholder="" name="allergen" type="text" defaultValue={ this.state.allergen }
 									   onChange={ this.handleInputChange }
 									   className="popup_item_description sb_sofia"/>
-								{/*<div className="item_allergen medium_sofia">*/ }
-								{/*	<p className="item_allergen_name">Celery</p>*/ }
-								{/*</div>*/ }
-								{/*<div className="item_allergen medium_sofia">*/ }
-								{/*	<p className="item_allergen_name">Crustacean</p>*/ }
-								{/*</div>*/ }
-								{/*<div className="item_allergen medium_sofia">*/ }
-								{/*	<p className="item_allergen_name">Egg</p>*/ }
-								{/*</div>*/ }
-								{/*<div className="item_allergen medium_sofia">*/ }
-								{/*	<p className="item_allergen_name">Fish</p>*/ }
-								{/*</div>*/ }
-								{/*<div className="item_allergen medium_sofia">*/ }
-								{/*	<p className="item_allergen_name">Lupin</p>*/ }
-								{/*</div>*/ }
-								{/*<div className="item_allergen medium_sofia">*/ }
-								{/*	<p className="item_allergen_name">Peanuts</p>*/ }
-								{/*</div>*/ }
-								{/*<div className="item_allergen medium_sofia">*/ }
-								{/*	<p className="item_allergen_name">Molluscs</p>*/ }
-								{/*</div>*/ }
-								{/*<div className="item_allergen medium_sofia">*/ }
-								{/*	<p className="item_allergen_name">Dairy</p>*/ }
-								{/*</div>*/ }
-								{/*<div className="item_allergen medium_sofia">*/ }
-								{/*	<p className="item_allergen_name">Soya</p>*/ }
-								{/*</div>*/ }
-								{/*<div className="item_allergen medium_sofia">*/ }
-								{/*	<p className="item_allergen_name">Mustard</p>*/ }
-								{/*</div>*/ }
-								{/*<div className="item_allergen medium_sofia">*/ }
-								{/*	<p className="item_allergen_name">Tree nuts</p>*/ }
-								{/*</div>*/ }
-								{/*<div className="item_allergen medium_sofia">*/ }
-								{/*	<p className="item_allergen_name">Sulphur dioxide</p>*/ }
-								{/*</div>*/ }
-								{/*<div className="item_allergen medium_sofia">*/ }
-								{/*	<p className="item_allergen_name">Sesame</p>*/ }
-								{/*</div>*/ }
-								{/*<div className="item_allergen medium_sofia">*/ }
-								{/*	<p className="item_allergen_name">Wheat</p>*/ }
-								{/*</div>*/ }
-								{/*<div className="item_allergen medium_sofia">*/ }
-								{/*	<p className="item_allergen_name">Gluten</p>*/ }
-								{/*</div>*/ }
 							</div>
 						</div>
 						<div className="popup_add_save_btn medium_sofia" onClick={ this.handleSaveDish }>Save</div>

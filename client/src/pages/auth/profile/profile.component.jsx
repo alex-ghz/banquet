@@ -24,7 +24,7 @@ class Profile extends React.Component {
 
 		this.state = {
 			image: {
-				file: null
+				url: null
 			},
 			description: {
 				description: ""
@@ -80,13 +80,7 @@ class Profile extends React.Component {
 		const settings = this.state;
 		const formData = new FormData();
 
-		if ( !!settings.image.file ) {
-			formData.append("file", settings.image.file);
-			formData.append("fileAdded", JSON.stringify(true));
-		} else {
-			formData.append("fileAdded", JSON.stringify(false));
-		}
-
+		formData.append("image", settings.image.url);
 		formData.append("description", settings.description.description);
 		formData.append("delivery", JSON.stringify(settings.delivery));
 		formData.append("categories", JSON.stringify(settings.categories));

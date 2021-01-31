@@ -1,20 +1,40 @@
 const express = require('express');
 const router = express.Router();
 
-router.post('/uploadFile', (req, res) => {
-	const userFile = req.files.file;
-	const userFileName = Date.now() + '.' + getFileExtension(userFile.name);
+const { v4: uuidv4 } = require('uuid');
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 
-	const data = Array.from(Buffer.from(userFile.data, 'binary'));
-	const parseFile = new Parse.File(userFileName, data);
+const s3 = new S3Client({
+	credentials: {
+		accessKeyId: process.env.AWS_ACCESS_KEY,
+		secretAccessKey: process.env.AWS_SECRET_KEY,
+	},
+	region: process.env.AWS_BUCKET_REGION
+});
 
-	parseFile.save()
-			 .then(result => {
-				 res.status(200).json({ fileUrl: result.url() });
-			 })
-			 .catch(err => {
-				 res.json({ err: true, message: "File corrupted", error: err });
-			 });
+router.post('/uploadFile', async (req, res) => {
+	const name = uuidv4();
+	const { file } = req.files;
+
+	if ( !!file === false ) {
+		return;
+	}
+
+	const uploadParams = {
+		Bucket: process.env.AWS_BUCKET_NAME,
+		Key: name,
+		Body: file.data,
+		ACL: '',
+	};
+
+	try {
+		await s3.send(new PutObjectCommand(uploadParams));
+		res.status(200).json({
+			fileUrl: `https://${ process.env.AWS_BUCKET_NAME }.s3.eu-west-2.amazonaws.com/${ name }`
+		})
+	} catch ( err ) {
+		res.status(500).json({ err: err });
+	}
 
 });
 

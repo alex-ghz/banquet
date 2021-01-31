@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from "reselect";
-import { FaChevronDown, FaChevronUp, FaPlus, FaTrash } from "react-icons/all";
+import { FaPlus, FaTrash } from "react-icons/all";
 import axios from "axios";
 
 import './edit-categories.styles.scss';

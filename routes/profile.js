@@ -2,33 +2,27 @@ const express = require('express');
 const router = express.Router();
 
 router.post('/update', (req, res) => {
-	const { fileAdded, chefId } = req.body;
+	const { chefId } = req.body;
 
 	const Chef = Parse.Object.extend("Chef");
 	const queryChef = new Parse.Query(Chef);
 
 	queryChef.get(chefId)
 			 .then(chef => {
-				 if ( fileAdded === 'true' ) {
-					 saveChefPhoto(req.files.file)
-						 .then(photoUrl => {
-							 chef.set("profilePhotoURL", photoUrl);
-							 saveChefDetails(chef, req.body, () => {
-								 chef.save()
-									 .then(result => {
-										 res.json({ newChef: result.attributes });
-									 })
-							 });
+				 saveChefDetails(chef, req.body, () => {
+					 chef.save()
+						 .then(result => {
+							 res.json({ newChef: result.attributes });
+						 })
+						 .catch(err => {
+						 	return res.status(400).json({err: "Error at saving details. Please retry."});
 						 });
-				 } else {
-					 saveChefDetails(chef, req.body, () => {
-						 chef.save()
-							 .then(result => {
-								 res.json({ newChef: result.attributes });
-							 })
-					 });
-				 }
-			 });
+				 });
+			 })
+		.catch(err => {
+			console.log(err);
+			return res.status(400).json({err: "Error at saving details. Please retry."});
+		})
 });
 
 router.post('/updatePopup', (req, res) => {
@@ -83,7 +77,9 @@ function saveChefPhoto(file) {
 }
 
 function saveChefDetails(chef, body, cb) {
+	console.log(body);
 	const {
+		image,
 		description,
 		delivery,
 		categories,
@@ -94,6 +90,10 @@ function saveChefDetails(chef, body, cb) {
 
 	const deliveryObject = JSON.parse(delivery);
 
+	if ( image !== 'undefined' ) {
+		chef.set("profilePhotoURL", image);
+	}
+
 	chef.set("deliveryRadius", deliveryObject.deliveryRadius);
 	chef.set("deliveryCost", deliveryObject.deliveryCost);
 	chef.set("pickupInstructions", deliveryObject.pickupInstructions)
@@ -101,13 +101,15 @@ function saveChefDetails(chef, body, cb) {
 	chef.set("pickup", deliveryObject.pickup);
 	chef.set("address", deliveryObject.address);
 
-	const point = new Parse.GeoPoint({
-		latitude: deliveryObject.postcode.latitude,
-		longitude: deliveryObject.postcode.longitude
-	});
+	if ( deliveryObject.postcode !== '' ) {
+		const point = new Parse.GeoPoint({
+			latitude: deliveryObject.postcode.latitude,
+			longitude: deliveryObject.postcode.longitude
+		});
 
-	chef.set("location", point);
-	chef.set("postcode", deliveryObject.postcode.value);
+		chef.set("location", point);
+		chef.set("postcode", deliveryObject.postcode.value);
+	}
 
 	cb();
 }

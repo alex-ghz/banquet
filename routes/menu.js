@@ -97,33 +97,15 @@ router.post('/addDish', (req, res) => {
 });
 
 addDish = (req, res) => {
-	const { fileAdded } = req.body;
-
-	if ( fileAdded === 'true' ) {
-		saveImage(req.files.file)
-			.then(photoUrl => {
-				saveDish(req, res, photoUrl);
-			});
-	} else {
-		saveDish(req, res);
-	}
+	saveDish(req, res);
 }
 
 editDish = (req, res) => {
-	const { fileAdded } = req.body;
-
-	if ( fileAdded === 'true' ) {
-		saveImage(req.files.file)
-			.then(photoUrl => {
-				saveEditedDish(req, res, photoUrl);
-			});
-	} else {
-		saveEditedDish(req, res);
-	}
+	saveEditedDish(req, res);
 }
 
-function saveEditedDish(req, res, photoUrl = null) {
-	const { name, price, allergen, description, dishId } = req.body;
+function saveEditedDish(req, res) {
+	const { name, price, allergen, description, dishId, file } = req.body;
 
 	const Dish = Parse.Object.extend("Dish");
 	const dishQuery = new Parse.Query(Dish);
@@ -134,10 +116,7 @@ function saveEditedDish(req, res, photoUrl = null) {
 				 dish.set("name", name);
 				 dish.set("allergens", allergen);
 				 dish.set("description", description);
-
-				 if ( photoUrl !== null ) {
-					 dish.set("imgURL", photoUrl);
-				 }
+				 dish.set("imgURL", file);
 
 				 dish.save()
 					 .then(updatedDish => {
@@ -146,8 +125,8 @@ function saveEditedDish(req, res, photoUrl = null) {
 			 });
 }
 
-function saveDish(req, res, photoUrl = null) {
-	const { name, price, allergen, description, chefId, categoryId } = req.body;
+function saveDish(req, res) {
+	const { name, price, allergen, description, chefId, categoryId, file } = req.body;
 
 	const Chef = Parse.Object.extend("Chef");
 	const queryChef = new Parse.Query(Chef);
@@ -169,10 +148,7 @@ function saveDish(req, res, photoUrl = null) {
 								  dish.set("allergens", allergen);
 								  dish.set("description", description);
 								  dish.set("category", category);
-
-								  if ( photoUrl !== null ) {
-									  dish.set("imgURL", photoUrl);
-								  }
+								  dish.set("imgURL", file);
 
 								  dish.save()
 									  .then(newDish => {
