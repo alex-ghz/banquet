@@ -36,3 +36,14 @@ export const selectUserId = createSelector(
 	[selectUser],
 	(user) => user.currentUser.user.objectId
 );
+
+export const selectUserEmail = createSelector(
+	[selectUser],
+	user => user.currentUser.user.email
+);
+
+export const selectChefName = createSelector(
+	[selectUser],
+	user => user.currentUser.chef.name
+);
+

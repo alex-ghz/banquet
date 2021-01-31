@@ -5,7 +5,7 @@ import { createStructuredSelector } from "reselect";
 
 import './App.css';
 
-import { selectCurrentUser } from './redux/user/user.selectors';
+import { selectCurrentUser, selectUserEmail, selectChefId, selectChefName } from './redux/user/user.selectors';
 
 import SideMenu from "./components/sidemenu/sidemenu/sidemenu.component";
 
@@ -29,6 +29,24 @@ import Privacy from "./pages/noAuth/privacy/privacy.component";
 class App extends React.Component {
 
 	render() {
+		const { currentUser } = this.props;
+
+		if ( !!currentUser ) {
+			let chefId = currentUser.user.objectId,
+				chefEmail = currentUser.user.email,
+				chefName = currentUser.chef.name;
+
+			window.Intercom('boot', {
+				email: chefEmail,
+				user_id: chefId,
+				name: chefName
+			});
+		} else {
+			window.Intercom('update', {
+				"hide_default_launcher": true
+			});
+		}
+
 		return (
 			<div>
 				{
@@ -69,7 +87,10 @@ class App extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-	currentUser: selectCurrentUser
+	currentUser: selectCurrentUser,
+	// chefId: selectChefId,
+	// chefEmail: selectUserEmail,
+	// chefName: selectChefName
 });
 
 export default connect(mapStateToProps)(App);

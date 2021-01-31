@@ -37,11 +37,11 @@ class Settings extends React.Component {
 				id: 'settingsPayment',
 				title: 'Payment',
 				type: 'payment'
-			},
-			{
-				id: 'settingsHelp',
-				title: 'Help',
-				type: 'help'
+			// },
+			// {
+			// 	id: 'settingsHelp',
+			// 	title: 'Help',
+			// 	type: 'help'
 			}
 		];
 
@@ -60,7 +60,7 @@ class Settings extends React.Component {
 					<Route path={ `${ match.path }/verification` } component={ SettingsVerification }/>
 					<Route path={ `${ match.path }/notifications` } component={ SettingsNotifications }/>
 					<Route path={ `${ match.path }/payment` } component={ SettingsPayment }/>
-					<Route path={ `${ match.path }/help` } component={ SettingsHelp }/>
+					{/*<Route path={ `${ match.path }/help` } component={ SettingsHelp }/>*/}
 					<Route path={ `${ match.path }/feedback` } component={ SettingsFeedback }/>
 				</div>
 			</div>
