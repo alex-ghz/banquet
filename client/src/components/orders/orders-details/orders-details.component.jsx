@@ -21,6 +21,8 @@ class OrdersDetails extends React.Component {
 		customerInfo: '',
 		order: null,
 		status: "",
+		taxes: null,
+		total: 0,
 		showActions: false
 	}
 
@@ -42,6 +44,8 @@ class OrdersDetails extends React.Component {
 			customerInfo: 'Name: ' + order.customerInfo.name + '; Phone number: ' + order.customerInfo.phoneNo,
 			order: order.dishes,
 			status: order.status,
+			taxes: order.taxes,
+			total: order.total,
 			showActions: true
 		});
 	}
@@ -200,6 +204,7 @@ class OrdersDetails extends React.Component {
 	}
 
 	render() {
+		console.log(this.state.order);
 
 		return (
 			<div>
@@ -263,43 +268,46 @@ class OrdersDetails extends React.Component {
 								<div className="order_details_third_title medium_sofia">
 									ORDER DETAILS
 								</div>
-								<div className="order_panel_detail">
-									<div className="order_panel_detail_left">
-										<div className="order_panel_category sb_sofia">MAINS</div>
+								{
+									Object.keys(this.state.order).map(key => (
+										<div className="order_panel_detail" key={ key }>
+											<div className="order_panel_detail_left">
+												<div
+													className="order_panel_category sb_sofia">{ key.toUpperCase() }</div>
+											</div>
+											{
+												this.state.order[key].map(dish => (
+													<div className="order_panel_detail_right medium_sofia"
+														 key={ dish.name }>
+														<p className="product_qty medium_sofia">{ dish.qty } x</p>
+														<div className="order_panel_product_name">{ dish.name }</div>
+														<div className="order_panel_product_price">£{ dish.price }</div>
+													</div>
+												))
+											}
+										</div>
+									))
+								}
+								<div className="container_taxes">
+									<div className="taxes medium_sofia">
+										SERVICE FEE <span
+										className="order_total_price bold_sofia">£{ this.state.taxes.serviceFee }</span>
 									</div>
-									<div className="order_panel_detail_right medium_sofia">
-										<p className="product_qty medium_sofia">0 x</p>
-										<div className="order_panel_product_name">Dish Name</div>
-										<div className="order_panel_product_price">£0.00</div>
+									<div className="taxes medium_sofia">
+										SUBTOTAL <span
+										className="order_total_price bold_sofia">£{ this.state.taxes.subtotal }</span>
 									</div>
-									<div className="order_panel_detail_right medium_sofia">
-										<p className="product_qty medium_sofia">0 x</p>
-										<div className="order_panel_product_name">Dish Name</div>
-										<div className="order_panel_product_price">£0.00</div>
-									</div>
-									<div className="order_panel_detail_right medium_sofia">
-										<p className="product_qty medium_sofia">0 x</p>
-										<div className="order_panel_product_name">Dish Name</div>
-										<div className="order_panel_product_price">£0.00</div>
-									</div>
-								</div>
-								<div className="order_panel_detail">
-									<div className="order_panel_detail_left">
-										<div className="order_panel_category sb_sofia">SIDES</div>
-									</div>
-									<div className="order_panel_detail_right medium_sofia">
-										<p className="product_qty medium_sofia">0 x</p>
-										<div className="order_panel_product_name">Dish Name</div>
-										<div className="order_panel_product_price">£0.00</div>
-									</div>
-									<div className="order_panel_detail_right medium_sofia">
-										<p className="product_qty medium_sofia">0 x</p>
-										<div className="order_panel_product_name">Dish Name</div>
-										<div className="order_panel_product_price">£0.00</div>
-									</div>
+									{
+										this.state.orderType === 'DELIVERY' ?
+											<div className="taxes medium_sofia">
+												DELIVERY FEE <span
+												className="order_total_price bold_sofia">£{ this.state.taxes.deliveryFee }</span>
+											</div>
+											: null
+									}
 								</div>
 								<div className="order_panel_total medium_sofia">
-									ORDER TOTAL <span className="order_total_price bold_sofia">£0.00</span>
+									ORDER TOTAL <span className="order_total_price bold_sofia">£{this.state.total}</span>
 								</div>
 							</div>
 							: null

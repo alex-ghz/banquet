@@ -57,6 +57,12 @@ router.get('/details', (req, res) => {
 															 customerNote: order.get("notes"),
 															 customerInfo: client,
 															 status: order.get("status"),
+															 total: order.get("total"),
+															 taxes: {
+																 serviceFee: order.get("serviceFee"),
+																 subtotal: order.get("subtotal"),
+																 deliveryFee: order.get("deliveryFee")
+															 },
 															 itemsRaw: order.get("items"),
 															 dishes: groupBy(dishes, "category")
 														 }
