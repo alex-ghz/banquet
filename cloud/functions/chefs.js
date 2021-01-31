@@ -7,6 +7,10 @@ Parse.Cloud.define('getChefs', async (request) => {
 
 	return chefs.filter(chef => {
 
+		if ( !!chef.attributes.activated === false || chef.attributes.activated === false ) {
+			return false;
+		}
+
 		if ( !!chef.attributes.location === false ) {
 			return false;
 		}
