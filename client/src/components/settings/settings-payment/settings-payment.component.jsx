@@ -33,6 +33,14 @@ class SettingsPayment extends React.Component {
 			return;
 		}
 
+		console.log(JSON.parse(chefSettings.payment))
+
+		const account = JSON.parse(chefSettings.payment);
+
+		if ( account.accountHolder === '' || account.sortCode === '' || account.accountNumber === '' ) {
+			return;
+		}
+
 		this.setState({
 			...JSON.parse(chefSettings.payment),
 			accountSaved: true
@@ -62,9 +70,9 @@ class SettingsPayment extends React.Component {
 				 data: JSON.stringify(data)
 			 })
 			 .then(response => {
-			 	this.setState({
-					accountSaved: true
-				});
+				 this.setState({
+					 accountSaved: true
+				 });
 				 setChefSettings({
 					 ...chefSettings,
 					 payment: JSON.stringify(data)
@@ -108,12 +116,12 @@ class SettingsPayment extends React.Component {
 									<div className="settings_payment_right"/>
 								</div>
 								<div className="settings_payment_complex_row_no_border medium_sofia">
-									<div className="settings_payment_left">
-										BANK NAME <br/>
-										<span className="settings_payment_text regular_sofia">
-                                    		BANK NAME
-                                		</span>
-									</div>
+									{/*<div className="settings_payment_left">*/}
+									{/*	BANK NAME <br/>*/}
+									{/*	<span className="settings_payment_text regular_sofia">*/}
+                                    {/*		BANK NAME*/}
+                                	{/*	</span>*/}
+									{/*</div>*/}
 									<div className="settings_payment_left">
 										STATUS <br/>
 										<span className="settings_payment_text regular_sofia">
@@ -144,7 +152,9 @@ class SettingsPayment extends React.Component {
 											ACCOUNT HOLDER <br/>
 											<span className="settings_payment_text regular_sofia">
                                 		<input type="text" className="new_payment_input medium_sofia"
-											   placeholder="ACCOUNT HOLDER" name="accountHolder" defaultValue={ this.state.accountHolder } onChange={ this.handleChange }/>
+											   placeholder="ACCOUNT HOLDER" name="accountHolder"
+											   defaultValue={ this.state.accountHolder }
+											   onChange={ this.handleChange }/>
                             		</span>
 										</div>
 										<div className="settings_payment_complex_row medium_sofia">
@@ -152,35 +162,40 @@ class SettingsPayment extends React.Component {
 												SORT CODE <br/>
 												<span className="settings_payment_text regular_sofia">
                                     		<input type="text" className="new_payment_input medium_sofia"
-												   placeholder="SORT CODE" name="sortCode" defaultValue={ this.state.sortCode } onChange={ this.handleChange }/>
+												   placeholder="SORT CODE" name="sortCode"
+												   defaultValue={ this.state.sortCode } onChange={ this.handleChange }/>
                                 		</span>
 											</div>
 											<div className="settings_payment_left">
 												ACCOUNT NUMBER <br/>
 												<span className="settings_payment_text regular_sofia">
                                    			<input type="text" className="new_payment_input medium_sofia"
-												   placeholder="ACCOUNT NUMBER" name="accountNumber" defaultValue={ this.state.accountNumber } onChange={ this.handleChange }/>
+												   placeholder="ACCOUNT NUMBER" name="accountNumber"
+												   defaultValue={ this.state.accountNumber }
+												   onChange={ this.handleChange }/>
                                 		</span>
 											</div>
 											<div className="settings_payment_right"/>
 										</div>
 										<div className="settings_payment_complex_row_no_border medium_sofia">
-											<div className="settings_payment_left">
-												BANK NAME <br/>
-												<span className="settings_payment_text regular_sofia">
-                                    		BANK NAME
-                                		</span>
-											</div>
-											<div className="settings_payment_left">
-												STATUS <br/>
-												<span className="settings_payment_text regular_sofia">
-                                    		Pending
-                                		</span>
-											</div>
+										{/*	<div className="settings_payment_left">*/}
+										{/*		BANK NAME <br/>*/}
+										{/*		<span className="settings_payment_text regular_sofia">*/}
+                                    	{/*	BANK NAME*/}
+                                		{/*</span>*/}
+										{/*	</div>*/}
+										{/*	<div className="settings_payment_left">*/}
+										{/*		STATUS <br/>*/}
+										{/*		<span className="settings_payment_text regular_sofia">*/}
+                                    	{/*	Pending*/}
+                                		{/*</span>*/}
+										{/*	</div>*/}
 											<div className="settings_payment_right"/>
 										</div>
 										<div>
-											<div className="settings_payment_add_btn bold_sofia" onClick={ this.handleSave }>Add</div>
+											<div className="settings_payment_add_btn bold_sofia"
+												 onClick={ this.handleSave }>Add
+											</div>
 										</div>
 									</div>
 							}

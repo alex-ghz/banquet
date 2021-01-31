@@ -38,21 +38,11 @@ class Settings extends React.Component {
 				title: 'Payment',
 				type: 'payment'
 			},
-			// {
-			// 	id: 'settingsPrivacy',
-			// 	title: 'Privacy',
-			// 	type: 'privacy'
-			// },
 			{
 				id: 'settingsHelp',
 				title: 'Help',
 				type: 'help'
-			},
-			// {
-			// 	id: 'settingsFeedback',
-			// 	title: 'Feedback',
-			// 	type: 'feedback'
-			// }
+			}
 		];
 
 		return (
