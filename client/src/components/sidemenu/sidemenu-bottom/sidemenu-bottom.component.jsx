@@ -24,7 +24,7 @@ class SideMenuBottom extends React.Component {
 
 	componentDidMount() {
 		this.setState({
-			acceptingOrders: this.props.acceptingOrders
+			acceptingOrders: this.props.acceptingOrders ? this.props.acceptingOrders : false
 		})
 	}
 
