@@ -14,7 +14,7 @@
 
 .main_profile_img {
   width: 218pt;
-  height: 227pt;
+  height: 123pt;
   border-radius: 10px;
   font-size: 20pt;
   color: red;
@@ -22,10 +22,30 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  border: 2px solid #EB445A;
+  overflow: hidden;
 }
 
 .profileImgLogged {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.special {
+  display: flex;
+  align-items: center;
+}
+
+.arrows {
+  font-size: 100px;
+  margin: 0 20px 0 20px;
+}
+
+.profileExample {
+  max-height: 300px;
+}
+
+.first_profile_paragraph {
+  font-size: 20px;
 }

@@ -119,7 +119,7 @@ class ProfileDelivery extends React.Component {
 		return (
 			<div>
 				<div className="profile_section_border">
-					<p className="first_profile_paragraph medium_sofia">DELIVERY / COLLECTION OPTIONS</p>
+					<p className="first_profile_paragraph bold_sofia">DELIVERY / COLLECTION OPTIONS</p>
 					<div className="delivery_collection_div">
 						<AsyncSelect
 							className='postcode-selector'

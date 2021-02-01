@@ -45,7 +45,7 @@ class ProfileDescription extends React.Component {
 		return (
 			<div>
 				<div className="profile_section_border">
-					<p className="first_profile_paragraph medium_sofia">CHEF DESCRIPTION</p>
+					<p className="first_profile_paragraph bold_sofia">CHEF DESCRIPTION</p>
 					<p className="gs_paragraph regular_sofia">This is a chance to tell people who you are, what you’re
 						creating
 						and what you love about it (favourite ingredients to cook with, an especially good dish…) Let

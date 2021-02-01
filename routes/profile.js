@@ -15,14 +15,13 @@ router.post('/update', (req, res) => {
 							 res.json({ newChef: result.attributes });
 						 })
 						 .catch(err => {
-						 	return res.status(400).json({err: "Error at saving details. Please retry."});
+							 return res.status(400).json({ err: "Error at saving details. Please retry." });
 						 });
 				 });
 			 })
-		.catch(err => {
-			console.log(err);
-			return res.status(400).json({err: "Error at saving details. Please retry."});
-		})
+			 .catch(err => {
+				 return res.status(400).json({ err: "Error at saving details. Please retry." });
+			 })
 });
 
 router.post('/updatePopup', (req, res) => {
@@ -77,21 +76,29 @@ function saveChefPhoto(file) {
 }
 
 function saveChefDetails(chef, body, cb) {
-	console.log(body);
 	const {
 		image,
+		profileImage,
 		description,
 		delivery,
 		categories,
 	} = body;
+
+	const negative = [
+		'undefined', 'null'
+	];
 
 	chef.set("description", description);
 	chef.set("cuisineType", JSON.parse(categories));
 
 	const deliveryObject = JSON.parse(delivery);
 
-	if ( image !== 'undefined' ) {
-		chef.set("profilePhotoURL", image);
+	if ( !negative.includes(profileImage) ) {
+		chef.set("profilePhotoURL", profileImage);
+	}
+
+	if ( !negative.includes(image) ) {
+		chef.set("menuImage", image);
 	}
 
 	chef.set("deliveryRadius", deliveryObject.deliveryRadius);
