@@ -37,10 +37,12 @@ class App extends React.Component {
 				chefName = currentUser.chef.name;
 
 			window.Intercom('boot', {
+				app_id: process.env.INTERCOM_KEY,
 				email: chefEmail,
 				user_id: chefId,
 				name: chefName
 			});
+			window.Intercom("update");
 		} else {
 			window.Intercom('update', {
 				"hide_default_launcher": true
