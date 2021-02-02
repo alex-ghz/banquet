@@ -36,9 +36,8 @@ class App extends React.Component {
 				chefEmail = currentUser.user.email,
 				chefName = currentUser.chef.name;
 
-			console.log('intercom', process.env.INTERCOM_KEY);
 			window.Intercom('boot', {
-				app_id: process.env.INTERCOM_KEY,
+				app_id: 'diyaphva',
 				email: chefEmail,
 				user_id: chefId,
 				name: chefName
