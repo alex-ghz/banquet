@@ -8,7 +8,12 @@ import './orders-details.styles.scss';
 
 import { selectOrderDetails, selectSelectedOrderDetail } from "../../../redux/orders/orders.selectors";
 import { selectChefId } from "../../../redux/user/user.selectors";
-import { setActiveSectionOnUpdate, setActiveSection } from "../../../redux/orders/orders.actions";
+import {
+	setActiveSectionOnUpdate,
+	setActiveSection,
+	setActiveDishDetails,
+	fetchOrderDetailsStart, fetchOrderDetailsStartAsync
+} from "../../../redux/orders/orders.actions";
 
 class OrdersDetails extends React.Component {
 
@@ -103,6 +108,7 @@ class OrdersDetails extends React.Component {
 			 .then(response => {
 				 Swal.fire('Client was notified that the food is on his way!');
 				 reupdate();
+				 this.updateDetails(orderNo);
 			 })
 			 .catch(err => {
 				 console.log(err);
@@ -119,6 +125,7 @@ class OrdersDetails extends React.Component {
 			 .then(response => {
 				 Swal.fire('Client was notified that the food is ready to be picked up!');
 				 reupdate();
+				 this.updateDetails(orderNo);
 			 })
 			 .catch(err => {
 				 console.log(err);
@@ -203,8 +210,14 @@ class OrdersDetails extends React.Component {
 		}
 	}
 
+	updateDetails = (orderNo) => {
+		const { setActiveDishDetails, startFetchingOrderDetails, startFetchingOrderDetailsAsync } = this.props;
+		setActiveDishDetails(orderNo);
+		startFetchingOrderDetails();
+		startFetchingOrderDetailsAsync(orderNo);
+	}
+
 	render() {
-		console.log(this.state.order);
 
 		return (
 			<div>
@@ -331,7 +344,10 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-	setSection: section => dispatch(setActiveSection(section))
+	setSection: section => dispatch(setActiveSection(section)),
+	setActiveDishDetails: section => dispatch(setActiveDishDetails(section)),
+	startFetchingOrderDetails: () => dispatch(fetchOrderDetailsStart()),
+	startFetchingOrderDetailsAsync: orderNo => dispatch(fetchOrderDetailsStartAsync(orderNo))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrdersDetails);
