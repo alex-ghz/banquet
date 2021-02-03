@@ -25,10 +25,10 @@ router.post('/image', async (req, res) => {
 
 		const { image } = req.files;
 		const type = await FileType.fromBuffer(image.data);
-		const name = uuidv4() + type.ext;
+		const name = uuidv4() + '.' + type.ext;
 
 		if ( !acceptedFileTypes.includes(type.ext) ) {
-			return res.status(400).json({err: "Please upload a valid image. (.jpg/png)"});
+			return res.status(400).json({ err: "Please upload a valid image. (.jpg/png)" });
 		}
 
 		const uploadParams = {
