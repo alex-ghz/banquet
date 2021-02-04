@@ -33,8 +33,6 @@ class OrdersList extends React.Component {
 				orders: orders,
 				category: category,
 				items: orders[category]
-			}, () => {
-				console.log(this.state);
 			});
 		}
 	}

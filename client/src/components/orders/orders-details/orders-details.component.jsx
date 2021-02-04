@@ -6,13 +6,12 @@ import Swal from 'sweetalert2';
 
 import './orders-details.styles.scss';
 
-import { selectOrderDetails, selectSelectedOrderDetail } from "../../../redux/orders/orders.selectors";
+import { selectOrderDetails, selectSelectedOrderDetail, selectAllOrders } from "../../../redux/orders/orders.selectors";
 import { selectChefId } from "../../../redux/user/user.selectors";
 import {
-	setActiveSectionOnUpdate,
 	setActiveSection,
 	setActiveDishDetails,
-	fetchOrderDetailsStart, fetchOrderDetailsStartAsync
+	fetchOrderDetailsStart, fetchOrderDetailsStartAsync, fetchOrdersSuccess
 } from "../../../redux/orders/orders.actions";
 
 class OrdersDetails extends React.Component {
@@ -33,6 +32,15 @@ class OrdersDetails extends React.Component {
 
 	componentDidMount() {
 		const { order, orderNo } = this.props;
+
+		this.setState({
+			orderNo: orderNo
+		}, () => {
+			this.updateState(order)
+		})
+	}
+
+	updateState = (order) => {
 		const date = new Date(order.placedAt),
 			day = (date.getDate() < 10 ? '0' : '') + date.getDate(),
 			month = (date.getMonth() < 10 ? '0' : '') + (date.getMonth() + 1),
@@ -41,7 +49,6 @@ class OrdersDetails extends React.Component {
 			minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
 
 		this.setState({
-			orderNo: orderNo,
 			orderType: order.orderType,
 			placedAt: day + '/' + month + '/' + yead + ' - ' + hours + ':' + minutes,
 			deliverTo: !!order.deliveryTo ? order.deliveryTo.firstLine + ' ' + order.deliveryTo.secondLine : null,
@@ -105,31 +112,33 @@ class OrdersDetails extends React.Component {
 				 chefId: chefId,
 				 orderNo: orderNo
 			 })
-			 .then(response => {
+			 .then(response => response.data)
+			 .then(data => data.order)
+			 .then(order => {
 				 Swal.fire('Client was notified that the food is on his way!');
-				 reupdate();
-				 this.updateDetails(orderNo);
+				 this.updateState(order);
 			 })
 			 .catch(err => {
 				 console.log(err);
-			 })
+			 });
 	}
 
 	handlePickupReady = () => {
-		const { chefId, orderNo, reupdate } = this.props;
+		const { chefId, orderNo } = this.props;
 
 		axios.put('/orders/pickupReady', {
 				 chefId: chefId,
 				 orderNo: orderNo
 			 })
-			 .then(response => {
+			 .then(response => response.data)
+			 .then(data => data.order)
+			 .then(order => {
 				 Swal.fire('Client was notified that the food is ready to be picked up!');
-				 reupdate();
-				 this.updateDetails(orderNo);
+				 this.updateState(order);
 			 })
 			 .catch(err => {
 				 console.log(err);
-			 })
+			 });
 	}
 
 	handleComplete = () => {
@@ -320,7 +329,8 @@ class OrdersDetails extends React.Component {
 									}
 								</div>
 								<div className="order_panel_total medium_sofia">
-									ORDER TOTAL <span className="order_total_price bold_sofia">£{this.state.total}</span>
+									ORDER TOTAL <span
+									className="order_total_price bold_sofia">£{ this.state.total }</span>
 								</div>
 							</div>
 							: null
@@ -340,13 +350,15 @@ class OrdersDetails extends React.Component {
 const mapStateToProps = createStructuredSelector({
 	order: selectOrderDetails,
 	orderNo: selectSelectedOrderDetail,
-	chefId: selectChefId
+	chefId: selectChefId,
+	orders: selectAllOrders
 });
 
 const mapDispatchToProps = dispatch => ({
 	setSection: section => dispatch(setActiveSection(section)),
 	setActiveDishDetails: section => dispatch(setActiveDishDetails(section)),
 	startFetchingOrderDetails: () => dispatch(fetchOrderDetailsStart()),
+	updateOrders: orders => dispatch(fetchOrdersSuccess(orders)),
 	startFetchingOrderDetailsAsync: orderNo => dispatch(fetchOrderDetailsStartAsync(orderNo))
 });
 

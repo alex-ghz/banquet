@@ -41,51 +41,63 @@ router.get('/details', (req, res) => {
 	queryOrder.find()
 			  .then(results => results[0])
 			  .then(order => {
-				  getAddress(order.get("address"))
-					  .then(address => {
-						  getClient(order.get("client"))
-							  .then(client => {
-								  getDishes(order.get("items"))
-									  .then(dishes => {
-										  Promise.all(dishes)
-												 .then(dishes => {
-													 return res.status(200).json({
-														 data: {
-															 orderType: order.get("delivery") ? "DELIVERY" : "PICKUP",
-															 placedAt: order.get("createdAt"),
-															 deliveryTo: address,
-															 customerNote: order.get("notes"),
-															 customerInfo: client,
-															 status: order.get("status"),
-															 total: order.get("total"),
-															 taxes: {
-																 serviceFee: order.get("serviceFee"),
-																 subtotal: order.get("subtotal"),
-																 deliveryFee: order.get("deliveryFee")
-															 },
-															 itemsRaw: order.get("items"),
-															 dishes: groupBy(dishes, "category")
-														 }
-													 });
-												 })
-									  })
-									  .catch(err => {
-										  return res.status(500).json({ err: "Err at dishes search" });
-									  })
-							  })
-							  .catch(err => {
-								  return res.status(500).json({ err: "Client could not be found" });
-							  })
+				  getFormattedOrder(order)
+					  .then(order => {
+						  return res.status(200).json({
+							  data: order
+						  });
 					  })
 					  .catch(err => {
-						  return res.status(500).json({ err: "Address of the order was not found" });
-					  })
+					  	return res.status(500).json({err: err});
+					  });
 			  })
 			  .catch(err => {
 				  return res.status(400).json({ err: "Something went wrong went searching for the order" });
 			  })
 
 });
+
+function getFormattedOrder(order) {
+	return new Promise((resolve, reject) => {
+		getAddress(order.get("address"))
+			.then(address => {
+				getClient(order.get("client"))
+					.then(client => {
+						getDishes(order.get("items"))
+							.then(dishes => {
+								Promise.all(dishes)
+									   .then(dishes => {
+										   resolve({
+											   orderType: order.get("delivery") ? "DELIVERY" : "PICKUP",
+											   placedAt: order.get("createdAt"),
+											   deliveryTo: address,
+											   customerNote: order.get("notes"),
+											   customerInfo: client,
+											   status: order.get("status"),
+											   total: order.get("total"),
+											   taxes: {
+												   serviceFee: order.get("serviceFee"),
+												   subtotal: order.get("subtotal"),
+												   deliveryFee: order.get("deliveryFee")
+											   },
+											   itemsRaw: order.get("items"),
+											   dishes: groupBy(dishes, "category")
+										   });
+									   })
+							})
+							.catch(err => {
+								reject("Err at dishes search");
+							})
+					})
+					.catch(err => {
+						reject("Client could not be found");
+					})
+			})
+			.catch(err => {
+				reject("Address of the order was not found");
+			});
+	});
+}
 
 router.get('/items', (req, res) => {
 	const { chefId } = req.query;
@@ -121,12 +133,19 @@ router.get('/items', (req, res) => {
 function changeOrderStatusWrapper(chefId, orderNo, newStatus, res) {
 	changeOrderStatus(chefId, orderNo, newStatus)
 		.then(order => {
-			res.status(200).json({ msg: "ok" });
+			getFormattedOrder(order)
+				.then(order => {
+					res.status(200).json({ order: order });
+				})
+				.catch(err => {
+					return res.status(500).json({err: err});
+				});
 
 			notifyClient(order)
 				.then(response => {
 					console.log(response);
-				});
+				})
+				.catch(err => {});
 		})
 		.catch(err => {
 			return res.status(400).json({ err: err });
