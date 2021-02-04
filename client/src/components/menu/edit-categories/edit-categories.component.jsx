@@ -92,7 +92,6 @@ class EditCategories extends React.Component {
 																							category={ category }
 																							handleChange={ this.handleChange }/>)
 							}
-							{/*<FaTrash className='trash_icon_btn'/>*/ }
 							<div className="popup_edit_add_btn" onClick={ this.handleAdd }>
 								<FaPlus className='plus_icon_edit'/>
 							</div>
