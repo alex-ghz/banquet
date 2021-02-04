@@ -47,7 +47,7 @@ const parse = new ParseServer({
 	serverURL: process.env.SERVER_URL || 'http://localhost:5000/parse',  // Don't forget to change to https if needed
 	cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
 	liveQuery: {
-		classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
+		classNames: ["Posts", "Comments", "Orders"] // List of classes to support for query subscriptions
 	},
 	push: {
 		ios: [
