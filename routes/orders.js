@@ -48,7 +48,7 @@ router.get('/details', (req, res) => {
 						  });
 					  })
 					  .catch(err => {
-					  	return res.status(500).json({err: err});
+						  return res.status(500).json({ err: err });
 					  });
 			  })
 			  .catch(err => {
@@ -59,43 +59,80 @@ router.get('/details', (req, res) => {
 
 function getFormattedOrder(order) {
 	return new Promise((resolve, reject) => {
-		getAddress(order.get("address"))
-			.then(address => {
-				getClient(order.get("client"))
-					.then(client => {
-						getDishes(order.get("items"))
-							.then(dishes => {
-								Promise.all(dishes)
-									   .then(dishes => {
-										   resolve({
-											   orderType: order.get("delivery") ? "DELIVERY" : "PICKUP",
-											   placedAt: order.get("createdAt"),
-											   deliveryTo: address,
-											   customerNote: order.get("notes"),
-											   customerInfo: client,
-											   status: order.get("status"),
-											   total: order.get("total"),
-											   taxes: {
-												   serviceFee: order.get("serviceFee"),
-												   subtotal: order.get("subtotal"),
-												   deliveryFee: order.get("deliveryFee")
-											   },
-											   itemsRaw: order.get("items"),
-											   dishes: groupBy(dishes, "category")
-										   });
-									   })
-							})
-							.catch(err => {
-								reject("Err at dishes search");
-							})
-					})
-					.catch(err => {
-						reject("Client could not be found");
-					})
-			})
-			.catch(err => {
-				reject("Address of the order was not found");
-			});
+		const delivery = order.get("delivery");
+
+		if ( delivery ) {
+			getAddress(order.get("address"))
+				.then(address => {
+					getClient(order.get("client"))
+						.then(client => {
+							getDishes(order.get("items"))
+								.then(dishes => {
+									Promise.all(dishes)
+										   .then(dishes => {
+											   resolve({
+												   orderType: order.get("delivery") ? "DELIVERY" : "PICKUP",
+												   placedAt: order.get("createdAt"),
+												   deliveryTo: address,
+												   customerNote: order.get("notes"),
+												   customerInfo: client,
+												   status: order.get("status"),
+												   total: order.get("total"),
+												   taxes: {
+													   serviceFee: order.get("serviceFee"),
+													   subtotal: order.get("subtotal"),
+													   deliveryFee: order.get("deliveryFee")
+												   },
+												   itemsRaw: order.get("items"),
+												   dishes: groupBy(dishes, "category")
+											   });
+										   })
+								})
+								.catch(err => {
+									reject("Err at dishes search");
+								})
+						})
+						.catch(err => {
+							reject("Client could not be found");
+						})
+				})
+				.catch(err => {
+					reject("Address of the order was not found");
+				});
+		} else {
+			getClient(order.get("client"))
+				.then(client => {
+					getDishes(order.get("items"))
+						.then(dishes => {
+							Promise.all(dishes)
+								   .then(dishes => {
+									   resolve({
+										   orderType: order.get("delivery") ? "DELIVERY" : "PICKUP",
+										   placedAt: order.get("createdAt"),
+										   deliveryTo: null,
+										   customerNote: order.get("notes"),
+										   customerInfo: client,
+										   status: order.get("status"),
+										   total: order.get("total"),
+										   taxes: {
+											   serviceFee: order.get("serviceFee"),
+											   subtotal: order.get("subtotal"),
+											   deliveryFee: order.get("deliveryFee")
+										   },
+										   itemsRaw: order.get("items"),
+										   dishes: groupBy(dishes, "category")
+									   });
+								   })
+						})
+						.catch(err => {
+							reject("Err at dishes search");
+						})
+				})
+				.catch(err => {
+					reject("Client could not be found");
+				})
+		}
+
 	});
 }
 
@@ -138,14 +175,15 @@ function changeOrderStatusWrapper(chefId, orderNo, newStatus, res) {
 					res.status(200).json({ order: order });
 				})
 				.catch(err => {
-					return res.status(500).json({err: err});
+					return res.status(500).json({ err: err });
 				});
 
 			notifyClient(order)
 				.then(response => {
 					console.log(response);
 				})
-				.catch(err => {});
+				.catch(err => {
+				});
 		})
 		.catch(err => {
 			return res.status(400).json({ err: err });
