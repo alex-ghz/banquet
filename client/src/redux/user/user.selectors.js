@@ -1,4 +1,4 @@
-import {createSelector} from "reselect";
+import { createSelector } from "reselect";
 
 const selectUser = state => state.user;
 
@@ -50,6 +50,11 @@ export const selectChefName = createSelector(
 export const selectChefAcceptingOrders = createSelector(
 	[selectUser],
 	user => user.currentUser.chef.online
+);
+
+export const selectIsUserActivated = createSelector(
+	[selectUser],
+	user => user.currentUser.chef.activated
 );
 
 
