@@ -20,6 +20,11 @@ export const setSelectedCategory = category => ({
 	payload: category
 });
 
+export const addNewCategory = category => ({
+	type: MenuActionTypes.ADD_NEW_CATEGORY,
+	payload: category
+});
+
 export const fetchCollectionStartAsync = menuId => {
 	return dispatch => {
 		axios.post('/menu/getMenu', {

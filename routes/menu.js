@@ -1,6 +1,118 @@
 const express = require('express');
 const router = express.Router();
 
+router.post('/deleteCategory', (req, res) => {
+	const { chefId, categoryId, categoryIndex, menuId } = req.body;
+
+	if ( !!chefId === false || !!categoryId === false ) {
+		return res.status(400).json({ err: "Invalid parameters" });
+	}
+
+	if ( !!categoryIndex === false ) {
+
+		getChef(chefId)
+			.then(chef => {
+				getMenuCategory(categoryId)
+					.then(category => {
+						const Dish = Parse.Object.extend("Dish");
+						const queryDish = new Parse.Query(Dish);
+
+						queryDish.equalTo("chef", chef);
+						queryDish.equalTo("category", category);
+
+						queryDish.count()
+								 .then(result => {
+									 if ( result !== 0 && !!categoryIndex === false ) {
+										 return res.status(400).json({
+											 err: "Seems like you still got some dishes in this category.",
+											 confirmation: 1
+										 })
+									 }
+
+									 if ( !!menuId === false ) {
+										 return res.status(400).json({ err: "Your session seems corrupted. Please logout and login." });
+									 }
+
+									 getRecordById("Menu", menuId)
+										 .then(menu => {
+
+											 deleteCategory(categoryId)
+												 .then(() => {
+													 const categories = menu.get("categories");
+													 const queryCategories = categories.query();
+
+													 queryCategories.ascending("index");
+
+													 queryCategories.find().then(categories => {
+														 let promises = [];
+
+														 categories.forEach((category, index) => {
+															 promises.push(new Promise(resolve => {
+																 category.set("index", index);
+
+																 category.save().then(() => resolve());
+															 }))
+														 });
+
+														 Promise.all(promises)
+																.then(results => {
+																	res.status(200).json({ msg: "Category was deleted successful." });
+																})
+													 })
+												 })
+												 .catch(err => {
+													 return res.status(400).json({ err: err });
+												 });
+										 })
+										 .catch(err => {
+											 return res.status(400).json({ err: err });
+										 })
+
+								 });
+					})
+					.catch(err => {
+						return res.status(400).json({ err: err });
+					});
+			})
+			.catch(err => {
+				return res.status(400).json({ err: err });
+			});
+	}
+});
+
+function deleteCategory(categoryId) {
+	return new Promise((resolve, reject) => {
+		getMenuCategory(categoryId)
+			.then(category => {
+				category.destroy()
+						.then(category => {
+							resolve();
+						})
+						.catch(err => reject("There was an error when deleting category."));
+			})
+			.catch(err => reject("Something went wrong when deleting category."));
+	});
+}
+
+function getChef(chefId) {
+	return getRecordById("Chef", chefId);
+}
+
+function getMenuCategory(categoryId) {
+	return getRecordById("MenuCategory", categoryId);
+}
+
+function getRecordById(collection, objectId) {
+	return new Promise((resolve, reject) => {
+		const Collection = Parse.Object.extend(collection);
+		const queryCollection = new Parse.Query(Collection);
+
+		queryCollection.get(objectId)
+					   .then(result => resolve(result))
+					   .catch(err => reject(`Something went wrong when searching in ${ collection }`));
+	});
+}
+
 router.post('/getMenu', async (req, res) => {
 	const { menuId } = req.body;
 
@@ -188,6 +300,10 @@ categoriesSyncer = (menu, dbCategories, categories) => {
 		categories.forEach((category, index, arr) => {
 			promises.push(new Promise(resolve => {
 				let selectedDbCategory = dbCategories[index];
+
+				if ( !!selectedDbCategory === false ) {
+					resolve();
+				}
 
 				if ( category.new ) {
 					// insert new category

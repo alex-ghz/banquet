@@ -10,7 +10,7 @@ import EditCategoryInput from "../edit-category-input/edit-category-input.compon
 
 import { selectMenuCategoriesNames, selectMenuCategories } from "../../../redux/menu/menu.selectors";
 import { selectCurrentUserMenuId } from "../../../redux/user/user.selectors";
-import { fetchCollectionStartAsync } from "../../../redux/menu/menu.actions";
+import { fetchCollectionStartAsync, addNewCategory } from "../../../redux/menu/menu.actions";
 
 
 class EditCategories extends React.Component {
@@ -19,7 +19,7 @@ class EditCategories extends React.Component {
 		super(props);
 
 		this.state = {
-			categories: this.sortByKey(props.selectMenuCategories, 'index')
+			categories: this.sortByKey(props.categories, 'index')
 		}
 
 		this.handleAdd = this.handleAdd.bind(this);
@@ -37,20 +37,15 @@ class EditCategories extends React.Component {
 	}
 
 	handleAdd() {
-		this.setState({
-			categories: [
-				...this.state.categories,
-				{
-					name: '',
-					index: this.state.categories.length,
-					new: true
-				}
-			]
+		this.props.addNewCategory({
+			name: '',
+			index: this.state.categories.length,
+			new: true
 		});
 	}
 
 	handleChange(index, name) {
-		let categories = this.state.categories;
+		let categories = this.props.categories;
 		categories[index]['name'] = name;
 
 		this.setState({
@@ -79,8 +74,14 @@ class EditCategories extends React.Component {
 		this.props.handleCancel();
 	}
 
+	handleUpdateCategoriesList = () => {
+		this.setState({
+			categories: this.sortByKey(this.props.selectMenuCategories, 'index')
+		});
+	}
+
 	render() {
-		let categories = this.state.categories;
+		let categories = this.props.categories;
 
 		return (
 			<div className="basic_popup_edit">
@@ -90,7 +91,8 @@ class EditCategories extends React.Component {
 							{
 								categories.map((category, index, arr) => <EditCategoryInput key={ index }
 																							category={ category }
-																							handleChange={ this.handleChange }/>)
+																							handleChange={ this.handleChange }
+																							update={ this.handleUpdateCategoriesList }/>)
 							}
 							<div className="popup_edit_add_btn" onClick={ this.handleAdd }>
 								<FaPlus className='plus_icon_edit'/>
@@ -115,7 +117,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-	fetchCollectionsStartAsync: menuId => dispatch(fetchCollectionStartAsync(menuId))
+	fetchCollectionsStartAsync: menuId => dispatch(fetchCollectionStartAsync(menuId)),
+	addNewCategory: category => dispatch(addNewCategory(category))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditCategories);

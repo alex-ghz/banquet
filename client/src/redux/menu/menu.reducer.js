@@ -32,6 +32,16 @@ const menuReducer = (state = INITIAL_STATE, action) => {
 				...state,
 				selectedCategory: action.payload
 			}
+		case MenuActionTypes.ADD_NEW_CATEGORY:
+			return {
+				...state,
+				categories: [
+					...state.categories,
+					{
+						category: action.payload
+					}
+				]
+			}
 		default:
 			return state;
 	}
