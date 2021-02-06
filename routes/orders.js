@@ -355,6 +355,7 @@ function notifyClient(order) {
 											  data: {
 												  push_type: "background",
 												  "content-available": 1,
+													"alert":{},
 												  custom: {
 													  orderId: order.id,
 													  newState: order.get("status")
