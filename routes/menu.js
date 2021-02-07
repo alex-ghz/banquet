@@ -76,7 +76,7 @@ router.post('/deleteCategory', (req, res) => {
 		});
 });
 
-function deleteCategory(categoryId) {
+function deleteCategory1(categoryId) {
 	return new Promise((resolve, reject) => {
 		getMenuCategory(categoryId)
 			.then(category => {
@@ -113,7 +113,7 @@ function getRecordById(collection, objectId) {
 	});
 }
 
-function deleteDishes(dishesPromise) {
+function deleteDishes1(dishesPromise) {
 	dishesPromise.then(dishes => {
 		dishes.forEach(dish => {
 			dish.destroy();
@@ -131,10 +131,11 @@ router.post('/getMenu', async (req, res) => {
 
 			categories.forEach(category => {
 				promises.push(new Promise(resolve => {
-					const categoryDishes = category.relation('dishes');
+					const categoryDishes = category.relation('dishes').query();
 
-					categoryDishes.query()
-								  .find()
+					categoryDishes.equalTo("deleted", undefined);
+
+					categoryDishes.find()
 								  .then(dishes => {
 									  resolve({
 										  category: {
@@ -194,17 +195,127 @@ router.post('/getDish', (req, res) => {
 });
 
 router.post('/saveCategories', (req, res) => {
-	const { menuId, categories } = req.body;
+	const { menuId, categories, deleted, confirmed } = req.body;
 
 	getMenu(menuId)
 		.then(menu => {
 			getCategories(menu)
-				.then(dbCategories => categoriesSyncer(menu, dbCategories, categories))
+				.then(dbCategories => categoriesSyncer(menu, dbCategories, categories, deleted))
+				.then(result => deleteCategories(deleted, confirmed))
 				.then(synced => {
-					res.status(200).json({ synced: synced });
+					res.status(200).json({ synced: true });
+				})
+				.catch(err => {
+					res.status(400).json(err);
 				});
 		});
 });
+
+function deleteCategories(categories, confirmed) {
+	if ( categories.length === 0 ) {
+		return;
+	}
+
+	return new Promise((resolve, reject) => {
+		let promises = [];
+
+		categories.filter(category => !!category.objectId).forEach(category => {
+			promises.push(deleteCategory(category, confirmed));
+		});
+
+		Promise.all(promises)
+			   .then(results => {
+				   resolve();
+			   })
+			   .catch(err => {
+				   reject(err);
+			   })
+	});
+}
+
+function deleteCategory(categoryId, confirmed) {
+	return new Promise((resolve, reject) => {
+		getMenuCategory(categoryId.objectId)
+			.then(category => {
+				deleteCheckDishes(category, confirmed)
+					.then(result => {
+						deleteCategoryConfirmed(category)
+							.then(category => {
+								resolve();
+							})
+							.catch(err => {
+								reject(err);
+							});
+					})
+					.catch(err => {
+						reject(err);
+					});
+			})
+			.catch(err => {
+				reject({ err: "Category was not found." })
+			});
+	});
+}
+
+function deleteCategoryConfirmed(category) {
+	return new Promise((resolve, reject) => {
+		category.set("deleted", new Date());
+		category.save()
+				.then(category => {
+					resolve(category);
+				})
+				.catch(err => {
+					reject(err);
+				})
+	});
+}
+
+function deleteCheckDishes(category, confirmed) {
+	return new Promise((resolve, reject) => {
+		category.get("dishes")
+				.query()
+				.find()
+				.then(dishes => {
+					if ( dishes.length !== 0 && !!confirmed === false ) {
+						return reject({err: "Seems like you still got some dishes in selected category to be deleted", confirmation: 1});
+					}
+
+					deleteDishes(dishes)
+						.then(result => {
+							resolve();
+						})
+						.catch(err => {
+							reject(err);
+						})
+				})
+				.catch(err => reject({ err: "Something went wrong when searching for dishes." }))
+	});
+}
+
+function deleteDishes(dishes) {
+	return new Promise(resolve => {
+		let promises = [];
+
+		dishes.forEach(dish => {
+			promises.push(new Promise(resolve1 => {
+				dish.set("deleted", new Date());
+				dish.save()
+					.then(dish => {
+						resolve1();
+					})
+					.catch(err => {
+					});
+			}))
+		});
+
+		Promise.all(promises)
+			   .then(result => {
+				   resolve();
+			   })
+			   .catch(err => {
+			   });
+	});
+}
 
 router.post('/addDish', (req, res) => {
 	const { dishId } = req.body;
@@ -299,21 +410,31 @@ function saveImage(file) {
 	});
 }
 
-categoriesSyncer = (menu, dbCategories, categories) => {
+categoriesSyncer = (menu, dbCategories, categories, deleted) => {
 	return new Promise(resolve => {
 		const MenuCategory = Parse.Object.extend("MenuCategory");
-
 		let promises = [];
 
 		categories.forEach((category, index, arr) => {
 			promises.push(new Promise(resolve => {
 				let selectedDbCategory = dbCategories[index];
-
-				if ( !!selectedDbCategory === false ) {
-					resolve();
-				}
-
 				if ( category.new ) {
+
+					if ( deleted.length > 0 ) {
+						let found = false;
+
+						for ( let i = 0; i <= deleted.length; i++ ) {
+							if ( category.name === deleted[i].name ) {
+								found = true;
+								break;
+							}
+						}
+
+						if ( found ) {
+							resolve();
+						}
+					}
+
 					// insert new category
 					let indexNew = dbCategories.length;
 
@@ -361,6 +482,7 @@ getCategories = menu => {
 		const menuCategories = menu.relation('categories');
 
 		menuCategories.query()
+					  .equalTo('deleted', undefined)
 					  .ascending('index')
 					  .find()
 					  .then(categories => resolve(categories));

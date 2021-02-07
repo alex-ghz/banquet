@@ -9,8 +9,9 @@ import './edit-categories.styles.scss';
 import EditCategoryInput from "../edit-category-input/edit-category-input.component";
 
 import { selectMenuCategoriesNames, selectMenuCategories } from "../../../redux/menu/menu.selectors";
-import { selectCurrentUserMenuId } from "../../../redux/user/user.selectors";
-import { fetchCollectionStartAsync, addNewCategory } from "../../../redux/menu/menu.actions";
+import { selectChefId, selectCurrentUserMenuId } from "../../../redux/user/user.selectors";
+import { fetchCollectionStartAsync, addNewCategory, removeCategory } from "../../../redux/menu/menu.actions";
+import Swal from "sweetalert2";
 
 
 class EditCategories extends React.Component {
@@ -19,7 +20,8 @@ class EditCategories extends React.Component {
 		super(props);
 
 		this.state = {
-			categories: this.sortByKey(props.categories, 'index')
+			categories: this.sortByKey(props.categories, 'index'),
+			deletedCategories: []
 		}
 
 		this.handleAdd = this.handleAdd.bind(this);
@@ -56,20 +58,101 @@ class EditCategories extends React.Component {
 	handleSave() {
 		axios.post('/menu/saveCategories', {
 				 menuId: this.props.menuId,
-				 categories: this.state.categories
+				 categories: this.state.categories,
+				 deleted: this.state.deletedCategories,
+				 chefId: this.props.chefId
 			 })
 			 .then(result => {
 				 let { fetchCollectionsStartAsync, menuId } = this.props;
 				 fetchCollectionsStartAsync(menuId);
 
 				 this.handleCancel();
-			 });
+			 })
+			 .catch(err => {
+				 const text = !!err.response.data.err ? err.response.data.err : false;
+				 const confirmation = !!err.response.data.confirmation;
+
+				 if ( text === false ) {
+					 Swal.fire({
+						 icon: 'error',
+						 title: 'Oops...',
+						 text: 'Something went wrong. Please retry.',
+					 });
+
+					 let { fetchCollectionsStartAsync, menuId } = this.props;
+					 fetchCollectionsStartAsync(menuId);
+
+					 this.handleCancel();
+				 } else {
+					 if ( !confirmation ) {
+						 Swal.fire({
+							 icon: 'error',
+							 title: 'Oops...',
+							 text: text,
+						 });
+
+						 let { fetchCollectionsStartAsync, menuId } = this.props;
+						 fetchCollectionsStartAsync(menuId);
+
+						 this.handleCancel();
+					 } else {
+						 Swal.fire({
+							 title: text,
+							 showDenyButton: true,
+							 confirmButtonText: `Delete dishes also`,
+						 }).then((result) => {
+							 /* Read more about isConfirmed, isDenied below */
+							 if ( result.isConfirmed ) {
+								 axios.post('/menu/saveCategories', {
+										  menuId: this.props.menuId,
+										  categories: this.state.categories,
+										  deleted: this.state.deletedCategories,
+										  chefId: this.props.chefId,
+										  confirmed: true
+									  })
+									  .then(response => response.data)
+									  .then(data => {
+										  Swal.fire(
+											  data.msg,
+											  'Category deleted',
+											  'success'
+										  );
+
+										  let { fetchCollectionsStartAsync, menuId } = this.props;
+										  fetchCollectionsStartAsync(menuId);
+
+										  this.handleCancel();
+									  })
+									  .catch(err => {
+										  const text = !!err.response.data.err ? err.response.data.err : false;
+										  Swal.fire({
+											  icon: 'error',
+											  title: 'Oops...',
+											  text: text,
+										  });
+
+										  let { fetchCollectionsStartAsync, menuId } = this.props;
+										  fetchCollectionsStartAsync(menuId);
+
+										  this.handleCancel();
+									  })
+							 } else {
+								 let { fetchCollectionsStartAsync, menuId } = this.props;
+								 fetchCollectionsStartAsync(menuId);
+							 }
+						 })
+					 }
+				 }
+			 })
 	}
 
 	handleCancel() {
 		this.setState({
 			categories: this.sortByKey(this.props.selectMenuCategories, 'index')
 		});
+
+		let { fetchCollectionsStartAsync, menuId } = this.props;
+		fetchCollectionsStartAsync(menuId);
 
 		this.props.handleCancel();
 	}
@@ -80,8 +163,16 @@ class EditCategories extends React.Component {
 		});
 	}
 
+	handleDeleteCategory = (category) => {
+		this.setState({
+			deletedCategories: [...this.state.deletedCategories, category]
+		}, () => {
+			this.props.removeCategory(category);
+		});
+	}
+
 	render() {
-		let categories = this.props.categories;
+		let categories = this.props.categories.filter(category => !this.state.deletedCategories.includes(category.objectId));
 
 		return (
 			<div className="basic_popup_edit">
@@ -92,7 +183,8 @@ class EditCategories extends React.Component {
 								categories.map((category, index, arr) => <EditCategoryInput key={ index }
 																							category={ category }
 																							handleChange={ this.handleChange }
-																							update={ this.handleUpdateCategoriesList }/>)
+																							update={ this.handleUpdateCategoriesList }
+																							deleteCategory={ this.handleDeleteCategory }/>)
 							}
 							<div className="popup_edit_add_btn" onClick={ this.handleAdd }>
 								<FaPlus className='plus_icon_edit'/>
@@ -111,6 +203,7 @@ class EditCategories extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
+	chefId: selectChefId,
 	selectCategoriesNames: selectMenuCategoriesNames,
 	selectMenuCategories: selectMenuCategories,
 	menuId: selectCurrentUserMenuId
@@ -118,7 +211,8 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
 	fetchCollectionsStartAsync: menuId => dispatch(fetchCollectionStartAsync(menuId)),
-	addNewCategory: category => dispatch(addNewCategory(category))
+	addNewCategory: category => dispatch(addNewCategory(category)),
+	removeCategory: category => dispatch(removeCategory(category))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditCategories);

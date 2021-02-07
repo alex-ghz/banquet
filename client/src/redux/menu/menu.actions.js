@@ -25,6 +25,11 @@ export const addNewCategory = category => ({
 	payload: category
 });
 
+export const removeCategory = category => ({
+	type: MenuActionTypes.REMOVE_CATEGORY,
+	payload: category
+});
+
 export const fetchCollectionStartAsync = menuId => {
 	return dispatch => {
 		axios.post('/menu/getMenu', {

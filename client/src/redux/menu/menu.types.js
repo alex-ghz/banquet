@@ -6,6 +6,7 @@ const MenuActionTypes = {
 	SET_SELECTED_CATEGORY: 'SET_SELECTED_CATEGORY',
 
 	ADD_NEW_CATEGORY: 'ADD_NEW_CATEGORY',
+	REMOVE_CATEGORY: 'REMOVE_CATEGORY'
 };
 
 export default MenuActionTypes;

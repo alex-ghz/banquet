@@ -42,6 +42,11 @@ const menuReducer = (state = INITIAL_STATE, action) => {
 					}
 				]
 			}
+		case MenuActionTypes.REMOVE_CATEGORY:
+			return {
+				...state,
+				categories: state.categories.filter(cat => cat.category.name !== action.payload.name)
+			}
 		default:
 			return state;
 	}
