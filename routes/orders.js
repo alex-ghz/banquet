@@ -353,11 +353,10 @@ function notifyClient(order) {
 									 Parse.Push.send({
 											  where: pushQuery,
 											  data: {
-													alert: {
-													  "title": "Banquet",
-													  "body": getNotificationMessage(order.get("status"))
-												  },
-													sound: "default",
+												  push_type: "background",
+												  "content-available": 1,
+													"alert":{},
+													priority: 10,
 												  custom: {
 													  orderId: order.id,
 													  newState: order.get("status")
