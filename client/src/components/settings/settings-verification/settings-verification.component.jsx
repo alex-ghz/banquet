@@ -175,7 +175,7 @@ class SettingsVerification extends React.Component {
 							{ this.fileData1() }
 						</div>
 					</div>
-					<div className="settings_certificate_title medium_sofia">
+					<div className="settings_certificate_title medium_sofia status_column">
 						STATUS
 						<div className="settings_certificate_status_type medium_sofia">
 							{ this.getStatus(chefSettings.food_license_status) }
@@ -208,7 +208,7 @@ class SettingsVerification extends React.Component {
 							{ this.fileData2() }
 						</div>
 					</div>
-					<div className="settings_certificate_title medium_sofia">
+					<div className="settings_certificate_title medium_sofia status_column">
 						STATUS
 						<div className="settings_certificate_status_type medium_sofia">
 							{ this.getStatus(chefSettings.food_hygeine_certificate_status) }
@@ -241,7 +241,7 @@ class SettingsVerification extends React.Component {
 							{ this.fileData3() }
 						</div>
 					</div>
-					<div className="settings_certificate_title medium_sofia">
+					<div className="settings_certificate_title medium_sofia status_column">
 						STATUS
 						<div className="settings_certificate_status_type medium_sofia">
 							{ this.getStatus(chefSettings.copy_of_id_status) }

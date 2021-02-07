@@ -165,7 +165,7 @@ class AddDish extends React.Component {
 								   className="popup_item_name sb_sofia"/>
 						</div>
 						<div className="item_description_popup medium_sofia">ITEM PRICE (<FaPoundSign/>)
-							<input name="price" type="text" defaultValue={ this.state.price } onChange={ this.handleInputChange }
+							<input name="price" type="number" defaultValue={ this.state.price } onChange={ this.handleInputChange }
 								   className="popup_item_price sb_sofia"/>
 						</div>
 						<div className="item_description_popup">
