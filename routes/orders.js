@@ -1,6 +1,37 @@
 const express = require('express');
 const router = express.Router();
 
+router.get('/new', (req, res) => {
+	const { chefId } = req.query;
+
+	if ( !!chefId === false ) {
+		return res.status(400);
+	}
+
+	const Chef = Parse.Object.extend("Chef");
+	const queryChef = new Parse.Query(Chef);
+
+	queryChef.get(chefId)
+			 .then(chef => {
+				 const Order = Parse.Object.extend("Order");
+				 const queryOrder = new Parse.Query(Order);
+
+				 queryOrder.equalTo("chef", chef);
+				 queryOrder.equalTo("status", "confirmed");
+
+				 queryOrder.count()
+						   .then(numberOfOrders => {
+							   return res.status(200).json({ count: numberOfOrders });
+						   })
+						   .catch(err => {
+							   return res.status(400);
+						   });
+			 })
+			 .catch(err => {
+				 return res.status(400);
+			 });
+});
+
 router.put('/acceptOrder', (req, res) => {
 	let { orderNo, chefId } = req.body;
 	changeOrderStatusWrapper(chefId, orderNo, "inProgress", res);
@@ -355,11 +386,26 @@ function notifyClient(order) {
 											  data: {
 												  push_type: "background",
 												  "content-available": 1,
-													"alert":{},
-													priority: 10,
+												  "alert": {},
 												  custom: {
 													  orderId: order.id,
 													  newState: order.get("status")
+												  }
+											  }
+										  }, { useMasterKey: true })
+										  .then(result => {
+											  resolve(result);
+										  })
+										  .catch(err => {
+											  resolve(err);
+										  })
+
+									 Parse.Push.send({
+											  where: pushQuery,
+											  data: {
+												  alert: {
+													  "title": "Banquet",
+													  "body": getNotificationMessage(order.get("status"))
 												  }
 											  }
 										  }, { useMasterKey: true })
