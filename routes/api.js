@@ -21,37 +21,45 @@ router.post('/register', async (req, res) => {
 
 		getMenu()
 			.then(menu => {
-				const chef = new Chef();
-				const user = new User();
+				const settings = new ChefSettings();
 
-				chef.set('name', name);
-				chef.set('phoneNo', phoneNo);
-				chef.set('online', false);
-				chef.set('menu', menu);
-				chef.set('settings', new ChefSettings());
+				settings.set("commission", 4.95);
+				settings.save()
+					.then(settings => {
+						const chef = new Chef();
+						const user = new User();
 
-				chef.save()
-					.then((chef) => {
-						user.set('chef', chef);
-						user.set('updatedAt', new Date());
-						user.set('activated', false);
-						user.set('username', email);
-						user.set('createdAt', new Date());
-						user.set('password', password);
-						user.set('email', email);
-						user.set('settings', new Settings());
+						chef.set('name', name);
+						chef.set('phoneNo', phoneNo);
+						chef.set('online', false);
+						chef.set('menu', menu);
+						chef.set('settings', settings);
 
-						user.save()
-							.then((user) => {
-								sendGeneratedUser({ user: user, newUser: true }, res);
+						chef.save()
+							.then((chef) => {
+								user.set('chef', chef);
+								user.set('updatedAt', new Date());
+								user.set('activated', false);
+								user.set('username', email);
+								user.set('createdAt', new Date());
+								user.set('password', password);
+								user.set('email', email);
+								user.set('settings', new Settings());
+
+								user.save()
+									.then((user) => {
+										sendGeneratedUser({ user: user, newUser: true }, res);
+									})
+									.catch((err) => {
+										return res.status(405).json({ msg: "User object could not be created", err: err });
+									})
 							})
 							.catch((err) => {
-								return res.status(405).json({ msg: "User object could not be created", err: err });
-							})
-					})
-					.catch((err) => {
-						return res.status(405).json({ msg: "Chef object could not be created", err: err });
-					});
+								return res.status(405).json({ msg: "Chef object could not be created", err: err });
+							});
+					}).catch(err => {
+						return res.status(500).json({msg: "Something went wrong. Please retry"});
+				});
 			});
 	}
 });
