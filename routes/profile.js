@@ -21,8 +21,9 @@ router.get('/stats', (req, res) => {
 				 queryOrders.find()
 							.then(results => {
 								res.status(200).json({
-									sales: results.reduce((a, b) => a + b.get("subtotal"), 0.00),
+									sales: results.filter(order => order.get("status") === 'complete').reduce((a, b) => a + b.get("subtotal"), 0.00),
 									rating: !!chef.get("rating") ? chef.get("rating") : 0,
+									newOrders: results.filter(order => order.get("status") === 'confirmed').length,
 									activeOrders: results.filter(order => !['complete', 'canceled'].includes(order.get("status"))).length,
 									completedOrders: results.filter(order => order.get("status") === 'complete').length
 								});
