@@ -1,6 +1,41 @@
 const express = require('express');
 const router = express.Router();
 
+router.get('/stats', (req, res) => {
+	const { chefId } = req.query;
+
+	if ( !!chefId === false ) {
+		return res.status(400).json({ err: "Invalid chefId" });
+	}
+
+	const Chef = Parse.Object.extend("Chef");
+	const queryChef = new Parse.Query(Chef);
+
+	queryChef.get(chefId)
+			 .then(chef => {
+				 const Order = Parse.Object.extend("Order");
+				 const queryOrders = new Parse.Query(Order);
+
+				 queryOrders.equalTo("chef", chef);
+
+				 queryOrders.find()
+							.then(results => {
+								res.status(200).json({
+									sales: results.reduce((a, b) => a + b.get("subtotal"), 0.00),
+									rating: !!chef.get("rating") ? chef.get("rating") : 0,
+									activeOrders: results.filter(order => !['complete', 'canceled'].includes(order.get("status"))).length,
+									completedOrders: results.filter(order => order.get("status") === 'complete').length
+								});
+							})
+							.catch(err => {
+								return res.status(500).json({ err: "Something went wrong when computing stats" });
+							});
+			 })
+			 .catch(err => {
+				 return res.status(400).json({ err: "No chef found with this id" });
+			 });
+});
+
 router.post('/update', (req, res) => {
 	const { chefId } = req.body;
 

@@ -157,7 +157,7 @@ class StartupPopup extends React.Component {
 								<input type="text" defaultValue={ this.state.name } onChange={ this.handleOnChange } className="username medium_sofia" placeholder="Username" name="name"/>
 								<p className="input_name input_dob medium_sofia">DOB</p>
 								<div className="birth_inputs">
-									<input type="text" className="month medium_sofia" placeholder="Month" name="month" defaultValue={ this.state.dob.month } onChange={ this.handleDobChange }/>
+									<input type="number" className="month medium_sofia" placeholder="Month" name="month" defaultValue={ this.state.dob.month } onChange={ this.handleDobChange }/>
 									<input type="number" className="day medium_sofia" placeholder="Day" name="day" defaultValue={ this.state.dob.day } onChange={ this.handleDobChange }/>
 									<input type="number" className="year medium_sofia" placeholder="Year" name="year" defaultValue={ this.state.dob.year } onChange={ this.handleDobChange }/>
 								</div>

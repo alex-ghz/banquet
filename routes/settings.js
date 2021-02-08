@@ -87,6 +87,33 @@ router.post('/setChefFile', (req, res) => {
 
 });
 
+router.post('/updateChef', (req, res) => {
+	const { chefId, name } = req.body;
+
+	if ( !!chefId === false || !!name === false ) {
+		return res.status(400).json({msg: "Invalid params"});
+	}
+
+	const Chef = Parse.Object.extend("Chef");
+	const queryChef = new Parse.Query(Chef);
+
+	queryChef.get(chefId)
+		.then(chef => {
+			chef.set("name", name);
+
+			chef.save()
+				.then(chef => {
+					res.status(200).json({chef: chef});
+				})
+				.catch(err => {
+					return res.status(400).json({msg: "Invalid params"});
+				});
+		})
+		.catch(err => {
+			return res.status(400).json({msg: "Invalid params"});
+		});
+});
+
 router.post('/chef', (req, res) => {
 	let { settingsId, settingName, value } = req.body;
 
@@ -122,47 +149,47 @@ router.post('/acceptingOrders', async (req, res) => {
 
 	queryChef.get(chefId)
 			 .then(chef => {
-			 	if ( newValue === false ) {
-					chef.set("online", false);
-					chef.save()
-						.then(chef => {
-							return res.status(200).json({ chef: chef });
-						})
-						.catch(err => {
-							return res.status(500).json({ err: "Error at toggling option." })
-						});
-				} else {
-					checkChefSettingsForAcceptingOrders(chef.get("settings"))
-						.then(() => {
-							if ( !!chef.get("activated") === false || chef.get("activated") === false ) {
-								return res.status(400).json({ err: "Your account was not activated" });
-							}
+				 if ( newValue === false ) {
+					 chef.set("online", false);
+					 chef.save()
+						 .then(chef => {
+							 return res.status(200).json({ chef: chef });
+						 })
+						 .catch(err => {
+							 return res.status(500).json({ err: "Error at toggling option." })
+						 });
+				 } else {
+					 checkChefSettingsForAcceptingOrders(chef.get("settings"))
+						 .then(() => {
+							 if ( !!chef.get("activated") === false || chef.get("activated") === false ) {
+								 return res.status(400).json({ err: "Your account was not activated" });
+							 }
 
-							checkChefDishes(chef)
-								.then(count => {
-									if ( count === 0 ) {
-										return res.status(400).json({ err: "No dish available for pickup/delivery" });
-									}
+							 checkChefDishes(chef)
+								 .then(count => {
+									 if ( count === 0 ) {
+										 return res.status(400).json({ err: "No dish available for pickup/delivery" });
+									 }
 
-									chef.set("online", true);
+									 chef.set("online", true);
 
-									chef.save()
-										.then(chef => {
-											return res.status(200).json({ chef: chef });
-										})
-										.catch(err => {
-											return res.status(500).json({ err: "Error at toggling option." })
-										});
+									 chef.save()
+										 .then(chef => {
+											 return res.status(200).json({ chef: chef });
+										 })
+										 .catch(err => {
+											 return res.status(500).json({ err: "Error at toggling option." })
+										 });
 
-								})
-								.catch(err => {
-									return res.status(400).json({ err: err });
-								})
-						})
-						.catch(err => {
-							return res.status(400).json({ err: err });
-						});
-				}
+								 })
+								 .catch(err => {
+									 return res.status(400).json({ err: err });
+								 })
+						 })
+						 .catch(err => {
+							 return res.status(400).json({ err: err });
+						 });
+				 }
 			 })
 			 .catch(err => {
 				 return res.status(400).json({ err: "Chef not found in db." });
