@@ -29,6 +29,7 @@ class ChefDashboard extends React.Component {
 				 this.setState({
 					 rating: data.rating,
 					 activeOrders: data.activeOrders,
+					 newOrders: data.newOrders,
 					 sales: data.sales,
 					 completedOrders: data.completedOrders
 				 });
@@ -49,9 +50,11 @@ class ChefDashboard extends React.Component {
 			},
 			{
 				id: "activeOrdersCard",
-				title: "Active Orders",
-				value: this.state.activeOrders,
-				description: ""
+				title: this.state.newOrders > 0 ? "New Orders" : "Active Orders",
+				value: this.state.newOrders > 0 ? this.state.newOrders : this.state.activeOrders,
+				description: "",
+				pulse: this.state.newOrders > 0,
+				redirect: 'orders'
 			},
 			{
 				id: "salesCard",
