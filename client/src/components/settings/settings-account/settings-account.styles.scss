@@ -33,3 +33,15 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.edit_input {
+  width: 48%;
+  border: 1px solid #d4e7ef;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  cursor: pointer;
+  height: 20pt;
+  padding: 5pt 0 5pt 5pt;
+  margin-top: 5px;
+}

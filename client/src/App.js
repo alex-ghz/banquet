@@ -73,7 +73,7 @@ class App extends React.Component {
 					 })
 					 .catch(err => {
 					 })
-			},  50000);
+			},  4 * 60000);
 		} else {
 			window.Intercom('update', {
 				"hide_default_launcher": true
