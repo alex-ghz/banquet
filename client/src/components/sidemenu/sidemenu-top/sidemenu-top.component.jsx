@@ -16,17 +16,20 @@ const SideMenuTop = ({ setCurrentPage, currentPage }) => {
 	return (
 		<div className='side-menu-top'>
 			<div className={ `settings_btn ${ currentPage === 'settings' ? 'active_top' : '' }` }>
-				<Link to='/settings' onClick={ () => setCurrentPage('settings') }>
+				<Link to='/settings' onClick={ () => setCurrentPage('settings') } className='settings_flex'>
 					<IconContext.Provider
-						value={ currentPage === 'settings' ? { className: 'active_top' } : { className: '' } }>
+						value={ currentPage === 'settings' ? { className: 'settings_icon active_top' } : { className: 'settings_icon' } }>
 						<div>
 							<FaCog/>
 						</div>
 					</IconContext.Provider>
+					<span className={`label_settings bold_sofia ${ currentPage === 'settings' ? 'active_top' : '' }`}>
+						Settings
+					</span>
 				</Link>
 			</div>
 			<div className="menu_arrows">
-				{/*{ sideMenuArrow }*/}
+				{/*{ sideMenuArrow }*/ }
 			</div>
 		</div>
 	);

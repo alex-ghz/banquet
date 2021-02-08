@@ -37,22 +37,12 @@ class Settings extends React.Component {
 				id: 'settingsPayment',
 				title: 'Payment',
 				type: 'payment'
-			},
-			// {
-			// 	id: 'settingsPrivacy',
-			// 	title: 'Privacy',
-			// 	type: 'privacy'
 			// },
-			{
-				id: 'settingsHelp',
-				title: 'Help',
-				type: 'help'
-			},
 			// {
-			// 	id: 'settingsFeedback',
-			// 	title: 'Feedback',
-			// 	type: 'feedback'
-			// }
+			// 	id: 'settingsHelp',
+			// 	title: 'Help',
+			// 	type: 'help'
+			}
 		];
 
 		return (
@@ -70,7 +60,7 @@ class Settings extends React.Component {
 					<Route path={ `${ match.path }/verification` } component={ SettingsVerification }/>
 					<Route path={ `${ match.path }/notifications` } component={ SettingsNotifications }/>
 					<Route path={ `${ match.path }/payment` } component={ SettingsPayment }/>
-					<Route path={ `${ match.path }/help` } component={ SettingsHelp }/>
+					{/*<Route path={ `${ match.path }/help` } component={ SettingsHelp }/>*/}
 					<Route path={ `${ match.path }/feedback` } component={ SettingsFeedback }/>
 				</div>
 			</div>

@@ -96,7 +96,7 @@ class MenuSection extends React.Component {
 				</div>
 				{
 					this.state.displayEditCategories ?
-						<EditCategories handleCancel={ this.handleEditCategories }/> : null
+						<EditCategories handleCancel={ this.handleEditCategories } categories={menuCategories}/> : null
 				}
 				{
 					this.state.displayAddDish ? <AddDish handleCancel={ this.handleAddDish } dishId={ this.state.dishToEdit }/> : null

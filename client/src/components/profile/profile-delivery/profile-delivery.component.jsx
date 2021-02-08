@@ -119,7 +119,7 @@ class ProfileDelivery extends React.Component {
 		return (
 			<div>
 				<div className="profile_section_border">
-					<p className="first_profile_paragraph medium_sofia">DELIVERY / COLLECTION OPTIONS</p>
+					<p className="first_profile_paragraph bold_sofia">DELIVERY / COLLECTION OPTIONS</p>
 					<div className="delivery_collection_div">
 						<AsyncSelect
 							className='postcode-selector'
@@ -210,7 +210,7 @@ class ProfileDelivery extends React.Component {
 																<span className="delivery_radius regular_sofia">Delivery cost (<FaPoundSign/>)</span>
 																<div className="delivery_collection_select_inner">
 																	<div className="delivery_section_right_text">
-																		<input type="number" name="deliveryCost" className="input-cost regular_sofia" defaultValue={this.state.deliveryCost} onChange={ this.handleChange }/>
+																		<input type="number" name="deliveryCost" className="input-cost regular_sofia" defaultValue={this.state.deliveryCost} onChange={ this.handleRadiusChange }/>
 																	</div>
 																</div>
 															</div>

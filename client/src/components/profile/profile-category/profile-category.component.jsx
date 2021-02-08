@@ -60,7 +60,7 @@ class ProfileCategory extends React.Component {
 			<div>
 				<div className="profile_section_border">
 					<div className="profile_section_edit">
-						<p className="first_profile_paragraph medium_sofia">CHEF CATEGORIES</p>
+						<p className="first_profile_paragraph bold_sofia">CHEF CATEGORIES</p>
 					</div>
 					<p className="gs_paragraph regular_sofia">Choose up to 4 categories that represent the food you offer.</p>
 				</div>

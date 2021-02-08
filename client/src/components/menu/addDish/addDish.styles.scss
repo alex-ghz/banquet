@@ -128,10 +128,12 @@
 
 .trash_icon_btn {
   font-size: 40px !important;
-  position: absolute;
-  top: 50px;
-  right: 50px;
+  //position: absolute;
+  //top: 50px;
+  //right: 50px;
   color: #ff2d55;
+  margin: 7px 0 0 0;
+  cursor: pointer;
 }
 
 .popup_edit_bottom {

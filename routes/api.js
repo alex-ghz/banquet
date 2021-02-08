@@ -21,37 +21,45 @@ router.post('/register', async (req, res) => {
 
 		getMenu()
 			.then(menu => {
-				const chef = new Chef();
-				const user = new User();
+				const settings = new ChefSettings();
 
-				chef.set('name', name);
-				chef.set('phoneNo', phoneNo);
-				chef.set('online', false);
-				chef.set('menu', menu);
-				chef.set('settings', new ChefSettings());
+				settings.set("commission", 4.95);
+				settings.save()
+					.then(settings => {
+						const chef = new Chef();
+						const user = new User();
 
-				chef.save()
-					.then((chef) => {
-						user.set('chef', chef);
-						user.set('updatedAt', new Date());
-						user.set('activated', false);
-						user.set('username', email);
-						user.set('createdAt', new Date());
-						user.set('password', password);
-						user.set('email', email);
-						user.set('settings', new Settings());
+						chef.set('name', name);
+						chef.set('phoneNo', phoneNo);
+						chef.set('online', false);
+						chef.set('menu', menu);
+						chef.set('settings', settings);
 
-						user.save()
-							.then((user) => {
-								sendGeneratedUser({ user: user, newUser: true }, res);
+						chef.save()
+							.then((chef) => {
+								user.set('chef', chef);
+								user.set('updatedAt', new Date());
+								user.set('activated', false);
+								user.set('username', email);
+								user.set('createdAt', new Date());
+								user.set('password', password);
+								user.set('email', email);
+								user.set('settings', new Settings());
+
+								user.save()
+									.then((user) => {
+										sendGeneratedUser({ user: user, newUser: true }, res);
+									})
+									.catch((err) => {
+										return res.status(405).json({ msg: "User object could not be created", err: err });
+									})
 							})
 							.catch((err) => {
-								return res.status(405).json({ msg: "User object could not be created", err: err });
-							})
-					})
-					.catch((err) => {
-						return res.status(405).json({ msg: "Chef object could not be created", err: err });
-					});
+								return res.status(405).json({ msg: "Chef object could not be created", err: err });
+							});
+					}).catch(err => {
+						return res.status(500).json({msg: "Something went wrong. Please retry"});
+				});
 			});
 	}
 });
@@ -61,22 +69,23 @@ router.post('/login', (req, res) => {
 
 	Parse.User.logIn(email, password)
 		 .then((user) => {
-			 sendGeneratedUser({ user: user }, res);
+		 	const hasClientAccount = !!user.get("client");
+
+		 	if ( !hasClientAccount ) {
+				sendGeneratedUser({ user: user }, res);
+			} else {
+		 		return res.status(400).json({
+					msg: "Cannot login with client credentials"
+				});
+			}
 		 })
 		 .catch((err) => {
-			 return {
+			 return res.status(405).json({
 				 msg: err.message,
 				 err: err
-			 };
+			 });
 		 });
 });
-
-router.post('/test', (req, res) => {
-	getMenu()
-		.then(menu => {
-			res.json({ data: menu });
-		})
-})
 
 function getMenu() {
 	return new Promise(resolve => {
@@ -163,5 +172,18 @@ function sendGeneratedUser(user, res) {
 								  });
 			 });
 }
+
+router.post('/test', (req, res) => {
+	const { location, delivery, pickup } = req.body;
+
+	Parse.Cloud.run('createOrder', {
+		location: location,
+		delivery: delivery,
+		pickup: pickup
+	})
+		.then(result => {
+			res.json({result: result});
+		})
+});
 
 module.exports = router;

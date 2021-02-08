@@ -6,6 +6,7 @@ import userReducer from "./user/user.reducer";
 import pageReducer from "./page/page.reducer";
 import notificationReducer from "./notification/notification.reducer";
 import menuReducer from "./menu/menu.reducer";
+import ordersReducer from "./orders/orders.reducer";
 
 const persistConfig = {
 	key: 'root',
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
 	user: userReducer,
 	page: pageReducer,
 	notification: notificationReducer,
-	menu: menuReducer
+	menu: menuReducer,
+	orders: ordersReducer
 });
 
 export default persistReducer(persistConfig, rootReducer);

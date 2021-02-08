@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import './sidemenu-button.styles.scss';
 
 import { setCurrentPage } from "../../../redux/page/page.actions";
+import { createStructuredSelector } from "reselect";
+import { selectNewOrders } from "../../../redux/orders/orders.selectors";
 
 class SideMenuButton extends React.Component {
 
@@ -24,16 +26,26 @@ class SideMenuButton extends React.Component {
 		}
 	}
 
+	newOrdersDot = (type, state) => {
+		if ( type === 'orders' && state !== 0 ) {
+			return (<div className="title_circle_sidemenu"/>);
+		}
+	}
+
 	render() {
+		const newOrders = this.props.orders.length;
+
 		return (
 			<div className='menu-button'>
 				<div className='empty_div'/>
-				<Link className={ this.props.title === 'orders' ? 'orders-sidemenu' : '' } to={ `/${ this.props.title }` } onClick={ () => this.props.setCurrentPage(this.props.title) }>
+				<Link className={ this.props.title === 'orders' ? 'orders-sidemenu' : '' }
+					  to={ `/${ this.props.title }` } onClick={ () => this.props.setCurrentPage(this.props.title) }>
 					<div
 						className={ `menu_item bold_sofia ${ this.props.selected ? 'selected' : '' }` }>
 						{ this.getIcon(this.props.title) }
 						<span className='button_title'>{ this.props.title }</span>
 					</div>
+					{ this.newOrdersDot(this.props.title, newOrders) }
 				</Link>
 				<div className='empty_div_bottom'/>
 			</div>
@@ -41,8 +53,12 @@ class SideMenuButton extends React.Component {
 	}
 }
 
+const mapStateToProps = createStructuredSelector({
+	orders: selectNewOrders
+});
+
 const mapDispatchProps = dispatch => ({
 	setCurrentPage: page => dispatch(setCurrentPage(page))
 });
 
-export default connect(null, mapDispatchProps)(SideMenuButton);
+export default connect(mapStateToProps, mapDispatchProps)(SideMenuButton);

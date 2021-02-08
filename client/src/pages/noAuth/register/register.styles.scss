@@ -1,12 +1,12 @@
 .phone_number {
-    width: 80%;
-    font-size: 12pt;
-    border: 1px solid #ff2d55;
-    height: 45pt;
-    padding: 0 35px 0 35px;
-    border-radius: 15px;
-    color: #75797e;
-    outline: none;
+  width: 80%;
+  font-size: 12pt;
+  border: 1px solid #ff2d55;
+  height: 45pt;
+  padding: 0 35px 0 35px;
+  border-radius: 15px;
+  color: #75797e;
+  outline: none;
 }
 
 input[type=number]::-webkit-outer-spin-button,
@@ -16,7 +16,17 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 .sch-msg {
-    font-size: 12pt;
-    color: #c5c5c8;
-    margin: 10pt 0;
+  font-size: 12pt;
+  color: #c5c5c8;
+  margin: 10pt 0;
+}
+
+.errMsg {
+  //padding-top: 20px;
+  color: #ff2d55;
+  text-align: center;
+}
+
+.errP {
+  margin: 0
 }

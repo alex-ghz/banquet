@@ -8,13 +8,15 @@ import { selectChef, selectChefId } from "../../../redux/user/user.selectors";
 import { setChef } from "../../../redux/user/user.actions";
 
 import ProfileImage from "../../../components/profile/profile-image/profile-image.component";
+import ProfileImageChef from "../../../components/profile/profile-image-chef/profile-image-chef.component";
 import ProfileDescription from "../../../components/profile/profile-description/profile-description.component";
 import ProfileDelivery from "../../../components/profile/profile-delivery/profile-delivery.component";
 import ProfileCategory from "../../../components/profile/profile-category/profile-category.component";
 import WithSpinnerButton from "../../../components/with-spinner-button/with-spinner-button.components";
 import { createStructuredSelector } from "reselect";
 
-const SaveButton = (props) => (<div className="save_btn_profile bold_sofia" onClick={ props.onClick }>Save changes</div>);
+const SaveButton = (props) => (
+	<div className="save_btn_profile bold_sofia" onClick={ props.onClick }>Save changes</div>);
 const SaveWithSpinner = WithSpinnerButton(SaveButton);
 
 class Profile extends React.Component {
@@ -24,7 +26,10 @@ class Profile extends React.Component {
 
 		this.state = {
 			image: {
-				file: null
+				url: null
+			},
+			profileImage: {
+				url: null
 			},
 			description: {
 				description: ""
@@ -80,13 +85,11 @@ class Profile extends React.Component {
 		const settings = this.state;
 		const formData = new FormData();
 
-		if ( !!settings.image.file ) {
-			formData.append("file", settings.image.file);
-			formData.append("fileAdded", JSON.stringify(true));
-		} else {
-			formData.append("fileAdded", JSON.stringify(false));
-		}
+		console.log(settings.image.url)
+		console.log(settings.profileImage.url)
 
+		formData.append("image", settings.image.url);
+		formData.append("profileImage", settings.profileImage.url);
 		formData.append("description", settings.description.description);
 		formData.append("delivery", JSON.stringify(settings.delivery));
 		formData.append("categories", JSON.stringify(settings.categories));
@@ -117,6 +120,7 @@ class Profile extends React.Component {
 				</div>
 				<div className='profile_section_inner'>
 					<ProfileImage handleChange={ this.handleChanges }/>
+					<ProfileImageChef handleChange={ this.handleChanges }/>
 					<ProfileDescription handleChange={ this.handleChanges }/>
 					<ProfileDelivery handleChange={ this.handleChanges }/>
 					<ProfileCategory handleChange={ this.handleChanges }/>

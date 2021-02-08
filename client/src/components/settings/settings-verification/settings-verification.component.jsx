@@ -52,17 +52,19 @@ class SettingsVerification extends React.Component {
 
 		setChefSettings({
 			...this.props.chefSettings,
-			[`${this.state.map[file]}_status`]: 'submitted'
+			[`${ this.state.map[file] }_status`]: 'submitted',
+			[`${ this.state.map[file] }_date`]: new Date()
 		});
 
 		axios.post('setChefFile', {
-			settingsId: settingsId,
-			file: this.state.map[file],
-			fileUrl: fileUrl
-		})
-			.then(response => {
-				console.log(response);
-			})
+				 settingsId: settingsId,
+				 file: this.state.map[file],
+				 data: new Date(),
+				 fileUrl: fileUrl
+			 })
+			 .then(response => {
+				 console.log(response);
+			 })
 	}
 
 	onUploadFile1 = () => this.onUploadFile('file1');
@@ -128,6 +130,19 @@ class SettingsVerification extends React.Component {
 		}
 	}
 
+	getDate = (date) => {
+		if ( !!date === false ) {
+			return null;
+		}
+
+		date = new Date(date);
+		const day = (date.getDate() < 10 ? '0' : '') + date.getDate(),
+			month = (date.getMonth() < 10 ? '0' : '') + (date.getMonth() + 1),
+			yead = date.getFullYear();
+
+		return day + ' / ' + month + ' / ' + yead;
+	}
+
 	render() {
 		let chefSettings = this.props.chefSettings;
 
@@ -160,12 +175,13 @@ class SettingsVerification extends React.Component {
 							{ this.fileData1() }
 						</div>
 					</div>
-					<div className="settings_certificate_title medium_sofia">
+					<div className="settings_certificate_title medium_sofia status_column">
 						STATUS
 						<div className="settings_certificate_status_type medium_sofia">
 							{ this.getStatus(chefSettings.food_license_status) }
 							<br/>
-							<span className="settings_cerficiate_status_date medium_sofia">06 / 06 /2019</span>
+							<span
+								className="settings_cerficiate_status_date medium_sofia">{ this.getDate(chefSettings.food_license_date) }</span>
 						</div>
 					</div>
 					{ this.getStatusIcon(chefSettings.food_license_status) }
@@ -192,12 +208,13 @@ class SettingsVerification extends React.Component {
 							{ this.fileData2() }
 						</div>
 					</div>
-					<div className="settings_certificate_title medium_sofia">
+					<div className="settings_certificate_title medium_sofia status_column">
 						STATUS
 						<div className="settings_certificate_status_type medium_sofia">
 							{ this.getStatus(chefSettings.food_hygeine_certificate_status) }
 							<br/>
-							<span className="settings_cerficiate_status_date medium_sofia">06 / 06 /2019</span>
+							<span
+								className="settings_cerficiate_status_date medium_sofia">{ this.getDate(chefSettings.food_hygeine_certificate_date) }</span>
 						</div>
 					</div>
 					{ this.getStatusIcon(chefSettings.food_hygeine_certificate_status) }
@@ -207,7 +224,7 @@ class SettingsVerification extends React.Component {
 						COPY OF ID
 						<div className='file_upload'>
 							{
-								this.state.file2 ?
+								this.state.file3 ?
 									<div>
 										<div className="save_btn_profile bold_sofia" onClick={ this.onUploadFile3 }>Save
 											changes
@@ -216,20 +233,21 @@ class SettingsVerification extends React.Component {
 									:
 									<div className="container_button">
 										<label className="save_btn_profile save_label bold_sofia"
-											   htmlFor="file2">Upload</label>
-										<input type="file" id="file2" className="file2"
+											   htmlFor="file3">Upload</label>
+										<input type="file" id="file3" className="file2"
 											   onChange={ this.onFileChange3 }/>
 									</div>
 							}
 							{ this.fileData3() }
 						</div>
 					</div>
-					<div className="settings_certificate_title medium_sofia">
+					<div className="settings_certificate_title medium_sofia status_column">
 						STATUS
 						<div className="settings_certificate_status_type medium_sofia">
 							{ this.getStatus(chefSettings.copy_of_id_status) }
 							<br/>
-							<span className="settings_cerficiate_status_date medium_sofia">06 / 06 /2019</span>
+							<span
+								className="settings_cerficiate_status_date medium_sofia">{ this.getDate(chefSettings.copy_of_id_date) }</span>
 						</div>
 					</div>
 					{ this.getStatusIcon(chefSettings.copy_of_id_status) }

@@ -1,6 +1,126 @@
 const express = require('express');
 const router = express.Router();
 
+router.post('/deleteCategory', (req, res) => {
+	const { chefId, categoryId, categoryIndex, menuId } = req.body;
+
+	if ( !!chefId === false || !!categoryId === false ) {
+		return res.status(400).json({ err: "Invalid parameters" });
+	}
+
+	getChef(chefId)
+		.then(chef => {
+			getMenuCategory(categoryId)
+				.then(category => {
+					const Dish = Parse.Object.extend("Dish");
+					const queryDish = new Parse.Query(Dish);
+
+					queryDish.equalTo("chef", chef);
+					queryDish.equalTo("category", category);
+
+					queryDish.count()
+							 .then(result => {
+								 if ( result !== 0 && !!categoryIndex === false ) {
+									 return res.status(400).json({
+										 err: "Seems like you still got some dishes in this category.",
+										 confirmation: 1
+									 })
+								 }
+
+								 if ( !!menuId === false ) {
+									 return res.status(400).json({ err: "Your session seems corrupted. Please logout and login." });
+								 }
+
+								 getRecordById("Menu", menuId)
+									 .then(menu => {
+										 deleteCategory(categoryId)
+											 .then(() => {
+												 const categories = menu.get("categories");
+												 const queryCategories = categories.query();
+
+												 queryCategories.ascending("index");
+
+												 queryCategories.find().then(categories => {
+													 let promises = [];
+
+													 categories.forEach((category, index) => {
+														 promises.push(new Promise(resolve => {
+															 category.set("index", index);
+
+															 category.save().then(() => resolve());
+														 }))
+													 });
+
+													 Promise.all(promises)
+															.then(results => {
+																res.status(200).json({ msg: "Category was deleted successful." });
+															})
+												 })
+											 })
+											 .catch(err => {
+												 return res.status(400).json({ err: err });
+											 });
+									 })
+									 .catch(err => {
+										 return res.status(400).json({ err: err });
+									 })
+
+							 });
+				})
+				.catch(err => {
+					return res.status(400).json({ err: err });
+				});
+		})
+		.catch(err => {
+			return res.status(400).json({ err: err });
+		});
+});
+
+function deleteCategory1(categoryId) {
+	return new Promise((resolve, reject) => {
+		getMenuCategory(categoryId)
+			.then(category => {
+				deleteDishes(category.get("dishes").query().find());
+
+				category.destroy()
+						.then(category => {
+							resolve();
+						})
+						.catch(err => reject("There was an error when deleting category."));
+			})
+			.catch(err => {
+				reject("Something went wrong when deleting category.")
+			});
+	});
+}
+
+function getChef(chefId) {
+	return getRecordById("Chef", chefId);
+}
+
+function getMenuCategory(categoryId) {
+	return getRecordById("MenuCategory", categoryId);
+}
+
+function getRecordById(collection, objectId) {
+	return new Promise((resolve, reject) => {
+		const Collection = Parse.Object.extend(collection);
+		const queryCollection = new Parse.Query(Collection);
+
+		queryCollection.get(objectId)
+					   .then(result => resolve(result))
+					   .catch(err => reject(`Something went wrong when searching in ${ collection }`));
+	});
+}
+
+function deleteDishes1(dishesPromise) {
+	dishesPromise.then(dishes => {
+		dishes.forEach(dish => {
+			dish.destroy();
+		});
+	});
+}
+
 router.post('/getMenu', async (req, res) => {
 	const { menuId } = req.body;
 
@@ -11,10 +131,11 @@ router.post('/getMenu', async (req, res) => {
 
 			categories.forEach(category => {
 				promises.push(new Promise(resolve => {
-					const categoryDishes = category.relation('dishes');
+					const categoryDishes = category.relation('dishes').query();
 
-					categoryDishes.query()
-								  .find()
+					categoryDishes.equalTo("deleted", undefined);
+
+					categoryDishes.find()
 								  .then(dishes => {
 									  resolve({
 										  category: {
@@ -74,17 +195,127 @@ router.post('/getDish', (req, res) => {
 });
 
 router.post('/saveCategories', (req, res) => {
-	const { menuId, categories } = req.body;
+	const { menuId, categories, deleted, confirmed } = req.body;
 
 	getMenu(menuId)
 		.then(menu => {
 			getCategories(menu)
-				.then(dbCategories => categoriesSyncer(menu, dbCategories, categories))
+				.then(dbCategories => categoriesSyncer(menu, dbCategories, categories, deleted))
+				.then(result => deleteCategories(deleted, confirmed))
 				.then(synced => {
-					res.status(200).json({ synced: synced });
+					res.status(200).json({ synced: true });
+				})
+				.catch(err => {
+					res.status(400).json(err);
 				});
 		});
 });
+
+function deleteCategories(categories, confirmed) {
+	if ( categories.length === 0 ) {
+		return;
+	}
+
+	return new Promise((resolve, reject) => {
+		let promises = [];
+
+		categories.filter(category => !!category.objectId).forEach(category => {
+			promises.push(deleteCategory(category, confirmed));
+		});
+
+		Promise.all(promises)
+			   .then(results => {
+				   resolve();
+			   })
+			   .catch(err => {
+				   reject(err);
+			   })
+	});
+}
+
+function deleteCategory(categoryId, confirmed) {
+	return new Promise((resolve, reject) => {
+		getMenuCategory(categoryId.objectId)
+			.then(category => {
+				deleteCheckDishes(category, confirmed)
+					.then(result => {
+						deleteCategoryConfirmed(category)
+							.then(category => {
+								resolve();
+							})
+							.catch(err => {
+								reject(err);
+							});
+					})
+					.catch(err => {
+						reject(err);
+					});
+			})
+			.catch(err => {
+				reject({ err: "Category was not found." })
+			});
+	});
+}
+
+function deleteCategoryConfirmed(category) {
+	return new Promise((resolve, reject) => {
+		category.set("deleted", new Date());
+		category.save()
+				.then(category => {
+					resolve(category);
+				})
+				.catch(err => {
+					reject(err);
+				})
+	});
+}
+
+function deleteCheckDishes(category, confirmed) {
+	return new Promise((resolve, reject) => {
+		category.get("dishes")
+				.query()
+				.find()
+				.then(dishes => {
+					if ( dishes.length !== 0 && !!confirmed === false ) {
+						return reject({err: "Seems like you still got some dishes in selected category to be deleted", confirmation: 1});
+					}
+
+					deleteDishes(dishes)
+						.then(result => {
+							resolve();
+						})
+						.catch(err => {
+							reject(err);
+						})
+				})
+				.catch(err => reject({ err: "Something went wrong when searching for dishes." }))
+	});
+}
+
+function deleteDishes(dishes) {
+	return new Promise(resolve => {
+		let promises = [];
+
+		dishes.forEach(dish => {
+			promises.push(new Promise(resolve1 => {
+				dish.set("deleted", new Date());
+				dish.save()
+					.then(dish => {
+						resolve1();
+					})
+					.catch(err => {
+					});
+			}))
+		});
+
+		Promise.all(promises)
+			   .then(result => {
+				   resolve();
+			   })
+			   .catch(err => {
+			   });
+	});
+}
 
 router.post('/addDish', (req, res) => {
 	const { dishId } = req.body;
@@ -97,33 +328,15 @@ router.post('/addDish', (req, res) => {
 });
 
 addDish = (req, res) => {
-	const { fileAdded } = req.body;
-
-	if ( fileAdded === 'true' ) {
-		saveImage(req.files.file)
-			.then(photoUrl => {
-				saveDish(req, res, photoUrl);
-			});
-	} else {
-		saveDish(req, res);
-	}
+	saveDish(req, res);
 }
 
 editDish = (req, res) => {
-	const { fileAdded } = req.body;
-
-	if ( fileAdded === 'true' ) {
-		saveImage(req.files.file)
-			.then(photoUrl => {
-				saveEditedDish(req, res, photoUrl);
-			});
-	} else {
-		saveEditedDish(req, res);
-	}
+	saveEditedDish(req, res);
 }
 
-function saveEditedDish(req, res, photoUrl = null) {
-	const { name, price, allergen, description, dishId } = req.body;
+function saveEditedDish(req, res) {
+	const { name, price, allergen, description, dishId, file } = req.body;
 
 	const Dish = Parse.Object.extend("Dish");
 	const dishQuery = new Parse.Query(Dish);
@@ -134,10 +347,7 @@ function saveEditedDish(req, res, photoUrl = null) {
 				 dish.set("name", name);
 				 dish.set("allergens", allergen);
 				 dish.set("description", description);
-
-				 if ( photoUrl !== null ) {
-					 dish.set("imgURL", photoUrl);
-				 }
+				 dish.set("imgURL", file);
 
 				 dish.save()
 					 .then(updatedDish => {
@@ -146,8 +356,8 @@ function saveEditedDish(req, res, photoUrl = null) {
 			 });
 }
 
-function saveDish(req, res, photoUrl = null) {
-	const { name, price, allergen, description, chefId, categoryId } = req.body;
+function saveDish(req, res) {
+	const { name, price, allergen, description, chefId, categoryId, file } = req.body;
 
 	const Chef = Parse.Object.extend("Chef");
 	const queryChef = new Parse.Query(Chef);
@@ -169,10 +379,7 @@ function saveDish(req, res, photoUrl = null) {
 								  dish.set("allergens", allergen);
 								  dish.set("description", description);
 								  dish.set("category", category);
-
-								  if ( photoUrl !== null ) {
-									  dish.set("imgURL", photoUrl);
-								  }
+								  dish.set("imgURL", file);
 
 								  dish.save()
 									  .then(newDish => {
@@ -203,17 +410,31 @@ function saveImage(file) {
 	});
 }
 
-categoriesSyncer = (menu, dbCategories, categories) => {
+categoriesSyncer = (menu, dbCategories, categories, deleted) => {
 	return new Promise(resolve => {
 		const MenuCategory = Parse.Object.extend("MenuCategory");
-
 		let promises = [];
 
 		categories.forEach((category, index, arr) => {
 			promises.push(new Promise(resolve => {
 				let selectedDbCategory = dbCategories[index];
-
 				if ( category.new ) {
+
+					if ( deleted.length > 0 ) {
+						let found = false;
+
+						for ( let i = 0; i <= deleted.length; i++ ) {
+							if ( category.name === deleted[i].name ) {
+								found = true;
+								break;
+							}
+						}
+
+						if ( found ) {
+							resolve();
+						}
+					}
+
 					// insert new category
 					let indexNew = dbCategories.length;
 
@@ -261,6 +482,7 @@ getCategories = menu => {
 		const menuCategories = menu.relation('categories');
 
 		menuCategories.query()
+					  .equalTo('deleted', undefined)
 					  .ascending('index')
 					  .find()
 					  .then(categories => resolve(categories));

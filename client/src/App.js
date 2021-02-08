@@ -2,10 +2,13 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from "reselect";
+import {Howl, Howler} from 'howler';
+import NotificationSound from './assets/sounds/good_notification.mp3';
+import axios from "axios";
 
 import './App.css';
 
-import { selectCurrentUser } from './redux/user/user.selectors';
+import { selectCurrentUser, selectChefId } from './redux/user/user.selectors';
 
 import SideMenu from "./components/sidemenu/sidemenu/sidemenu.component";
 
@@ -23,10 +26,60 @@ import HowItWorksPage from "./pages/noAuth/how-it-works/how-it-works.component";
 import Login from "./pages/noAuth/login/login.component";
 import Register from "./pages/noAuth/register/register.component";
 import Footer from "./components/footer/footer.component";
+import TermsAndConditions from "./pages/noAuth/terms-and-conditions/terms-and-conditions.components";
+import Privacy from "./pages/noAuth/privacy/privacy.component";
+import { fetchOrdersStart, fetchOrdersStartAsync } from "./redux/orders/orders.actions";
 
 class App extends React.Component {
 
+	playSound = () => {
+		const audio = new Howl({ src: [NotificationSound]});
+		audio.play().resume();
+	}
+
 	render() {
+		const { currentUser } = this.props;
+
+		if ( !!currentUser ) {
+			let chefId = currentUser.user.objectId,
+				chefEmail = currentUser.user.email,
+				chefName = currentUser.chef.name,
+				chefIdReal = currentUser.user.chef.objectId;
+
+			window.Intercom('boot', {
+				app_id: 'diyaphva',
+				email: chefEmail,
+				user_id: chefId,
+				name: chefName
+			});
+			window.Intercom("update");
+
+			setInterval(() => {
+				axios.get(`/orders/new?chefId=${ chefIdReal }`)
+					 .then(response => response.data)
+					 .then(data => data.count)
+					 .then(count => {
+						 if ( count === 0 ) {
+							 return;
+						 }
+
+						 let { fetchOrdersStartAsync, isFetching } = this.props;
+
+						 if ( !isFetching ) {
+							 fetchOrdersStartAsync(chefIdReal);
+						 }
+
+						 this.playSound();
+					 })
+					 .catch(err => {
+					 })
+			},  50000);
+		} else {
+			window.Intercom('update', {
+				"hide_default_launcher": true
+			});
+		}
+
 		return (
 			<div>
 				{
@@ -52,8 +105,10 @@ class App extends React.Component {
 								<Route exact path='/' component={ IndexPage }/>
 								<Route exact path='/our-story' component={ OurStoryPage }/>
 								<Route exact path='/how-it-works' component={ HowItWorksPage }/>
-								{/*<Route exact path='/login' component={ Login }/>*/}
-								{/*<Route exact path='/register' component={ Register }/>*/}
+								<Route exact path='/login' component={ Login }/>
+								<Route exact path='/register' component={ Register }/>
+								<Route exact path='/terms-and-conditions' component={ TermsAndConditions }/>
+								<Route exact path='/privacy' component={ Privacy }/>
 								<Redirect from='*' to='/'/>
 							</Switch>
 							<Footer/>
@@ -65,7 +120,15 @@ class App extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-	currentUser: selectCurrentUser
+	currentUser: selectCurrentUser,
+	// chefId: selectChefId,
+	// chefEmail: selectUserEmail,
+	// chefName: selectChefName
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => ({
+	fetchOrdersStart: () => dispatch(fetchOrdersStart()),
+	fetchOrdersStartAsync: chefId => dispatch(fetchOrdersStartAsync(chefId))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
