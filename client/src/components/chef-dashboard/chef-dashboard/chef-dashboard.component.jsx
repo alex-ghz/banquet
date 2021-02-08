@@ -55,8 +55,12 @@ const ChefDashboard = ({ dashboardNotification }) => {
 					smallCards.map(card => (<ChefDashboardCardSmall key={ card.id } { ...card }/>))
 				}
 			</div>
-			<Reviews/>
-			<GettingStarted/>
+			{/*<Reviews/>*/ }
+			{
+				!!dashboardNotification === false
+				|| dashboardNotification === false ? <GettingStarted/>
+					: null
+			}
 		</div>
 	);
 };
