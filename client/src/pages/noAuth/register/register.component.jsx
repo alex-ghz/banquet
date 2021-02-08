@@ -49,7 +49,6 @@ class Register extends React.Component {
 									 setCurrentUser(user);
 								 })
 								 .catch((err) => {
-									 console.log(err.response);
 									 this.setState({
 										 err: [err.response.data.msg]
 									 });

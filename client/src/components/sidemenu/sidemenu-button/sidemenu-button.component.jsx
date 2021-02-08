@@ -7,7 +7,7 @@ import './sidemenu-button.styles.scss';
 
 import { setCurrentPage } from "../../../redux/page/page.actions";
 import { createStructuredSelector } from "reselect";
-import { selectNewOrders } from "../../../redux/orders/orders.selectors";
+import { selectAllOrders } from "../../../redux/orders/orders.selectors";
 
 class SideMenuButton extends React.Component {
 
@@ -33,7 +33,7 @@ class SideMenuButton extends React.Component {
 	}
 
 	render() {
-		const newOrders = this.props.orders.length;
+		const newOrders = !!this.props.orders ? (!!this.props.orders.new ? this.props.orders.new.length : 0) : 0
 
 		return (
 			<div className='menu-button'>
@@ -54,7 +54,7 @@ class SideMenuButton extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-	orders: selectNewOrders
+	orders: selectAllOrders
 });
 
 const mapDispatchProps = dispatch => ({
