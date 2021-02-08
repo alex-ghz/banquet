@@ -46,3 +46,8 @@ export const selectOrderDetails = createSelector(
 	[selectOrders],
 	orders => orders.orderDetails
 );
+
+export const selectNewOrders = createSelector(
+	[selectOrders],
+	orders => orders.orders.new
+);

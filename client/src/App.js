@@ -2,10 +2,13 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from "reselect";
+import {Howl, Howler} from 'howler';
+import NotificationSound from './assets/sounds/good_notification.mp3';
+import axios from "axios";
 
 import './App.css';
 
-import { selectCurrentUser, selectUserEmail, selectChefId, selectChefName } from './redux/user/user.selectors';
+import { selectCurrentUser, selectChefId } from './redux/user/user.selectors';
 
 import SideMenu from "./components/sidemenu/sidemenu/sidemenu.component";
 
@@ -25,8 +28,14 @@ import Register from "./pages/noAuth/register/register.component";
 import Footer from "./components/footer/footer.component";
 import TermsAndConditions from "./pages/noAuth/terms-and-conditions/terms-and-conditions.components";
 import Privacy from "./pages/noAuth/privacy/privacy.component";
+import { fetchOrdersStart, fetchOrdersStartAsync } from "./redux/orders/orders.actions";
 
 class App extends React.Component {
+
+	playSound = () => {
+		const audio = new Howl({ src: [NotificationSound]});
+		audio.play().resume();
+	}
 
 	render() {
 		const { currentUser } = this.props;
@@ -34,7 +43,8 @@ class App extends React.Component {
 		if ( !!currentUser ) {
 			let chefId = currentUser.user.objectId,
 				chefEmail = currentUser.user.email,
-				chefName = currentUser.chef.name;
+				chefName = currentUser.chef.name,
+				chefIdReal = currentUser.user.chef.objectId;
 
 			window.Intercom('boot', {
 				app_id: 'diyaphva',
@@ -43,6 +53,27 @@ class App extends React.Component {
 				name: chefName
 			});
 			window.Intercom("update");
+
+			setInterval(() => {
+				axios.get(`/orders/new?chefId=${ chefIdReal }`)
+					 .then(response => response.data)
+					 .then(data => data.count)
+					 .then(count => {
+						 if ( count === 0 ) {
+							 return;
+						 }
+
+						 let { fetchOrdersStartAsync, isFetching } = this.props;
+
+						 if ( !isFetching ) {
+							 fetchOrdersStartAsync(chefIdReal);
+						 }
+
+						 this.playSound();
+					 })
+					 .catch(err => {
+					 })
+			},  50000);
 		} else {
 			window.Intercom('update', {
 				"hide_default_launcher": true
@@ -95,4 +126,9 @@ const mapStateToProps = createStructuredSelector({
 	// chefName: selectChefName
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => ({
+	fetchOrdersStart: () => dispatch(fetchOrdersStart()),
+	fetchOrdersStartAsync: chefId => dispatch(fetchOrdersStartAsync(chefId))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
