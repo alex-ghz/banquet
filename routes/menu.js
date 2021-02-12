@@ -343,7 +343,7 @@ function saveEditedDish(req, res) {
 
 	dishQuery.get(dishId)
 			 .then(dish => {
-				 dish.set("price", parseInt(price, 10));
+				 dish.set("price", parseFloat(price));
 				 dish.set("name", name);
 				 dish.set("allergens", allergen);
 				 dish.set("description", description);
@@ -373,7 +373,7 @@ function saveDish(req, res) {
 								  const dish = new Dish();
 
 								  dish.set("chef", chef);
-								  dish.set("price", parseInt(price, 10));
+								  dish.set("price", parseFloat(price));
 								  dish.set("available", false);
 								  dish.set("name", name);
 								  dish.set("allergens", allergen);
