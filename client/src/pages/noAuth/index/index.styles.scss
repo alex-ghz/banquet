@@ -134,6 +134,13 @@
   object-fit: cover;
 }
 
+.index_icon {
+  font-size: 140pt;
+  padding-top: 30px;
+  padding-left: 50px;
+  color: #fe1759;
+}
+
 .index_last_text {
   color: #2c2c2c;
   font-size: 30pt;
@@ -149,4 +156,32 @@
   position: absolute;
   bottom: 40pt;
   left: 45%;
+}
+
+@media screen and (max-width: 600px) {
+  .index_logo_section {
+    display: block;
+  }
+
+  .index_logo_container {
+    width: 100%;
+  }
+
+  .index_third_img {
+    display: none;
+  }
+
+  .index_third_content {
+    width: 100%;
+  }
+
+  .index_last_text {
+    padding: 0;
+    width: 100%;
+    margin: 30px;
+  }
+
+  .last_btn_home {
+    left: 19%;
+  }
 }

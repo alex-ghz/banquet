@@ -16,10 +16,10 @@ const Header = () => (
 				<li className="site_menu_item medium_sofia">
 					<Link to='/how-it-works'>How it works</Link>
 				</li>
-				<li className="site_menu_item medium_sofia">
+				<li className="site_menu_item medium_sofia header_hide_option">
 					<Link to='/register'>Become a Banquet Chef</Link>
 				</li>
-				<li className="site_menu_item site_menu_item_login medium_sofia">
+				<li className="site_menu_item site_menu_item_login medium_sofia header_hide_option">
 					<Link to='/login'>Chef Log In</Link>
 				</li>
 			</ul>

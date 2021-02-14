@@ -1,21 +1,25 @@
 .site_page_title_container {
   background: #effaff;
 }
+
 .site_page_title {
   font-size: 40pt;
   width: 90%;
   margin: 0 auto;
   padding: 49pt 0 49pt 0;
 }
+
 .how_it_works {
   display: flex;
   width: 50%;
   margin: 0 auto;
   padding-left: 35%;
 }
+
 .how_it_works_circles {
   padding-right: 70pt;
 }
+
 .circle {
   position: relative;
   border: 2px solid #a6c9db;
@@ -27,6 +31,7 @@
   background-color: #a6c9db;
   z-index: 2;
 }
+
 .circle:before {
   position: absolute;
   border: 1px solid #a6c9db;
@@ -39,33 +44,52 @@
   top: -230pt;
   margin-left: -1px;
 }
+
 .circle:first-child {
   margin-top: 150pt;
 }
+
 .circle:first-child:before {
   display: none;
 }
+
 .works_page_inner_element {
   display: flex;
 }
+
 .works_page_container {
   border: 2pt solid #a6c9db;
   border-radius: 15pt;
   margin-bottom: 85pt;
 }
+
 .works_first_container {
   margin-top: 76pt;
 }
+
 .works_last_container {
   margin-bottom: 125pt;
 }
+
 .works_page_cont_title {
   font-size: 20pt;
   padding: 25pt 0 12pt 30pt;
 }
+
 .works_page_cont_content {
   font-size: 15pt;
   color: #515151;
   line-height: 22pt;
   padding: 0pt 37pt 25pt 30pt;
+}
+
+@media screen and (max-width: 600px) {
+  .how_it_works_circles {
+    display: none;
+  }
+
+  .how_it_works {
+    padding-left: 0;
+    width: 85%;
+  }
 }

@@ -30,8 +30,8 @@ const Footer = () => (
 				<div className="footer_copyright_items medium_sofia">
 					<div className="footer_bottom_item">&#169; 2020 Banquet Technologies. All rights reserved. <span
 						className="copy_symbol">&#9679;</span></div>
-					<div className="footer_bottom_item">Privacy <span className="copy_symbol">&#9679;</span></div>
-					<div className="footer_bottom_item">Terms <span className="copy_symbol">&#9679;</span></div>
+					<Link className="footer_bottom_item footer_bottom_item_pad" to='/privacy'>Privacy <span className="copy_symbol">&#9679;</span></Link>
+					<Link className="footer_bottom_item" to='/terms-and-conditions'>Terms <span className="copy_symbol">&#9679;</span></Link>
 				</div>
 				<div className="footer_social_media">
 					<FaFacebook className='logo_footer'/>

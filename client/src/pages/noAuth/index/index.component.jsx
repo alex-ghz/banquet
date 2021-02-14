@@ -1,8 +1,9 @@
 import React from 'react';
 
 import Main1 from '../../../assets/images/main-1.jpg';
-import Main2 from '../../../assets/images/main-2.jpg'
-import Main3 from '../../../assets/images/main-3.jpg'
+import Main2 from '../../../assets/images/main-2.jpg';
+import Main3 from '../../../assets/images/main-3.jpg';
+import { BiSearchAlt, FaPiggyBank, SiCodechef } from "react-icons/all";
 
 import './index.styles.scss';
 
@@ -24,15 +25,21 @@ const IndexPage = () => (
 		</div>
 		<div className="index_logo_section">
 			<div className="index_logo_container">
-				<div className="index_logo_border"/>
+				<div className="index_logo_border">
+					<BiSearchAlt className='index_icon'/>
+				</div>
 				<p className="index_logo_text bold_sofia">Discover an abundance of tasty dishes on your doorstep</p>
 			</div>
 			<div className="index_logo_container">
-				<div className="index_logo_border"/>
+				<div className="index_logo_border">
+					<FaPiggyBank className='index_icon'/>
+				</div>
 				<p className="index_logo_text bold_sofia">Save money eating from local chefs</p>
 			</div>
 			<div className="index_logo_container">
-				<div className="index_logo_border"/>
+				<div className="index_logo_border">
+					<SiCodechef className='index_icon'/>
+				</div>
 				<p className="index_logo_text bold_sofia">Unlimited opportunity as a Banquet Chef - earn as you cook</p>
 			</div>
 		</div>

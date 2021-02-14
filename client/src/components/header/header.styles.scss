@@ -29,3 +29,26 @@
   border-radius: 20px;
   padding: 4pt 15pt;
 }
+
+@media screen and (max-width: 600px) {
+  .header_hide_option {
+    display: none;
+  }
+
+  .site_menu_section {
+    display: block;
+  }
+
+  .site_menu_item {
+    margin: 0 15pt 0 0;
+  }
+
+  .site_menu_section {
+    margin: 24pt auto 0;
+  }
+
+  .site_menu_list {
+    padding-left: 0;
+  }
+
+}
