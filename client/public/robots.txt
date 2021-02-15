@@ -1,3 +1,16 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Disallow:/home
+Disallow:/home/reviews
+Disallow:/orders
+Disallow:/menu
+Disallow:/profile
+Disallow:/settings
+Disallow:/our-story
+Disallow:/how-it-works
+Disallow:/login
+Disallow:/register
+Disallow:/terms-and-conditions
+Disallow:/privacy
+Disallow:/api
+Disallow:/upload

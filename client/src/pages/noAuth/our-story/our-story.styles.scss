@@ -92,3 +92,26 @@
 .site_page_title_new {
   width: 75%;
 }
+
+@media screen and (max-width: 820px) {
+  .story_page_image,
+  .story_page_image_second,
+  .story_page_image_third {
+    display: none;
+  }
+
+  .story_page_text_container_first,
+  .story_page_text_container_second {
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .story_page_text {
+    font-size: 12pt;
+  }
+
+  .story_page_section_title {
+    font-size: 20pt;
+  }
+}

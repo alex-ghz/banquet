@@ -56,3 +56,34 @@
   padding: 0 12pt 0 12pt;
   cursor: pointer;
 }
+
+@media screen and (max-width: 820px) {
+  .copy_symbol {
+    display: none;
+  }
+
+  .footer_copyright_items {
+    display: block;
+  }
+
+  .footer_bottom {
+    display: block;
+    text-align: center;
+  }
+
+  .footer_social_media {
+    padding-top: 20px;
+  }
+
+  .footer_list {
+    justify-content: space-around;
+  }
+
+  .footer_list_inner {
+    padding-right: 0;
+  }
+
+  .footer_bottom_item_pad {
+    padding-right: 10px;
+  }
+}
