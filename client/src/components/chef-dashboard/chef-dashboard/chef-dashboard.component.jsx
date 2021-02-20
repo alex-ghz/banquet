@@ -11,6 +11,7 @@ import GettingStarted from "../../getting-started/getting-started.component";
 import ChefDashboardNotification from "../chef-dashboard-notification/chef-dashboard-notification.component";
 import { selectIsUserActivated } from "../../../redux/user/user.selectors";
 import { selectChefId } from "../../../redux/user/user.selectors";
+import { getDashboardNotification } from "../../../redux/notification/notification.selectors";
 
 class ChefDashboard extends React.Component {
 
@@ -73,8 +74,9 @@ class ChefDashboard extends React.Component {
 		return (
 			<div className='home_section_inner'>
 				{
-					!!this.props.dashboardNotification === false
-					|| this.props.dashboardNotification === false ? <ChefDashboardNotification/> : null
+					(!!this.props.dashboardNotification === false
+						|| this.props.dashboardNotification === false)
+					&& this.props.getDashboardNotification === true ? <ChefDashboardNotification/> : null
 				}
 				<div className="day_moment sb_sofia">
 					{/*<AiOutlineLeft/>*/ }
@@ -99,6 +101,7 @@ class ChefDashboard extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
 	dashboardNotification: selectIsUserActivated,
+	getDashboardNotification: getDashboardNotification,
 	chefId: selectChefId
 });
 
