@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from "reselect";
-import {Howl, Howler} from 'howler';
+import { Howl, Howler } from 'howler';
 import NotificationSound from './assets/sounds/good_notification.mp3';
 import axios from "axios";
 
@@ -33,7 +33,7 @@ import { fetchOrdersStart, fetchOrdersStartAsync } from "./redux/orders/orders.a
 class App extends React.Component {
 
 	playSound = () => {
-		const audio = new Howl({ src: [NotificationSound]});
+		const audio = new Howl({ src: [NotificationSound] });
 		audio.play().resume();
 	}
 
@@ -41,6 +41,13 @@ class App extends React.Component {
 		const { currentUser } = this.props;
 
 		if ( !!currentUser ) {
+			let activated = currentUser.user.activated;
+
+			if ( !!activated === false || activated === false ) {
+				localStorage.clear();
+				window.location.href = '/';
+			}
+
 			let chefId = currentUser.user.objectId,
 				chefEmail = currentUser.user.email,
 				chefName = currentUser.chef.name,
@@ -73,7 +80,7 @@ class App extends React.Component {
 					 })
 					 .catch(err => {
 					 })
-			},  4 * 60000);
+			}, 4 * 60000);
 		} else {
 			window.Intercom('update', {
 				"hide_default_launcher": true
