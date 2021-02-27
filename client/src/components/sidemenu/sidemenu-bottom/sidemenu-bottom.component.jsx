@@ -69,12 +69,11 @@ class SideMenuBottom extends React.Component {
 		branch.init('key_live_mdXaxuRyfL4Tla3nkRpk5kefqwmrjYsS');
 
 		var linkData = {
-			alias: this.props.chefName.replace(/\s+/g, '').concat(this.props.chefId.substr(0, 4)),
+			alias: this.props.chefName.replace(/\s+/g, '').concat(this.props.chefId.substr(0, 5)),
 			data: {
 				chefId: this.props.chefId
 			}
 		};
-
 		branch.link(linkData, function (err, link) {
 			if ( err ) {
 				return Swal.fire({
