@@ -41,12 +41,12 @@ class App extends React.Component {
 		const { currentUser } = this.props;
 
 		if ( !!currentUser ) {
-			let activated = currentUser.user.activated;
-
-			if ( !!activated === false || activated === false ) {
-				localStorage.clear();
-				window.location.href = '/';
-			}
+			// let activated = currentUser.user.activated;
+			//
+			// if ( !!activated === false || activated === false ) {
+			// 	localStorage.clear();
+			// 	window.location.href = '/';
+			// }
 
 			let chefId = currentUser.user.objectId,
 				chefEmail = currentUser.user.email,

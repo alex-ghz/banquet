@@ -151,13 +151,13 @@ function sendGeneratedUser(user, res) {
 			 .then((result) => {
 				 user.chef = result[0].attributes;
 
-				 const activated = user.user.get("activated");
-
-				 if ( !!activated === false && activated === false ) {
-				 	return res.status(400).json({
-				 	msg: "Thank you for creating an account with Banquet. We'll contact you shortly in order to activate your account!"
-				 });
-				 }
+				 // const activated = user.user.get("activated");
+				 //
+				 // if ( !!activated === false && activated === false ) {
+				 // 	return res.status(400).json({
+				 // 	msg: "Thank you for creating an account with Banquet. We'll contact you shortly in order to activate your account!"
+				 // });
+				 // }
 
 				 const ChefSettings = Parse.Object.extend("ChefSettings");
 				 const queryChefSettings = new Parse.Query(ChefSettings);
