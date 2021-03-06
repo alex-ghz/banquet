@@ -54,7 +54,7 @@ const parse = new ParseServer({
 			{
 				pfx: 'banquetStaging.p12', // Dev PFX or P12
 				bundleId: process.env.BUNDLE_ID || '',
-				production: true // Dev
+				production: false // Dev
 			},
 			{
 				pfx: 'banquetProd.p12', // Prod PFX or P12
