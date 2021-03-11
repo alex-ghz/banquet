@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { FaCamera, FaPoundSign } from "react-icons/all";
 import { createStructuredSelector } from "reselect";
 
-
 import './addDish.styles.scss';
 
 import { selectChefId, selectCurrentUserMenuId } from "../../../redux/user/user.selectors";
@@ -24,9 +23,17 @@ class AddDish extends React.Component {
 			name: '',
 			price: '',
 			allergen: '',
-			description: ''
+			description: '',
+			preorder: {
+				on: false,
+				days: 0,
+				hours: 0,
+				minutes: 0
+			}
 		};
 
+		this.handleInputChangePreorderCheckbox = this.handleInputChangePreorderCheckbox.bind(this);
+		this.handleInputChangePreorder = this.handleInputChangePreorder.bind(this);
 		this.handleImageUpload = this.handleImageUpload.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleSaveDish = this.handleSaveDish.bind(this);
@@ -40,20 +47,51 @@ class AddDish extends React.Component {
 			return;
 		}
 
-
 		axios.post('/menu/getDish', {
 				 dishId: dishId
 			 })
 			 .then(response => response.data)
 			 .then(data => data.dish)
 			 .then(dish => {
+				 let preorder = {
+					 on: false,
+					 days: 0,
+					 hours: 0,
+					 minutes: 0
+				 }
+
+				 if ( !!dish.preorder && dish.preorder ) {
+					 debugger;
+
+					 const days = Math.floor(dish.preorderValue / 86400);
+					 dish.preorderValue -= days * 86400;
+
+					 const hours = Math.floor(dish.preorderValue / 3600) % 24;
+					 dish.preorderValue -= hours * 3600;
+
+					 const minutes = Math.floor(dish.preorderValue / 60) % 60;
+					 dish.preorderValue -= minutes * 60;
+
+					 preorder = {
+						on: dish.preorder,
+						days: days,
+						hours: hours,
+						minutes: minutes
+					}
+
+				 }
+
 				 this.setState({
 					 objectId: dishId,
 					 imageUrl: !!dish.imgURL ? dish.imgURL : null,
 					 name: !!dish.name ? dish.name : null,
 					 price: !!dish.price ? dish.price : null,
 					 allergen: !!dish.allergens ? dish.allergens : null,
-					 description: !!dish.description ? dish.description : ''
+					 description: !!dish.description ? dish.description : '',
+					 preorder: preorder,
+				 }, () => {
+					 console.log(preorder);
+				 	debugger;
 				 });
 			 })
 	}
@@ -100,6 +138,28 @@ class AddDish extends React.Component {
 		this.setState({ [name]: value });
 	}
 
+	handleInputChangePreorder(event) {
+		const { value, name } = event.target;
+
+		this.setState({
+			preorder: {
+				...this.state.preorder,
+				[name]: value
+			}
+		});
+	}
+
+	handleInputChangePreorderCheckbox(event) {
+		const { checked, name } = event.target;
+		debugger;
+		this.setState({
+			preorder: {
+				...this.state.preorder,
+				[name]: checked
+			}
+		});
+	}
+
 	handleCancel() {
 		this.setState({
 			objectId: null,
@@ -123,6 +183,7 @@ class AddDish extends React.Component {
 		formData.append("price", this.state.price);
 		formData.append("allergen", this.state.allergen);
 		formData.append("description", this.state.description);
+		formData.append("preorder", JSON.stringify(this.state.preorder));
 		formData.append("chefId", this.props.selectChefId);
 		formData.append("categoryId", this.props.selectedCategory.category.objectId);
 
@@ -161,11 +222,13 @@ class AddDish extends React.Component {
 						</div>
 						<div className="div_item_name_popup">
 							<p className="item_name_popup medium_sofia">ITEM NAME</p>
-							<input name="name" type="text" defaultValue={ this.state.name } onChange={ this.handleInputChange }
+							<input name="name" type="text" defaultValue={ this.state.name }
+								   onChange={ this.handleInputChange }
 								   className="popup_item_name sb_sofia"/>
 						</div>
 						<div className="item_description_popup medium_sofia">ITEM PRICE (<FaPoundSign/>)
-							<input name="price" type="number" defaultValue={ this.state.price } onChange={ this.handleInputChange }
+							<input name="price" type="number" defaultValue={ this.state.price }
+								   onChange={ this.handleInputChange }
 								   className="popup_item_price sb_sofia"/>
 						</div>
 						<div className="item_description_popup">
@@ -174,13 +237,87 @@ class AddDish extends React.Component {
 								   onChange={ this.handleInputChange }
 								   className="popup_item_description sb_sofia"/>
 						</div>
-						<div className="item_allergen_popup">
+						<div className="item_description_popup">
 							<div className="item_allergen_tile medium_sofia">ALLERGEN INFO</div>
 							<div className="item_allergens_list">
 								<input placeholder="" name="allergen" type="text" defaultValue={ this.state.allergen }
 									   onChange={ this.handleInputChange }
 									   className="popup_item_description sb_sofia"/>
 							</div>
+						</div>
+						<div className="item_description_popup">
+							<div className="preorder">
+								<div className="item_allergen_tile medium_sofia">PREORDER</div>
+								<label className="switch switch_preorder">
+									<input type="checkbox" name='on' checked={ this.state.preorder.on }
+										   onChange={ this.handleInputChangePreorderCheckbox }/>
+									<span className="slider_menu slider_menu_preorder round"/>
+								</label>
+							</div>
+							{
+								this.state.preorder.on ?
+									<>
+										<div className="item_allergen_tile medium_sofia">MINIMUM ORDER TIME IN ADVANCE
+										</div>
+										<div className='time'>
+											<div className='days'>
+												<div className="item_allergen_tile medium_sofia">Days</div>
+												<select name="days" onChange={ this.handleInputChangePreorder }
+														defaultValue={ this.state.preorder.days }
+														className='selector'>
+													<option value="0">0</option>
+													<option value="1">1</option>
+													<option value="2">2</option>
+													<option value="3">3</option>
+													<option value="4">4</option>
+													<option value="5">5</option>
+												</select>
+											</div>
+											<div className='days'>
+												<div className="item_allergen_tile medium_sofia">Hours</div>
+												<select name="hours" onChange={ this.handleInputChangePreorder }
+														defaultValue={ this.state.preorder.hours }
+														className='selector'>
+													<option value="0">0</option>
+													<option value="1">1</option>
+													<option value="2">2</option>
+													<option value="3">3</option>
+													<option value="4">4</option>
+													<option value="5">5</option>
+													<option value="6">6</option>
+													<option value="7">7</option>
+													<option value="8">8</option>
+													<option value="9">9</option>
+													<option value="10">10</option>
+													<option value="11">11</option>
+													<option value="12">12</option>
+													<option value="13">13</option>
+													<option value="14">14</option>
+													<option value="15">15</option>
+													<option value="16">16</option>
+													<option value="17">17</option>
+													<option value="18">18</option>
+													<option value="19">19</option>
+													<option value="20">20</option>
+													<option value="21">21</option>
+													<option value="22">22</option>
+													<option value="23">23</option>
+												</select>
+											</div>
+											<div className='days'>
+												<div className="item_allergen_tile medium_sofia">Minutes</div>
+												<select name="minutes" onChange={ this.handleInputChangePreorder }
+														defaultValue={ this.state.preorder.minutes }
+														className='selector'>
+													<option value="0">0</option>
+													<option value="30">30</option>
+												</select>
+											</div>
+										</div>
+									</>
+									:
+									null
+							}
 						</div>
 						<div className="popup_add_save_btn medium_sofia" onClick={ this.handleSaveDish }>Save</div>
 						<div className="popup_add_cancel_btn medium_sofia" onClick={ this.handleCancel }>Cancel</div>

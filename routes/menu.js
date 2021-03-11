@@ -277,7 +277,10 @@ function deleteCheckDishes(category, confirmed) {
 				.find()
 				.then(dishes => {
 					if ( dishes.length !== 0 && !!confirmed === false ) {
-						return reject({err: "Seems like you still got some dishes in selected category to be deleted", confirmation: 1});
+						return reject({
+							err: "Seems like you still got some dishes in selected category to be deleted",
+							confirmation: 1
+						});
 					}
 
 					deleteDishes(dishes)
@@ -336,8 +339,9 @@ editDish = (req, res) => {
 }
 
 function saveEditedDish(req, res) {
-	const { name, price, allergen, description, dishId, file } = req.body;
+	const { name, price, allergen, description, dishId, file, preorder } = req.body;
 
+	const parsedPreorder = JSON.parse(preorder);
 	const Dish = Parse.Object.extend("Dish");
 	const dishQuery = new Parse.Query(Dish);
 
@@ -348,6 +352,11 @@ function saveEditedDish(req, res) {
 				 dish.set("allergens", allergen);
 				 dish.set("description", description);
 				 dish.set("imgURL", file);
+				 dish.set("preorder", parsedPreorder.on);
+				 dish.set("preorderValue",
+					 parseInt(parsedPreorder.minutes, 10) * 60
+					 + parseInt(parsedPreorder.hours, 10) * 60 * 60
+					 + parseInt(parsedPreorder.days, 10) * 24 * 60 * 60);
 
 				 dish.save()
 					 .then(updatedDish => {
@@ -357,8 +366,9 @@ function saveEditedDish(req, res) {
 }
 
 function saveDish(req, res) {
-	const { name, price, allergen, description, chefId, categoryId, file } = req.body;
+	const { name, price, allergen, description, chefId, categoryId, file, preorder } = req.body;
 
+	const parsedPreorder = JSON.parse(preorder);
 	const Chef = Parse.Object.extend("Chef");
 	const queryChef = new Parse.Query(Chef);
 
@@ -380,6 +390,10 @@ function saveDish(req, res) {
 								  dish.set("description", description);
 								  dish.set("category", category);
 								  dish.set("imgURL", file);
+								  dish.set("preorder", parsedPreorder.on);
+								  dish.set("preorderValue", parseInt(parsedPreorder.minutes, 10) * 60
+									  + parseInt(parsedPreorder.hours, 10) * 60 * 60
+									  + parseInt(parsedPreorder.days, 10) * 24 * 60 * 60);
 
 								  dish.save()
 									  .then(newDish => {
