@@ -60,17 +60,17 @@ const IndexPage = () => (
 				<img className="index-third-img" src={ Main2 } alt=""/>
 			</div>
 		</div>
-		<div className="index_content_section index_last_content">
-			<div className="index_last bold_sofia">
-				<img className="index-last-img" src={ Main3 } alt=""/>
-				<div className="index_last_text">
-					How joining Banquet is changing lives
-				</div>
-				<div className="banquet_home_button last_btn_home bold_sofia">
-					Testimonials
-				</div>
-			</div>
-		</div>
+		{/*<div className="index_content_section index_last_content">*/}
+		{/*	<div className="index_last bold_sofia">*/}
+		{/*		<img className="index-last-img" src={ Main3 } alt=""/>*/}
+		{/*		<div className="index_last_text">*/}
+		{/*			How joining Banquet is changing lives*/}
+		{/*		</div>*/}
+		{/*		<div className="banquet_home_button last_btn_home bold_sofia">*/}
+		{/*			Testimonials*/}
+		{/*		</div>*/}
+		{/*	</div>*/}
+		{/*</div>*/}
 	</div>
 );
 

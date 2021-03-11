@@ -8,7 +8,7 @@
   border-radius: 10px;
   height: 45px;
   position: absolute;
-  bottom: 90px;
+  bottom: 150px;
   left: 13pt;
 }
 
@@ -59,5 +59,22 @@
   margin: 0 auto;
   position: absolute;
   bottom: 20px;
+  left: 13pt;
+}
+
+.share_profile {
+  background: #ff2d55;
+  font-size: 14pt;
+  padding-top: 13px;
+  color: white;
+  border-radius: 10px;
+  text-align: center;
+  height: 40px;
+  margin-top: 35px;
+  cursor: pointer;
+  width: 86%;
+  margin: 0 auto;
+  position: absolute;
+  bottom: 85px;
   left: 13pt;
 }

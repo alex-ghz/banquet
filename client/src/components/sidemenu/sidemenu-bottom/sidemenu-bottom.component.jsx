@@ -4,10 +4,17 @@ import axios from "axios";
 
 import './sidemenu-bottom.styles.scss';
 
-import { selectUserId, selectChefAcceptingOrders, selectChefId } from "../../../redux/user/user.selectors";
+import {
+	selectUserId,
+	selectChefAcceptingOrders,
+	selectChefId,
+	selectChefName
+} from "../../../redux/user/user.selectors";
 import { setChef } from "../../../redux/user/user.actions";
 import { createStructuredSelector } from "reselect";
 import Swal from "sweetalert2";
+
+const branch = require("branch-sdk");
 
 class SideMenuBottom extends React.Component {
 
@@ -57,6 +64,34 @@ class SideMenuBottom extends React.Component {
 			 });
 	}
 
+	shareProfile = () => {
+		var options = { no_journeys: true };
+		branch.init('key_live_mdXaxuRyfL4Tla3nkRpk5kefqwmrjYsS');
+
+		var linkData = {
+			alias: this.props.chefName.replace(/\s+/g, '').concat(this.props.chefId.substr(0, 5)),
+			data: {
+				chefId: this.props.chefId
+			}
+		};
+		branch.link(linkData, function (err, link) {
+			if ( err ) {
+				return Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: 'Something went wrong!'
+				})
+			}
+
+			Swal.fire(
+				'Share this link to your social media',
+				link
+			);
+		});
+
+
+	}
+
 	render() {
 
 		return (
@@ -72,6 +107,9 @@ class SideMenuBottom extends React.Component {
 						<span className="slider_menu round"/>
 					</label>
 				</div>
+				<div className="share_profile sb_sofia" onClick={ this.shareProfile }>
+					Share my menu
+				</div>
 				<div className="log-out-side sb_sofia" onClick={ this.handleLogout }>
 					Log out
 				</div>
@@ -83,7 +121,8 @@ class SideMenuBottom extends React.Component {
 const mapStateToProps = createStructuredSelector({
 	userId: selectUserId,
 	acceptingOrders: selectChefAcceptingOrders,
-	chefId: selectChefId
+	chefId: selectChefId,
+	chefName: selectChefName
 });
 
 const mapDispatchToProps = dispatch => ({

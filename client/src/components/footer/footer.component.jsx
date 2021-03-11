@@ -18,7 +18,9 @@ const Footer = () => (
 					<div className="footer_title_list sb_sofia">Community</div>
 					<div className="footer_option_list regular_sofia">Banquet Chef</div>
 					<Link className="footer_option_list regular_sofia" to='/how-it-works'>How it works</Link>
-					<div className="footer_option_list regular_sofia">Contact</div>
+					<div className="footer_option_list regular_sofia">
+						<a href="mailto:hello@banqueteats.com?subject=Banqueteats Contact">Contact</a>
+					</div>
 				</div>
 				{/*<div className="footer_list_inner">*/ }
 				{/*	<div className="footer_title_list sb_sofia">Help</div>*/ }
@@ -32,6 +34,9 @@ const Footer = () => (
 						className="copy_symbol">&#9679;</span></div>
 					<Link className="footer_bottom_item footer_bottom_item_pad" to='/privacy'>Privacy <span className="copy_symbol">&#9679;</span></Link>
 					<Link className="footer_bottom_item" to='/terms-and-conditions'>Terms <span className="copy_symbol">&#9679;</span></Link>
+					<div>
+						<a href="tel:+44 7908 285349">+44 7908 285349</a>
+					</div>
 				</div>
 				<div className="footer_social_media">
 					<FaFacebook className='logo_footer'/>
